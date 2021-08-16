@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"ondrejsynacek",utcoffset:"1"}))};sessionStorage.setItem("_swa","1");</script>
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Ondrej Synacek - Front end & Web developer</title>
+  <link rel="stylesheet" type="text/css" href="{{get_url(path="/css/main.css")}}">
+  <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+  </head>
+  <body>
+    <div class="body-wrapper">
+      <div class="content-wrapper">
+        <header class="header">
+          <div class="header__main-text-wrapper">
+            <h1 class="header__main-text">Ondrej Synacek</h1>
+          </div>
+          <nav class="header__nav">
+            <div class="header__nav--about-me <%= active === 'index' ? 'header__nav--about-me--active' : '' %>">
+              <a href="/" class="header__navlink">About me</a>
+            </div>
+            <div class="header__nav--projects <%= active === 'projects' ? 'header__nav--projects--active' : '' %>">
+              <a href="/projects" class="header__navlink">Projects</a>
+            </div>
+            <div class="header__nav--contact <%= active === 'contact' ? 'header__nav--contact--active' : '' %>">
+              <a href="/contact" class="header__navlink">Contact</a>
+            </div>
+          </nav>
+          {% block content %} {% endblock %}
+        </header>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+:root {
+  --color1: #F8B195;
+  --color2: #F67280;
+  --color3: #C06C84;
+  --color4: #6C5B7B;
+  --color5: #355C7D;
+
+  --edge-padding: 10px;
+  --text-color: var(--color1);
+  --active-box-shadow: inset 0px -1px 5px -1px rgba(0, 0, 0, 0.6);
+  --nav-hover-background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.1));
+}

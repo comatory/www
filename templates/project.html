@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<section class="section">
+  <div>
+    <a
+      href="/projects"
+      class="back-to-projects"
+    >↩︎ Go back</a>
+  </div>
+  <h2>{{ page.title }}</h2>
+
+  <!-- TODO: Check if it's possible to use shortcodes in templates -->
+  <ul class="tags">
+  {% for value in page.taxonomies["tech"] %}
+    <li class="tag">{{value}}</li>
+  {% endfor %}
+  </ul>
+
+  <div>
+    {{ page.content | safe }}
+  </div>
+</section>
+{% endblock content %}

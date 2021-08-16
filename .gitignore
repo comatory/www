@@ -1,0 +1,9 @@
+*.log
+*.swp
+.DS_Store
+.env
+.atom/
+.buildlog/
+.history
+.svn/
+public/

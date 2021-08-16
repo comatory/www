@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section id="contact" class="section">
+  {{section.content | safe}}
+  <ul>
+    <li>
+      <a href="https://twitter.com/ondrejsynacek" target="_blank" class="contact-link">Twitter</a>
+      <span class="social-handle">as @ondrejsynacek</span>
+    </li>
+    <li>
+      <a href="https://github.com/comatory" target="_blank" class="contact-link">Github</a>
+      <span class="social-handle">at github.com/comatory</span>
+    </li>
+    <li>
+      <a href="https://instagram.com/comatory/" target="_blank" class="contact-link">Instagram</a>
+      <span class="social-handle">as @comatory</span>
+    </li>
+    <li>
+      <a href="https://linkedin.com/in/ondrejsynacek">LinkedIn</a>
+      <span class="social-handle">at linkedin.com/in/ondrejsynacek</span>
+    </li>
+  </ul>
+<p>
+  <form action="https://formspree.io/ondrejsynacek@fastmail.com"
+    method="POST" id="contact-form">
+    <div>
+      <label for="message">Your message:</label>
+      <div>
+        <textarea rows=5 name="message" required></textarea>
+      </div>
+    </div>
+    <div>
+      <label for="_replyto">Your email:</label>
+      <div>
+        <input type="email" required name="_replyto">
+      </div>
+    </div>
+    <input type="submit" value="Send" class="submit-button">
+    <div class="disclaimer">
+      I do not collect your emails. Please refer to <a href="https://sendgrid.com/policies/privacy/">Sendgrid</a>
+      privacy policies if you wish to know more.
+    </div>
+  </form>
+</p>
+</section>
+{% endblock content %}
