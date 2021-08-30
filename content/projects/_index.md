@@ -47,7 +47,7 @@ template = "projects.html"
   even when offline.
   Built using SvelteJS to minimize payload with help from Webpack for code-splitting. Code for parsing HTML and event data is isomorphic and runs on both server and browser.
   It's so simple that it can actually run without JavaScript in browser and is _progressively enhanced_.
-  Use it on [fb2ical.com](https://fb2ical.com)
+  Use it on [fb2ical-3051b.web.app](https://fb2ical-3051b.web.app/)
 
   {{ tags(values=[
     'PWA',
