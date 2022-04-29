@@ -7,6 +7,19 @@ template = "projects.html"
 
 ### Projects
 
+* [mileus/ui](/projects/mileus-ui)
+
+  React component UI library used within Mileus web projects
+
+  {{ tags(values=[
+    'React',
+    'Typescript',
+    'ES6',
+    'Library',
+    'Storybook',
+    'PostCSS',
+    ]) }}
+
 * [try.mileus.com](/projects/try-mileus-com)
 
   Web application for showcasing Mileus commute subscription service in Prague.
