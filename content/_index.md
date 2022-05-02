@@ -11,5 +11,5 @@ I have worked in mid-size companies creating enterprise apps and also I've worke
 at multiple startups creating very focused products.
 I enjoy creating products from ground up and making them a reality.
 
-Read my bio [here](https://linkedin.com/in/ondrejsynacek").
+Read my bio [here](https://linkedin.com/in/ondrejsynacek).
 
