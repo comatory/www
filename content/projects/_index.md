@@ -45,7 +45,7 @@ template = "projects.html"
     'Dependency injection'
     ]) }}
 
-* [avocode-email-tagsinput](https://github.com/avocode/avocode-email-tagsinput")
+* [avocode-email-tagsinput](https://github.com/avocode/avocode-email-tagsinput)
 
   React component library that contains components for rendering
   tags within inputs. More specifically, the library allows you to insert
