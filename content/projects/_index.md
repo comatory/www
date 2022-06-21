@@ -7,6 +7,17 @@ template = "projects.html"
 
 ### Projects
 
+* [wdid](https://comatory.github.io/wdid/)
+
+  Command line application that helps you with daily stand-up meetings
+
+  {{ tags(values=[
+    'NodeJS',
+    'JavaScript',
+    'JSDoc',
+    'CLI',
+    ]) }}
+
 * [mileus/ui](/projects/mileus-ui)
 
   React component UI library used within Mileus web projects
