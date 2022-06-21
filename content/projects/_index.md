@@ -7,6 +7,17 @@ template = "projects.html"
 
 ### Projects
 
+* [wdid](https://comatory.github.io/wdid/)
+
+  Command line application that helps you with daily stand-up meetings
+
+  {{ tags(values=[
+    'NodeJS',
+    'JavaScript',
+    'JSDoc',
+    'CLI',
+    ]) }}
+
 * [mileus/ui](/projects/mileus-ui)
 
   React component UI library used within Mileus web projects
@@ -34,7 +45,7 @@ template = "projects.html"
     'Dependency injection'
     ]) }}
 
-* [avocode-email-tagsinput](https://github.com/avocode/avocode-email-tagsinput")
+* [avocode-email-tagsinput](https://github.com/avocode/avocode-email-tagsinput)
 
   React component library that contains components for rendering
   tags within inputs. More specifically, the library allows you to insert
