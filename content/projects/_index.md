@@ -18,6 +18,19 @@ template = "projects.html"
     'CLI',
     ]) }}
 
+* [Mileus mobile apps](/projects/mileus-mobile)
+
+  Suite of multi-platform mobile apps for Mileus commute subscription service
+
+  {{ tags(values=[
+     "Dart",
+     "Flutter",
+     "mobile",
+     "iOS",
+     "Android",
+     "Firebase"
+    ]) }}
+
 * [mileus/ui](/projects/mileus-ui)
 
   React component UI library used within Mileus web projects
