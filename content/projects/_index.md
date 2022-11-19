@@ -78,8 +78,6 @@ template = "projects.html"
 
 * [fb2iCal](https://github.com/comatory/fb2iCal)
 
-  Very minimalistic Progressive Web App for converting Facebook
-  event URLs / event IDs into iCal files. Works well on mobile
   where it can work as standalone app and list event data
   even when offline.
   Built using SvelteJS to minimize payload with help from Webpack for code-splitting. Code for parsing HTML and event data is isomorphic and runs on both server and browser.
@@ -168,7 +166,27 @@ template = "projects.html"
 
 </div>
 
+<div id="fun" class="col">
+
+### Fun
+
+
+* [HTML Tetris](/projects/html-tetris)
+
+  Implementation of Tetris game rendered via HTML
+
+  {{ tags(values=[
+    'HTML',
+    'Vanilla JS',
+    'ES Modules',
+    'PWA',
+    'Game'
+    ]) }}
+
+</div>
+
 <div class="col" id="utilities">
+
 
 ### Utilities
 

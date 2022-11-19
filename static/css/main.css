@@ -1,5 +1,6 @@
 @import './variables.css';
 @import './tags.css';
+@import './project-links.css';
 
 @import url('https://fonts.googleapis.com/css?family=Oswald:700');
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:100,400,700');
@@ -351,6 +352,11 @@ ul.list li > p {
   justify-content: center;
 }
 
+.responsive-media {
+  width: 600px;
+  height: auto;
+}
+
 .row {
   display: flex;
   flex-direction: row;
@@ -413,5 +419,11 @@ figcaption {
   }
   #logo-description--responsive {
     width: 50px;
+  }
+}
+
+@media only screen and (max-width : 600px) {
+  .responsive-media {
+    width: 100%;
   }
 }

@@ -18,6 +18,33 @@
   {% endfor %}
   </ul>
 
+  <ul class="project-links">
+  {% if 'project_url' in page.extra %}
+    <li class="project-link-item">
+      <a
+        href="{{ page.extra.project_url }}"
+        class="project-link project-link-demo"
+        target="_blank"
+      >
+        <svg class="project-link-icon" xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="enable-background:new 0 0 386.972 386.972" width="20px" height="20px" viewBox="0 0 386.972 386.972"><path d="M25.99 0v386.972l334.991-193.486L25.99 0zm30 51.972 245.009 141.514L55.99 335V51.972z"/></svg>
+        <div>Demo</div>
+      </a>
+    </li>
+  {% endif %}
+  {% if 'repository_url' in page.extra %}
+    <li class="project-link-item">
+      <a
+        href="{{ page.extra.repository_url }}"
+        class="project-link project-link-repository"
+        target="_blank"
+      >
+        <svg class="project-link-icon" xmlns="http://www.w3.org/2000/svg" width="25px" height="25px" fill="none" viewBox="0 0 15 15"><path fill="#000" d="m6.793 1.207.353.354-.353-.354ZM1.207 6.793l-.353-.354.353.354Zm0 1.414.354-.353-.354.353Zm5.586 5.586-.354.353.354-.353Zm1.414 0-.353-.354.353.354Zm5.586-5.586.353.354-.353-.354Zm0-1.414-.354.353.354-.353ZM8.207 1.207l.354-.353-.354.353ZM6.44.854.854 6.439l.707.707 5.585-5.585L6.44.854ZM.854 8.56l5.585 5.585.707-.707-5.585-5.585-.707.707Zm7.707 5.585 5.585-5.585-.707-.707-5.585 5.585.707.707Zm5.585-7.707L8.561.854l-.707.707 5.585 5.585.707-.707Zm0 2.122a1.5 1.5 0 0 0 0-2.122l-.707.707a.5.5 0 0 1 0 .708l.707.707ZM6.44 14.146a1.5 1.5 0 0 0 2.122 0l-.707-.707a.5.5 0 0 1-.708 0l-.707.707ZM.854 6.44a1.5 1.5 0 0 0 0 2.122l.707-.707a.5.5 0 0 1 0-.708L.854 6.44Zm6.292-4.878a.5.5 0 0 1 .708 0L8.56.854a1.5 1.5 0 0 0-2.122 0l.707.707Zm-2 1.293 1 1 .708-.708-1-1-.708.708ZM7.5 5a.5.5 0 0 1-.5-.5H6A1.5 1.5 0 0 0 7.5 6V5Zm.5-.5a.5.5 0 0 1-.5.5v1A1.5 1.5 0 0 0 9 4.5H8ZM7.5 4a.5.5 0 0 1 .5.5h1A1.5 1.5 0 0 0 7.5 3v1Zm0-1A1.5 1.5 0 0 0 6 4.5h1a.5.5 0 0 1 .5-.5V3Zm.646 2.854 1.5 1.5.707-.708-1.5-1.5-.707.708ZM10.5 8a.5.5 0 0 1-.5-.5H9A1.5 1.5 0 0 0 10.5 9V8Zm.5-.5a.5.5 0 0 1-.5.5v1A1.5 1.5 0 0 0 12 7.5h-1Zm-.5-.5a.5.5 0 0 1 .5.5h1A1.5 1.5 0 0 0 10.5 6v1Zm0-1A1.5 1.5 0 0 0 9 7.5h1a.5.5 0 0 1 .5-.5V6ZM7 5.5v4h1v-4H7Zm.5 5.5a.5.5 0 0 1-.5-.5H6A1.5 1.5 0 0 0 7.5 12v-1Zm.5-.5a.5.5 0 0 1-.5.5v1A1.5 1.5 0 0 0 9 10.5H8Zm-.5-.5a.5.5 0 0 1 .5.5h1A1.5 1.5 0 0 0 7.5 9v1Zm0-1A1.5 1.5 0 0 0 6 10.5h1a.5.5 0 0 1 .5-.5V9Z"/></svg>
+        <div>Source</div>
+      </a>
+    </li>
+  {% endif %}
+  </ul>
+
   <div>
     {{ page.content | safe }}
   </div>

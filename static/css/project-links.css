@@ -1,0 +1,21 @@
+.project-links {
+  list-style-type: none;
+  margin: 0px;
+  padding:  15px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.project-link-item {
+  margin-right: 20px;
+}
+
+.project-link {
+  display: flex;
+  align-items: center;
+}
+
+.project-link-icon {
+  margin-right: 5px;
+}
