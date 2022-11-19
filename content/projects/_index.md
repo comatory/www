@@ -183,6 +183,16 @@ template = "projects.html"
     'Game'
     ]) }}
 
+* [CSS Tetrominoes](https://comatory.github.io/css-tetrominoes/)
+
+  Tetrominos made as single HTML element styled with pure CSS
+
+  {{ tags(values=[
+    'CSS',
+    'HTML',
+    'Game'
+    ]) }}
+
 </div>
 
 <div class="col" id="utilities">

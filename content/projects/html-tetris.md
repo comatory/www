@@ -15,7 +15,7 @@ Motivation for re-implementing the game was to:
 
 I believe I achieved those goals and it was quite interesting to learn about various styles of tetris games. One example was reading up on different types of rotation systems, meaning how pieces are rotated and how they behave when collision occurs[^1].
 
-I didn't use `Canvas` API for browsers but instead opted for rendering the game using HTML document itself. The play area is constructed with CSS grid. This decision meant not using "sprites". The block that makes up a tetromino shape isn't image either, it's pure CSS.
+I didn't use `Canvas` API for browsers but instead opted for rendering the game using HTML document itself. The play area is constructed with CSS grid. This decision meant not using "sprites". The block that makes up a tetromino shape isn't image either, it's pure CSS - I published it as [separate source](https://github.com/comatory/css-tetrominoes).
 
 See for yourself:
 
