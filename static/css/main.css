@@ -118,6 +118,10 @@ section {
   padding: var(--edge-padding);
 }
 
+.header__main-text-link {
+  text-decoration: none;
+}
+
 .header__main-text {
   text-transform: uppercase;
   font-size: 6rem;
