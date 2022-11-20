@@ -2,7 +2,7 @@
 title = "HTML Tetris"
 template = "project.html"
 [taxonomies]
-tech=["HTML","Vanilla JS","ES Modules","PWA","Game"]
+tech=["HTML", "Javascript", "Vanilla JS","ES Modules","PWA","Game"]
 [extra]
 project_url = "https://tetris.synacek.org"
 repository_url = "https://github.com/comatory/html-tetris"

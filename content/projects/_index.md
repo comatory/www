@@ -13,7 +13,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'NodeJS',
-    'JavaScript',
+    'Javascript',
     'JSDoc',
     'CLI',
     ]) }}
@@ -37,6 +37,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'React',
+    'Javascript',
     'Typescript',
     'ES6',
     'Library',
@@ -50,6 +51,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'React',
+    'Javascript',
     'Typescript',
     'ES6',
     'Responsive',
@@ -69,6 +71,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'React',
+    'Javascript',
     'SlateJS',
     'ES6',
     'Flow',
@@ -81,12 +84,13 @@ template = "projects.html"
   where it can work as standalone app and list event data
   even when offline.
   Built using SvelteJS to minimize payload with help from Webpack for code-splitting. Code for parsing HTML and event data is isomorphic and runs on both server and browser.
-  It's so simple that it can actually run without JavaScript in browser and is _progressively enhanced_.
+  It's so simple that it can actually run without Javascript in browser and is _progressively enhanced_.
   Use it on [fb2ical-3051b.web.app](https://fb2ical-3051b.web.app/)
 
   {{ tags(values=[
     'PWA',
     'Mobile',
+    'Javascript',
     'NodeJS',
     'SvelteJS',
     'Service Worker',
@@ -103,6 +107,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'ES6',
+    'Javascript',
     'NodeJS',
     'React',
     'Webpack',
@@ -137,7 +142,7 @@ template = "projects.html"
   {{ tags(values=[
     'Ruby',
     'Ruby on Rails',
-    'JavaScript',
+    'Javascript',
     'PostgreSQL',
     'Heroku',
     ]) }}
@@ -177,6 +182,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'HTML',
+    'Javascript',
     'Vanilla JS',
     'ES Modules',
     'PWA',
@@ -228,6 +234,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'ES6',
+    'Javascript',
     'NodeJS',
     'Jest',
     ]) }}
@@ -238,6 +245,7 @@ template = "projects.html"
 
   {{ tags(values=[
     'ES6',
+    'Javascript',
     'ReactJS',
     'Redux',
     'Webpack',

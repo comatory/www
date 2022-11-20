@@ -2,7 +2,7 @@
 title = "mileus/ui"
 template = "project.html"
 [taxonomies]
-tech=["React","Typescript","ES6","Library","Storybook","PostCSS"]
+tech=["React","Javascript", "Typescript","ES6","Library","Storybook","PostCSS"]
 +++
 
 I decided to build React component library for Mileus' web projects because we were building multiple web applications based on same stack.
