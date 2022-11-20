@@ -183,7 +183,7 @@ template = "projects.html"
     'Game'
     ]) }}
 
-* [CSS Tetrominoes](https://comatory.github.io/css-tetrominoes/)
+* [CSS Tetrominoes](https://comatory.github.io/css-tetrominoes/src)
 
   Tetrominos made as single HTML element styled with pure CSS
 
