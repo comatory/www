@@ -1,5 +1,7 @@
 <ul class="tags">
 {% for value in values %}
-<li class="tag">{{value}}</li>
+<li class="tag">
+  <a class="tag__link" href="/tech/{{value | replace(from=" ", to="-") | lower}}">{{value}}</a>
+</li>
 {% endfor %}
 </ul>
