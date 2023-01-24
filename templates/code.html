@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% import "macros/macros.html" as macros %}
+
+{% block content %}
+  <section id="projects" class="section">
+    <div class="row wrap">
+      {% for subsection in section.subsections %}
+        {% set current_section = get_section(path=subsection) %}
+          <div class="col">
+            <h3>{{ current_section.title }}</h3>
+            <ul>
+              {% for project in current_section.pages %}
+                <li class="project-item">
+                  {{ macros::get_project_link(page=project) }}
+                  <p class="project-item__description">
+                    {{ project.description }}
+                  </p>
+                  {% if project.taxonomies and 'tech' in project.taxonomies %}
+                    {{ macros::tags(
+                      tag_list=project.taxonomies.tech,
+                      taxonomy_category="tech"
+                      ) }}
+                  {% endif %}
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock content %}
+

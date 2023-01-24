@@ -1,6 +1,8 @@
 +++
 title = "try.mileus.com"
 template = "project.html"
+description = "Web application for showcasing Mileus commute subscription service in Prague"
+date = 2021-11-01
 [taxonomies]
 tech=["React","Typescript","Javascript", "ES6","Responsive","Mapbox","Redux","Dependency injection"]
 +++

@@ -1,6 +1,8 @@
 +++
 title = "HTML Tetris"
 template = "project.html"
+description = "Tetris game rendered in HTML, inspired by 1989 Gameboy version"
+date = 2022-11-20
 [taxonomies]
 tech=["HTML", "Javascript", "Vanilla JS","ES Modules","PWA","Game"]
 [extra]

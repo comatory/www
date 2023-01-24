@@ -5,8 +5,8 @@
 <section class="section">
   <div>
     <a
-      href="/projects"
-      class="back-to-projects"
+      href="/code"
+      class="back-to-code"
     >↩︎ Go back</a>
   </div>
   <h2>{{ page.title }}</h2>
@@ -46,7 +46,11 @@
   </ul>
 
   <div>
-    {{ page.content | safe }}
+    {% if page.description and not page.content %}
+      {{ page.description | safe }}
+    {% else %}
+      {{ page.content | safe }}
+    {% endif %}
   </div>
 </section>
 {% endblock content %}

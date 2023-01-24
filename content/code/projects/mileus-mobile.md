@@ -1,6 +1,8 @@
 +++
 title = "Mileus mobile apps"
 template = "project.html"
+description = "Suite of multi-platform mobile apps for Mileus commute subscription service"
+date = 2022-02-01
 [taxonomies]
 tech=["Dart","Flutter","mobile","iOS","Android","Firebase"]
 +++

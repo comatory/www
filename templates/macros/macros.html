@@ -1,0 +1,27 @@
+{% macro get_project_link(page) %}
+  {% if not page.content and 'project_url' in page.extra %}
+    <a href="{{ page.extra.project_url | safe }}" target="_blank">
+      {{ page.title }}
+    </a>
+  {% elif not page.content and 'repository_url' in page.extra %}
+    <a href="{{ page.extra.repository_url | safe }}" target="_blank">
+      {{ page.title }}
+    </a>
+  {% else %}
+    <a href="{{ page.path | safe }}">
+      {{ page.title }}
+    </a>
+  {% endif %}
+{% endmacro get_project_link %}
+
+{% macro tags(tag_list, taxonomy_category) %}
+  <ul class="tags">
+    {% for tag_name in tag_list %}
+    <li class="tag">
+      <a href="{{ taxonomy_category | slugify }}/{{ tag_name | slugify }}" class="tag-link">
+        {{tag_name}}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+{% endmacro tags %}

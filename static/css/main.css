@@ -1,6 +1,7 @@
 @import './variables.css';
 @import './tags.css';
 @import './project-links.css';
+@import './projects.css';
 @import './tech.css';
 
 @import url('https://fonts.googleapis.com/css?family=Oswald:700');
@@ -50,7 +51,7 @@ a.contact-link:after {
   bottom: 0;
 }
 
-a.back-to-projects {
+a.back-to-code {
   font-size: 0.8rem;
 }
 
@@ -170,7 +171,7 @@ section {
 }
 
 .header__nav--about-me,
-.header__nav--projects,
+.header__nav--code,
 .header__nav--contact {
   cursor: pointer;
   display: flex;
@@ -182,7 +183,7 @@ section {
   box-shadow: var(--active-box-shadow);
 }
 
-.header__nav--projects--active {
+.header__nav--code--active {
   box-shadow: var(--active-box-shadow);
   color: var(--color5);
 }
@@ -197,7 +198,7 @@ section {
   background-image: var(--nav-hover-background);
 }
 
-.header__nav--projects:hover {
+.header__nav--code:hover {
   color: var(--color5);
   background-image: var(--nav-hover-background);
 }
@@ -211,7 +212,7 @@ section {
   background-color: var(--color2);
 }
 
-.header__nav--projects {
+.header__nav--code {
   background-color: var(--color3);
 }
 

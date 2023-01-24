@@ -1,0 +1,8 @@
+.project-item {
+  padding-top: var(--edge-padding);
+  padding-bottom: calc(var(--edge-padding) * 3);
+}
+
+.project-item__description {
+  margin-bottom: var(--edge-padding);
+}
