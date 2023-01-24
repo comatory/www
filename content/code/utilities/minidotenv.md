@@ -7,4 +7,5 @@ date = 2020-01-25
 tech=["0 dependency","Typescript","Jest","Dot files"]
 [extra]
 repository_url = "https://github.com/comatory/minidotenv"
+archived = false
 +++

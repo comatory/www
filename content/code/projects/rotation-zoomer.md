@@ -8,4 +8,5 @@ tech=["CoffeeScript","jQuery","Canvas"]
 [extra]
 repository_url = "https://github.com/comatory/rotation-zoomer"
 project_url = "https://comatory.github.io/rotation-zoomer"
+archived = false
 +++

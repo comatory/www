@@ -8,6 +8,7 @@ tech=["HTML", "Javascript", "Vanilla JS","ES Modules","PWA","Game"]
 [extra]
 project_url = "https://tetris.synacek.org"
 repository_url = "https://github.com/comatory/html-tetris"
+archived = false
 +++
 
 Motivation for re-implementing the game was to:

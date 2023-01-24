@@ -2,17 +2,17 @@
 {% import "macros/macros.html" as macros %}
 
 {% block content %}
-  <section id="projects" class="section">
+  <section id="code" class="section">
     <div class="row wrap">
       {% for subsection in section.subsections %}
         {% set current_section = get_section(path=subsection) %}
           <div class="col">
             <h3>{{ current_section.title }}</h3>
-            <ul>
-              {% for project in current_section.pages %}
-                <li class="project-item">
+            <ul class="code-list">
+              {% for project in current_section.pages | filter(attribute="extra.archived", value=false) %}
+                <li class="code-list__code-item">
                   {{ macros::get_project_link(page=project) }}
-                  <p class="project-item__description">
+                  <p class="code-list__code-item__description">
                     {{ project.description }}
                   </p>
                   {% if project.taxonomies and 'tech' in project.taxonomies %}
@@ -24,6 +24,20 @@
                 </li>
               {% endfor %}
             </ul>
+            {% set archived_projects = current_section.pages | filter(attribute="extra.archived", value=true) %}
+            {% set archived_projects_many = archived_projects | length > 1 %}
+            {% if archived_projects | length > 0 %}
+              <p class="show-more-link">
+                <a href="{{ current_section.path }}">
+                  +{{ archived_projects | length}}
+                  {% if archived_projects_many %}
+                    archived items
+                  {% else %}
+                    archived item
+                  {% endif %}
+                </a>
+              </p>
+            {% endif %}
           </div>
       {% endfor %}
     </div>

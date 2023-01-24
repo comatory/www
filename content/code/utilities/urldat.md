@@ -8,4 +8,5 @@ tech=["0 dependency","Dart","Web URLs"]
 [extra]
 project_url = "https://pub.dev/packages/urldat"
 repository_url = "https://github.com/comatory/urldat"
+archived = false
 +++

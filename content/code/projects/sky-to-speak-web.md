@@ -7,4 +7,5 @@ date = 2013-10-21
 tech=["Wordpress","HTML5","CSS3"]
 [extra]
 project_url = "https://web.archive.org/web/20210116182451/http://skytospeak.com/"
+archived = true
 +++

@@ -8,4 +8,5 @@ tech=["NodeJS","Javascript","JSDoc","CLI"]
 [extra]
 project_url = "https://comatory.github.io/wdid/"
 repository_url = "https://github.com/comatory/wdid"
+archived = false
 +++

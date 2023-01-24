@@ -1,3 +1,20 @@
+{% extends "base.html" %}
+
 {% block content %}
-  {{ section.content | safe }}
+  <section id="project-section" class="section">
+    <h2>{{ section.title }} ({{ section.pages | length }})</h2>
+    {{ section.content | safe }}
+    {% if section.pages | length > 0 %}
+    <ul>
+      {% for page in section.pages %}
+        <li>
+          <a href="{{ page.path }}">{{ page.title }}</a>
+          {% if 'archived' in page.extra and page.extra.archived %}
+            <div class="archived"></div>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+  </section>
 {% endblock content %}

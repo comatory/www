@@ -7,4 +7,5 @@ date = 2018-12-09
 tech=["ES6","Javascript","NodeJS","React","Webpack","SequelizeJS","Dependency injection","Material Design"]
 [extra]
 repository_url = "https://github.com/comatory/portion-tracker"
+archived = false
 +++

@@ -7,4 +7,5 @@ date = 2017-11-11
 tech=["ES6","Javascript","NodeJS","Jest"]
 [extra]
 repository_url = "https://github.com/comatory/proximity-search-array"
+archived = true
 +++

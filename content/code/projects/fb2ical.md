@@ -8,4 +8,5 @@ tech=["PWA","Mobile","Javascript","NodeJS","SvelteJS","Service Worker","Offline"
 [extra]
 project_url = "https://fb2ical-3051b.web.app"
 repository_url = "https://github.com/comatory/fb2iCal"
+archived = false
 +++

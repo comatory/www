@@ -7,4 +7,5 @@ date = 2017-07-18
 tech=["ES6","Javascript","ReactJS","Redux","Webpack","CSS Modules"]
 [extra]
 repository_url = "https://github.com/comatory/es6-frontend-boilerplate-2017"
+archived = true
 +++

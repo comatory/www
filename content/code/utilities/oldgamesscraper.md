@@ -7,4 +7,5 @@ date = 2015-10-06
 tech=["Python","Web Scraping"]
 [extra]
 repository_url = "https://github.com/comatory/oldGamesScraper"
+archived = false
 +++

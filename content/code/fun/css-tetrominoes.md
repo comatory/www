@@ -8,4 +8,5 @@ tech=["CSS","HTML","Game"]
 [extra]
 project_url = "https://comatory.github.io/css-tetrominoes/src/"
 repository_url = "https://github.com/comatory/css-tetrominoes"
+archived = false
 +++

@@ -7,4 +7,5 @@ date = 2015-11-19
 tech=["Ruby","Ruby on Rails","Javascript","PostgreSQL","Heroku"]
 [extra]
 repository_url = "https://github.com/comatory/Dignus"
+archived = true
 +++

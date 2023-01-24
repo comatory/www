@@ -7,4 +7,5 @@ date = 2015-09-18
 tech=["JSON","Open Source"]
 [extra]
 repository_url = "https://github.com/comatory/zeroclickinfo-goodies"
+archived = true
 +++

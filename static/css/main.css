@@ -1,7 +1,7 @@
 @import './variables.css';
 @import './tags.css';
 @import './project-links.css';
-@import './projects.css';
+@import './code.css';
 @import './tech.css';
 
 @import url('https://fonts.googleapis.com/css?family=Oswald:700');
@@ -401,6 +401,12 @@ figcaption {
   font-style: oblique;
   letter-spacing: 0.07rem;
   font-size: 0.95rem;
+}
+
+.show-more-link {
+  text-align: right;
+  font-size: 0.9rem;
+  margin: 0;
 }
 
 /* Media queries */
