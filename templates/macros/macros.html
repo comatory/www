@@ -18,7 +18,7 @@
   <ul class="tags">
     {% for tag_name in tag_list %}
     <li class="tag">
-      <a href="{{ taxonomy_category | slugify }}/{{ tag_name | slugify }}" class="tag-link">
+      <a href="/{{ taxonomy_category | slugify }}/{{ tag_name | slugify }}" class="tag-link">
         {{tag_name}}
       </a>
     </li>
