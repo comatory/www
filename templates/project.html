@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "macros/macros.html" as macros %}
 
 {% block content %}
 
@@ -11,12 +12,10 @@
   </div>
   <h2>{{ page.title }}</h2>
 
-  <!-- TODO: Check if it's possible to use shortcodes in templates -->
-  <ul class="tags">
-  {% for value in page.taxonomies["tech"] %}
-    <li class="tag">{{value}}</li>
-  {% endfor %}
-  </ul>
+  {{ macros::tags(
+    tag_list=page.taxonomies.tech,
+    taxonomy_category="tech"
+    ) }}
 
   <ul class="project-links">
   {% if 'project_url' in page.extra %}

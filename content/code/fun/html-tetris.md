@@ -4,7 +4,7 @@ template = "project.html"
 description = "Tetris game rendered in HTML, inspired by 1989 Gameboy version"
 date = 2022-11-20
 [taxonomies]
-tech=["HTML", "Javascript", "Vanilla JS","ES Modules","PWA","Game"]
+tech=["HTML", "Javascript", "Vanilla JS","ES Modules","PWA","Game", "JSDoc"]
 [extra]
 project_url = "https://tetris.synacek.org"
 repository_url = "https://github.com/comatory/html-tetris"
