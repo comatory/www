@@ -23,6 +23,8 @@ jobs:
         run: zola build
       - name: list files
         run: ls public
+      - name: restore timestamps to upload only changed files
+        uses: chetan/git-restore-mtime-action@v1
       - name: upload to server
         uses: wangyucode/sftp-upload-action@v2.0.2
         with:
@@ -31,3 +33,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           localDir: ./public
           remoteDir: /
+          forceUpload: false

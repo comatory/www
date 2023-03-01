@@ -12,4 +12,5 @@ at multiple startups creating very focused products.
 I enjoy creating products from ground up and making them a reality.
 
 Read my bio [here](https://linkedin.com/in/ondrejsynacek).
+You can also [contact me here](/contact).
 
