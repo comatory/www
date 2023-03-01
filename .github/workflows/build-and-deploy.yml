@@ -33,3 +33,4 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           localDir: ./public
           remoteDir: /
+          forceUpload: false
