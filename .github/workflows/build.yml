@@ -1,11 +1,7 @@
-name: Build & deploy
-on:
-  pull_request:
-    types:
-      - closed
+name: Build
+on: [push]
 jobs:
-  if_merged:
-    if: github.event.pull_request.merged
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: checkout repository
@@ -23,11 +19,3 @@ jobs:
         run: zola build
       - name: list files
         run: ls public
-      - name: upload to server
-        uses: wangyucode/sftp-upload-action@v2.0.2
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USER }}
-          password: ${{ secrets.PASSWORD }}
-          localDir: ./public
-          remoteDir: /
