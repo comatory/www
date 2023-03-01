@@ -15,7 +15,7 @@ jobs:
       - name: setup Zola
         uses: taiki-e/install-action@v2
         with:
-          tool: cargo-hack
+          tool: zola
       - name: build www
         run: zola build
       - name: list files
