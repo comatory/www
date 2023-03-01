@@ -13,7 +13,9 @@ jobs:
           profile: minimal
           toolchain: stable
       - name: setup Zola
-        run: sudo apt-get install zola
+        uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-hack
       - name: build www
         run: zola build
       - name: list files
