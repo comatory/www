@@ -27,4 +27,4 @@ jobs:
           username: ${{ secrets.USER }}
           password: ${{ secrets.PASSWORD }}
           localDir: ./public
-          remoteDir: ${{ vars.REMOTE_DIR_PATH }}
+          remoteDir: /
