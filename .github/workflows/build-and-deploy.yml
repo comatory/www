@@ -1,0 +1,20 @@
+name: Build & deploy
+run-name: Building and deploying www on {{ github.base_ref }}
+on: [push]
+jobs:
+  build-and-deploy:
+  runs-on: ubuntu-latest
+  steps:
+    - name: checkout repository
+      uses: actions/checkout@v3
+    - name: setup Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+    - name: setup Zola
+      run: sudo apt-get install zola
+    - name: build www
+      run: zola build
+    - name: list files
+      run: ls public
