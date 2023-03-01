@@ -1,5 +1,5 @@
 name: Build & deploy
-run-name: Building and deploying www on {{ github.base_ref }}
+run-name: Building and deploying www on ${{ github.base_ref }}
 on: [push]
 jobs:
   build-and-deploy:
@@ -20,3 +20,11 @@ jobs:
         run: zola build
       - name: list files
         run: ls public
+      - name: upload to server
+        uses: wangyucode/sftp-upload-action@v2.0.2
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USER }}
+          password: ${{ secrets.PASSWORD }}
+          localDir: ./public
+          remoteDir: ${{ vars.REMOTE_DIR_PATH }}
