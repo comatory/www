@@ -22,7 +22,7 @@ jobs:
       - name: build www
         run: zola build
       - name: list files
-        run: ls public
+        run: ls -l public/**/*
       - name: restore timestamps to upload only changed files
         uses: chetan/git-restore-mtime-action@v1
       - name: upload to server
