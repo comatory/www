@@ -6,9 +6,10 @@
     <p>
       This is a list of links that I found interesting and mostly reflects my reading list.
     </p>
+    
     <div class="row wrap">
       <ul class="links-list">
-        {% for link in section.pages %}
+        {% for link in paginator.pages %}
           <li class="links-list__item">
             <span class="links-list__item__posted-subtitle">
               {{ link.date | date(format="%Y-%m-%d %H:%M") }}
@@ -71,5 +72,13 @@
         {% endfor %}
       </ul>
     </div>
+    <nav class="pagination">
+      {% if paginator.previous %}
+          <a class="previous" href="{{ paginator.previous }}">‹ Previous</a>
+      {% endif %}
+      {% if paginator.next %}
+          <a class="next" href="{{ paginator.next }}">Next ›</a>
+      {% endif %}
+    </nav>
   </section>
 {% endblock content %}
