@@ -1,8 +1,12 @@
 +++
 title = "mileus/ui"
 template = "project.html"
+description = "React component UI library used within Mileus web projects"
+date = 2021-11-01
 [taxonomies]
 tech=["React","Javascript", "Typescript","ES6","Library","Storybook","PostCSS"]
+[extra]
+archived = false
 +++
 
 I decided to build React component library for Mileus' web projects because we were building multiple web applications based on same stack.

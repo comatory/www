@@ -1,8 +1,12 @@
 +++
 title = "Mileus mobile apps"
 template = "project.html"
+description = "Suite of multi-platform mobile apps for Mileus commute subscription service"
+date = 2022-02-01
 [taxonomies]
 tech=["Dart","Flutter","mobile","iOS","Android","Firebase"]
+[extra]
+archived = false
 +++
 
 The goal of the applications was to provide two mobile apps - one for end-users (customers) and other for service providers (taxi drivers).

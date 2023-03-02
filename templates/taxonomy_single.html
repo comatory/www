@@ -4,9 +4,9 @@
 {% set page_length = term.pages | length %}
 <section class="tech">
   <h2>{{ page_length }} page(s) with tag: "{{ term.name }}"</h2>
-  <ul class="tech-list">
+  <ul class="tag-list">
     {% for page in term.pages %}
-      <li class="tech-list-item">
+      <li class="tag-list-item">
         <a href="{{ page.path }}">{{ page.title }}</a>
       </li>
     {% endfor %}
