@@ -1,0 +1,34 @@
+.links-list {
+  list-style-type: none;
+  padding: 0px;
+}
+
+.links-list__item__posted-title {
+  letter-spacing: 1px;
+  margin: 0px;
+}
+
+.links-list__item__posted-subtitle {
+  font-size: 0.9rem;
+}
+
+.links-list__item__published,
+.links-list__item__published--link {
+  letter-spacing: 0.05em;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.links-list__item__published--link a {
+  color: var(--color1-fade);
+}
+
+.links-list__item__comment {
+  border-left: 1px solid var(--color1);
+  padding-left: 10px;
+  margin: 5px 0px;
+}
+
+.links-list__item__comment p {
+  margin: 0px
+}

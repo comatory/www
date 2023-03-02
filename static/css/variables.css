@@ -5,6 +5,8 @@
   --color4: #6C5B7B;
   --color5: #355C7D;
 
+  --color1-fade: #C58C76;;
+
   --edge-padding: 10px;
   --text-color: var(--color1);
   --active-box-shadow: inset 0px -1px 5px -1px rgba(0, 0, 0, 0.6);

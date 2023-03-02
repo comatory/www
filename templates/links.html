@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% import "macros/macros.html" as macros %}
+
+{% block content %}
+  <section id="links" class="section">
+    <p>
+      This is a list of links that I found interesting and mostly reflects my reading list.
+    </p>
+    <div class="row wrap">
+      <ul class="links-list">
+        {% for link in section.pages %}
+          <li class="links-list__item">
+            <span class="links-list__item__posted-subtitle">
+              {{ link.date | date(format="%Y-%m-%d %H:%M") }}
+            </span>
+            <h3 class="links-list__item__posted-title">
+              <a
+                href="{{ link.extra.link_url }}"
+                target="_blank"
+                class="links-list__item__posted-title__link"
+              >
+                {{ link.title }}
+              </a>
+            </h3>
+            {% if link.extra.published_date or link.extra.origin_title %}
+              {% if link.extra.published_date %}
+                <span class="links-list__item__published">
+                  Published {{ link.extra.published_date | date(format="%Y-%m-%d") }}
+                </span>
+              {% endif %}
+
+              {% if link.extra.origin_title and link.extra.origin_url %}
+                <span class="links-list__item__published--link">
+                  <a
+                    href="{{ link.extra.origin_url }}"
+                    target="_blank"
+                  >
+                    on {{ link.extra.origin_title }}
+                  </a>
+                </span>
+              {% elif link.extra.origin_title %}
+                <span class="links-list__item__published">
+                  on {{ link.extra.origin_title }}
+                </span>
+              {% endif %}
+            {% endif %}
+            {% if link.content %}
+              <div class="links-list__item__comment">
+                {% set wordcount_limit = 50 %}
+                {% if link.content | striptags | wordcount > wordcount_limit %}
+                  {{ link.content | striptags | split(pat=" ") | slice(end=wordcount_limit) | join(sep=" ") }}
+                  <a
+                    class="show-more-link"
+                    href="{{ link.path }}"
+                   >
+                     … Read more
+                  </a>
+                {% else %}
+                  {{ link.content | safe }}
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if link.taxonomies and 'tech' in link.taxonomies %}
+              {{ macros::tags(
+                tag_list=link.taxonomies.tech,
+                taxonomy_category="tech"
+                ) }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </section>
+{% endblock content %}
