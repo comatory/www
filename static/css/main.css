@@ -3,6 +3,7 @@
 @import './project-links.css';
 @import './code.css';
 @import './tech.css';
+@import './links.css';
 
 @import url('https://fonts.googleapis.com/css?family=Oswald:700');
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:100,400,700');
@@ -51,7 +52,7 @@ a.contact-link:after {
   bottom: 0;
 }
 
-a.back-to-code {
+a.back-to {
   font-size: 0.8rem;
 }
 
