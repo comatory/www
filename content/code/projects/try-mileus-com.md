@@ -1,8 +1,13 @@
 +++
 title = "try.mileus.com"
 template = "project.html"
+description = "Web application for showcasing Mileus commute subscription service in Prague"
+date = 2021-11-01
 [taxonomies]
 tech=["React","Typescript","Javascript", "ES6","Responsive","Mapbox","Redux","Dependency injection"]
+[extra]
+project_url = "https://try.mileus.com"
+archived = false
 +++
 
 Multilingual web application created with fast-loading in mind. The purpose of the web app is to communicate the upsides of using inter-modal transportation in Prague.

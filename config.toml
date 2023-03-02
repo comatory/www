@@ -4,12 +4,16 @@ base_url = "https://synacek.org"
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = false
 
+default_language = "en"
+
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = true
 
 taxonomies = [
   { name = "tech", feed = true }
 ]
+
+generate_feed = true
 
 [markdown]
 # Whether to do syntax highlighting
@@ -18,4 +22,9 @@ highlight_code = true
 
 [extra]
 # Put all your custom variables here
+
+[search]
+include_title = true
+include_description = true
+include_content = true
 

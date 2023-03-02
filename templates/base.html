@@ -9,6 +9,9 @@
   <title>Ondrej Synacek - Front end & Web developer</title>
   <link rel="stylesheet" type="text/css" href="{{get_url(path="/css/main.css")}}">
   <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
+{% block rss %}
+  <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
+{% endblock rss %}
   </head>
   <body>
     <div class="body-wrapper">
@@ -23,8 +26,8 @@
             <div class="header__nav--about-me <%= active === 'index' ? 'header__nav--about-me--active' : '' %>">
               <a href="/" class="header__navlink">About me</a>
             </div>
-            <div class="header__nav--projects <%= active === 'projects' ? 'header__nav--projects--active' : '' %>">
-              <a href="/projects" class="header__navlink">Projects</a>
+            <div class="header__nav--code <%= active === 'code' ? 'header__nav--code--active' : '' %>">
+              <a href="/code" class="header__navlink">Code</a>
             </div>
             <div class="header__nav--contact <%= active === 'contact' ? 'header__nav--contact--active' : '' %>">
               <a href="/contact" class="header__navlink">Contact</a>
