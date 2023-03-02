@@ -3,6 +3,12 @@
   padding: 0px;
 }
 
+.links-list__item:not(:first-child) {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color1);
+}
+
 .links-list__item__posted-title {
   letter-spacing: 1px;
   margin: 0px;
@@ -31,4 +37,21 @@
 
 .links-list__item__comment p {
   margin: 0px
+}
+
+.link-title {
+  margin: 15px 0px 10px 0px;
+}
+
+.link-posted {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.link-source {
+  margin: 15px 0px 0px 0px;
+}
+
+.link-published {
+  font-style: oblique;
 }

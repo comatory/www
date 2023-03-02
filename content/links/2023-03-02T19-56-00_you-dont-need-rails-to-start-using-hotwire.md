@@ -1,6 +1,7 @@
 +++
 title = "You Don't Need Rails to Start Using Hotwire"
 date = 2023-03-02T19:56:00.000Z
+template = "link.html"
 [taxonomies]
 tech=["HTML", "Ruby on Rails"]
 [extra]

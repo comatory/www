@@ -46,7 +46,7 @@
             {% endif %}
             {% if link.content %}
               <div class="links-list__item__comment">
-                {% set wordcount_limit = 50 %}
+                {% set wordcount_limit = 100 %}
                 {% if link.content | striptags | wordcount > wordcount_limit %}
                   {{ link.content | striptags | split(pat=" ") | slice(end=wordcount_limit) | join(sep=" ") }}
                   <a

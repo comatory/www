@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% import "macros/macros.html" as macros %}
+
+{% block content %}
+
+<section class="section">
+  <div>
+    <a
+      href="/links"
+      class="back-to"
+    >↩︎ Go back</a>
+  </div>
+
+  <h2 class="link-title">{{ page.title }}</h2>
+
+  {{ macros::tags(
+    tag_list=page.taxonomies.tech,
+    taxonomy_category="tech"
+    ) }}
+
+  <span class="link-posted">
+    Posted: {{ page.date | date(format="%Y-%m-%d %H:%M") }}
+  </span>
+
+  <h3 class="link-source">
+    URL:
+    <a
+      href="{{ page.extra.link_url }}"
+    >
+      {{ page.extra.link_url | truncate(length=100) }}
+    </a>
+  </h3>
+
+  <span class="link-published">
+    {% if page.extra.published_date %}
+      Link content published on {{ page.extra.published_date | date }}
+    {% endif %}
+    <span class="link-published__source">
+      @
+      {% if page.extra.origin_title and page.extra.origin_url %}
+        <a
+          href="{{ page.extra.origin_url }}"
+          target="_blank"
+        >
+          {{ page.extra.origin_title }}
+        </a>
+      {% elif page.extra.origin_title %}
+        {{ page.extra.origin_title }}
+      {% endif %}
+    </span>
+  </span>
+
+  <div>
+    {{ page.content | safe }}
+  </div>
+</section>
+
+{% endblock content %}
