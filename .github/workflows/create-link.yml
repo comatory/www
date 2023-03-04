@@ -30,11 +30,11 @@ jobs:
     steps:
       - name: log
         run: |
-          echo "Create link PR:"
-          echo "title: ${{ inputs.title }}"
-          echo "URL: ${{ inputs.url }}"
-          echo "tags: ${{ inputs.tags }}"
-          echo "comment: ${{ inputs.comment }}"
-          echo "origin title: ${{ inputs.origin_title }}"
-          echo "origin URL: ${{ inputs.origin_url }}"
-          echo "published: ${{ inputs.published_date }}"
+          echo "Create link PR ..."
+          echo "\ttitle: ${{ inputs.title }}"
+          echo "\tURL: ${{ inputs.url }}"
+          echo "\ttags: ${{ inputs.tags }}"
+          echo "\tcomment: ${{ inputs.comment }}"
+          echo "\torigin title: ${{ inputs.origin_title }}"
+          echo "\torigin URL: ${{ inputs.origin_url }}"
+          echo "\tpublished: ${{ inputs.published_date }}"
