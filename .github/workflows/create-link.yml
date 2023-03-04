@@ -28,12 +28,13 @@ jobs:
   create_link:
     runs-on: ubuntu-latest
     steps:
+      - name: log
       - run: |
-        echo "Create link PR:"
-        echo "title: ${{ inputs.title }}"
-        echo "URL: ${{ inputs.url }}"
-        echo "tags: ${{ inputs.tags }}"
-        echo "comment: ${{ inputs.comment }}"
-        echo "origin title: ${{ inputs.origin_title }}"
-        echo "origin URL: ${{ inputs.origin_url }}"
-        echo "published: ${{ inputs.published_date }}"
+          echo "Create link PR:"
+          echo "title: ${{ inputs.title }}"
+          echo "URL: ${{ inputs.url }}"
+          echo "tags: ${{ inputs.tags }}"
+          echo "comment: ${{ inputs.comment }}"
+          echo "origin title: ${{ inputs.origin_title }}"
+          echo "origin URL: ${{ inputs.origin_url }}"
+          echo "published: ${{ inputs.published_date }}"
