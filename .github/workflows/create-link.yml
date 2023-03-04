@@ -1,0 +1,30 @@
+name: Create link
+on:
+  workflow_dispatch:
+    inputs:
+      title:
+        required: true
+        type: string
+      url:
+        required: true
+        type: string
+      tags:
+        required: false
+        type: string
+      comment:
+        required: false
+        type: string
+      origin_title:
+        required: false
+        type: string
+      origin_url:
+        required: false
+        type: string
+      published_date:
+        required: false
+        type: string
+jobs:
+  create_link:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Create link PR with payload ${{ inputs }}"
