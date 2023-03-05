@@ -49,6 +49,8 @@ jobs:
           base: master
           title: "Create link ${{ inputs.url }}"
           commit-message: "Automated PR for link ${{ inputs.title }} @ ${{ inputs.url }}"
+          branch: "add-link"
+          branch-suffix: "timestamp"
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           labels: |
