@@ -47,7 +47,8 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           base: master
-          title: "Add link ${{ inputs.url }}"
+          title: "Create link ${{ inputs.url }}"
+          commit-message: "Automated PR for link ${{ inputs.title }} @ ${{ inputs.url }}"
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
           labels: |
