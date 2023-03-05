@@ -49,7 +49,10 @@ import path from 'path';
     'template = "link.html"',
     ...(() => {
       if (!options.tags.length) {
-        return [];
+        return [
+          '[taxonomies]',
+          'tech=[]',
+        ];
       }
 
       return [
