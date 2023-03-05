@@ -3,8 +3,9 @@ import path from 'path';
 
 (() => {
   const cleanArgument = arg => arg.replace(/-*/, '');
+  const valueIsNotEmpty = value => value.length > 0;
 
-  console.info(`processing arguments ${process.argv[2]}`);
+  console.info(`processing arguments ${process.argv.slice(2)}`);
 
   const options = process.argv.slice(2).reduce((acc, str) => {
     const [ arg, value ] = str.split(/=/);
@@ -15,12 +16,12 @@ import path from 'path';
       case '--originTitle':
       case '--originUrl':
       case '--comment':
-        return { ...acc, [cleanArgument(arg)]: value?.trim() ?? null };
+        return { ...acc, [cleanArgument(arg)]: valueIsNotEmpty(value) ? value.trim() : null };
       case '--date':
       case '--publishedDate':
-        return { ...acc, [cleanArgument(arg)]: value ? new Date(value) : null };
+        return { ...acc, [cleanArgument(arg)]: valueIsNotEmpty(value) ? new Date(value) : null };
       case '--tags':
-        return { ...acc, tags: value ? value.split(',').map(v => v.trim()) : [] };
+        return { ...acc, tags: valueIsNotEmpty(value) ? value.split(',').map(v => v.trim()) : [] };
       default:
         return acc;
     }
