@@ -46,7 +46,6 @@ jobs:
       - name: create PR
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN  }}
           base: master
           title: "Add link ${{ inputs.url }}"
           committer: GitHub <noreply@github.com>
