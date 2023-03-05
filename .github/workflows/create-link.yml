@@ -47,8 +47,5 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           base: master
-          title: "Add link ${{ inputs.url }}"
           committer: GitHub <noreply@github.com>
           author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
-          labels: |
-            automerge
