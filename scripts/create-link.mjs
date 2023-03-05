@@ -12,12 +12,12 @@ import path from 'path';
       case '--originTitle':
       case '--originUrl':
       case '--comment':
-        return { ...acc, [cleanArgument(arg)]: value.trim() };
+        return { ...acc, [cleanArgument(arg)]: value?.trim() ?? null };
       case '--date':
       case '--publishedDate':
-        return { ...acc, [cleanArgument(arg)]: new Date(value) };
+        return { ...acc, [cleanArgument(arg)]: value ? new Date(value) : null };
       case '--tags':
-        return { ...acc, tags: value.split(',').map(v => v.trim()) };
+        return { ...acc, tags: value ? value.split(',').map(v => v.trim()) : [] };
       default:
         return acc;
     }
