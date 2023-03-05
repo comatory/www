@@ -29,8 +29,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: prepare file for commit
-        run: sh scripts/new_link.sh {{  }}
       - name: log
         run: |
           echo "Create link PR ..."
