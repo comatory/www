@@ -3,6 +3,9 @@ import path from 'path';
 
 (() => {
   const cleanArgument = arg => arg.replace(/-*/, '');
+
+  console.info(`processing arguments ${process.argv[2]}`);
+
   const options = process.argv.slice(2).reduce((acc, str) => {
     const [ arg, value ] = str.split(/=/);
 
