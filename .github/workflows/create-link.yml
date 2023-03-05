@@ -47,6 +47,7 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           base: master
+          token: {{ secrets.PERSONAL_ACCESS_TOKEN }}
           title: "Create link ${{ inputs.url }}"
           commit-message: "Automated PR for link ${{ inputs.title }} @ ${{ inputs.url }}"
           branch: "add-link"
