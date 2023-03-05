@@ -47,8 +47,12 @@ jobs:
         uses: peter-evans/create-pull-request@v4
         with:
           base: master
-          title: "Add link ${{ inputs.url }}"
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          title: "Create link ${{ inputs.url }}"
+          commit-message: "Automated PR for link ${{ inputs.title }} @ ${{ inputs.url }}"
+          branch: "add-link"
+          branch-suffix: "timestamp"
           committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          author: Ondrej Synacek <ondrej@synacek.org>
           labels: |
             automerge
