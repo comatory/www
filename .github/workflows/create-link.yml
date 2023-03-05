@@ -44,3 +44,11 @@ jobs:
           node-version: 18.2.0
       - name: create post
         run: node scripts/create-link.mjs --title=${{ inputs.title }} --url=${{ inputs.url }} --date=$(date +"%Y-%m-%dT%H:%M:%S%z") --originTitle=${{ inputs.origin_title }} --originUrl=${{ inputs.origin_url }} --comment=${{ inputs.comment }} --publishedDate=${{ inputs.published_date }} --tags=${{ inputs.tags }}
+      - name: create PR
+        uses: peter-evans/create-pull-request@v4
+        with:
+          title: "Add link ${{ inputs.url }}"
+          committer: GitHub <noreply@github.com>
+          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          labels: |
+            automerge
