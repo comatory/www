@@ -28,6 +28,9 @@ jobs:
   create_link:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      - name: prepare file for commit
+        run: sh scripts/new_link.sh {{  }}
       - name: log
         run: |
           echo "Create link PR ..."
@@ -38,3 +41,8 @@ jobs:
           echo "\torigin title: ${{ inputs.origin_title }}"
           echo "\torigin URL: ${{ inputs.origin_url }}"
           echo "\tpublished: ${{ inputs.published_date }}"
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.2.0
+      - name: create post
+        run: node scripts/create-link.mjs --title={{ inputs.title }} --url={{ inputs.url }} --date=$(date +"%Y-%m-%dT%H:%M:%S%z") --originTitle={{ inputs.origin_title }} --originUrl={{ inputs.origin_url }} --comment={{ inputs.comment }} --publishedDate={{ inputs.published_date }} --tags={{ inputs.tags }}
