@@ -52,6 +52,6 @@ jobs:
           branch: "add-link"
           branch-suffix: "timestamp"
           committer: GitHub <noreply@github.com>
-          author: ${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>
+          author: Ondrej Synacek <ondrej@synacek.org>
           labels: |
             automerge
