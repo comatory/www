@@ -97,12 +97,7 @@
 
   const initialData = getData();
 
-  const win = window.open('', '_blank', 'top=30, left=30, width=350, height=550');
-
-  win.addEventListener('DOMContentLoaded', () => {
-    console.info('Ready to attach listeners')
-    alert('OK')
-  });
+  const win = window.open(window.location.href, '_blank', 'top=30, left=30, width=350, height=550');
 
   win.document.write(`
     <!DOCTYPE html>
@@ -137,7 +132,7 @@
           }
         </style>
       </head>
-      <body>
+      <body onload="onLoaded">
         <main>
           <form>
             <label>
@@ -174,6 +169,12 @@
             </div>
           </form>
         </main>
+        <script>
+          const onLoaded = () => {
+            console.info('Page loaded');
+            document.body.style.background = "silver";
+          };
+        </script>
       </body>
     </html>
   `);
