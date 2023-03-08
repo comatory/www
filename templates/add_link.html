@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add link to my web</title>
+    <style>
+      form {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+      }
+      input, textarea {
+        margin-bottom: 15px;
+        width: 100%;
+      }
+      main {
+        display: none;
+      }
+      form label {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+      }
+      .inline {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+      }
+      .controls {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+      #reset {
+        margin-right: 10px;
+      }
+      #tech-tag, #tag-buttons {
+        flex: 1;
+      }
+      #tag-buttons {
+        margin: 0px 10px;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .tag {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 0.85rem;
+        font-family: sans-serif;
+        padding: 2px 6px;
+        border: 1px solid silver;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+      .tag:not(:last-child) {
+        margin-right: 5px;
+      }
+      .tag__remove-button {
+        font-size: 0.4rem;
+        margin-left: 3px;
+        color: black;
+        filter: grayscale();
+      }
+    </style>
+    <script>
+      const redirectTo401 = () => {
+        window.location.href = '/401';
+      }
+
+      const formatDateTimeLocal = (date) => {
+        return [
+          date.getFullYear(),
+          '-',
+          `${Math.min(date.getMonth() + 1, 12)}`.padStart(2, '0'),
+          '-',
+          `${date.getDate()}`.padStart(2, '0'),
+          'T',
+          `${date.getHours()}`.padStart(2, '0'),
+          ':',
+          `${date.getMinutes()}`.padStart(2, '0'),
+        ].join('')
+      };
+
+      const normalizeDate = (value) => {
+        try {
+          const timestamp = Date.parse(value);
+
+          if (Number.isNaN(timestamp)) {
+            return null;
+          }
+
+          return formatDateTimeLocal(new Date(timestamp));
+        } catch (_) {
+          return null;
+        }
+      };
+
+      const normalizeTags = (value) => {
+        try {
+          return JSON.parse(value)
+            .filter(v => v && v.length > 0)
+            .map(v => v.trim());
+        } catch (_) {
+          return [ value ];
+        }
+      }
+
+      const buildTag = (value, removeCb) => {
+        const tag = document.createElement('div');
+        const removeButton = document.createElement('button');
+
+        tag.classList.add('tag');
+        tag.innerText = value;
+
+        removeButton.classList.add('tag__remove-button');
+        removeButton.innerText = '\u274C';
+
+        tag.appendChild(removeButton)
+
+        document.getElementById('tag-buttons')?.appendChild(tag);
+
+
+        removeButton.addEventListener('click', () => {
+          removeCb();
+          tag.remove();
+        });
+      }
+
+      const buildTags = (values) => {
+        const sortedValues = [ ...values ].sort();
+        sortedValues.forEach((tag) => {
+          buildTag(tag, () => {
+            const tagsInput = document.getElementById('tags');
+
+            if (!tagsInput) {
+              return;
+            }
+
+            const previousTagsValues = tagsInput.value.split(',').map(v => v.trim());
+            previousTagsValues.sort();
+            const set = new Set(previousTagsValues);
+            set.delete(tag);
+            tagsInput.value = Array.from(set).toString();
+          });
+        });
+      }
+
+      const attachListeners = (_) => {
+        const params = new URLSearchParams(window.location.search);
+
+        if (Array.from(params).length === 0) {
+          return redirectTo401();
+        }
+
+        const token = params.get('token')
+
+        if (!token || token.length === 0) {
+          return redirectTo401();
+        }
+
+        const title = params.get('title') ?? '';
+        const url = params.get('url') ? window.decodeURIComponent(params.get('url')) : '';
+        const originTitle = params.get('originTitle') ?? '';
+        const originUrl = params.get('originUrl') ? window.decodeURIComponent(params.get('originUrl')) : '';
+        const rawPublishedDate = params.get('publishedDate');
+        const rawTags = params.get('tags');
+        const publishedDate = rawPublishedDate ? normalizeDate(rawPublishedDate) : '';
+        const tags = rawTags && rawTags.length > 0 ? normalizeTags(rawTags) : [];
+
+        document.getElementById('title').setAttribute('value', title);
+        document.getElementById('url').setAttribute('value', url);
+        document.getElementById('originTitle').setAttribute('value', originTitle);
+        document.getElementById('originUrl').setAttribute('value', originUrl);
+        document.getElementById('publishedDate').setAttribute('value', publishedDate);
+        document.getElementById('tags').setAttribute('value', tags.toString());
+
+        if (tags.length > 0) {
+          buildTags(tags)
+        }
+
+        document.querySelector('main').style.display = 'block';
+
+        document.getElementById('tags')?.addEventListener('input', (e) => {
+        })
+
+        const updateTagButtons = (rawValue) => {
+          if (!rawValue) {
+            return;
+          }
+
+          const tags = rawValue.split(',').map(v => v.trim())
+
+          for (const existingTag of document.querySelectorAll('#tag-buttons .tag')) {
+            existingTag.remove();
+          }
+
+          buildTags(tags);
+        }
+
+        const updateTagValues = (value) => {
+          const tagInput = document.getElementById('tags')
+
+          if (!tagInput) {
+            return;
+          }
+
+          if (tagInput.value.length === 0) {
+            tagInput.value = value;
+          } else if (tagInput.value.length > 1) {
+            tagInput.value = `${tagInput.value}, ${value}`;
+          }
+
+          updateTagButtons(tagInput.value);
+        }
+
+        const techTagInput = document.getElementById('tech-tag');
+        techTagInput?.addEventListener('input', (e) => {
+          const value = e.target.value;
+
+          if (!value) {
+            return;
+          }
+
+          const list = document.querySelectorAll('#tag-list option');
+          const options = Array.from(list).map(n => n.value);
+
+          const option = options.find(v => v === value);
+
+          if (!option) {
+            return;
+          }
+
+          updateTagValues(option)
+
+          e.target.value = '';
+        });
+
+        techTagInput?.addEventListener('keydown', (e) => {
+          if (e.key !== 'Enter') {
+            return;
+          }
+
+          e.preventDefault();
+          updateTagValues(e.target.value);
+          e.target.value = '';
+        });
+
+        document.querySelector('form').addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          const formData = new FormData(e.target);
+
+          const errorPanel = document.getElementById('error');
+          errorPanel.innerText = '';
+          const sendButton = document.getElementById('send');
+          sendButton.setAttribute('disabled', true);
+
+          fetch('https://api.github.com/repos/comatory/www/actions/workflows/create-link.yml/dispatches', {
+            method: 'POST',
+            headers: new Headers({
+              'Authorization': `Bearer ${token}`,
+              'Accept': 'application/vnd.github+json',
+            }),
+            body: JSON.stringify({
+              ref: 'master',
+              inputs: {
+                title: formData.get('title'),
+                url: formData.get('url'),
+                tags: formData.get('tags'),
+                comment: formData.get('comment'),
+                origin_title: formData.get('originTitle'),
+                origin_url: formData.get('originUrl'),
+                published_date: formData.get('publishedDate'),
+              },
+            }),
+          }).then((_) => {
+          }).catch((e) => {
+            console.error(e);
+            errorPanel.innerText = e.message ?? e.toString();
+          }).finally(() => {
+            sendButton.removeAttribute('disabled');
+          });
+
+        })
+      };
+
+      document.addEventListener('DOMContentLoaded', attachListeners);
+    </script>
+  </head>
+  <body>
+    <main>
+      <form name="link" method="post">
+        <label>
+          Title*
+          <input required id="title" name="title" type="text" value="" />
+        </label>
+        <label>
+          URL*
+          <input required id="url" name="url" type="url" value="" />
+        </label>
+        <label>
+          Publisher name
+          <input id="originTitle" name="originTitle" type="title" value="" />
+        </label>
+        <label>
+          Publisher URL
+          <input id="originUrl" name="originUrl" type="url" value="" />
+        </label>
+        <label>
+          Published at
+          <input id="publishedDate" name="publishedDate" type="datetime-local" value="" />
+        </label>
+        <label>
+          Tags (comma-separated)
+          <div class="inline">
+            {% set tech_taxonomy = get_taxonomy(kind="tech") %}
+            {% if tech_taxonomy %}
+              <input id="tech-tag" list="tag-list" />
+              <div id="tag-buttons">
+              </div>
+              <datalist id="tag-list">
+                {% for taxonomy in tech_taxonomy.items %}
+                  <option value="{{ taxonomy.name }}">
+                    {{ taxonomy.name }}
+                  </option>
+                {% endfor %}
+              </datalist>
+            {% endif %}
+            <input id="tags" name="tags" type="hidden" value="" />
+          </div>
+        </label>
+        <label>
+          Your comment
+          <textarea id="comment" name="comment" value=""></textarea>
+        </label>
+        <div class="controls">
+          <pre id="error"></pre>
+          <input id="reset" type="reset" value="Reset" />
+          <input id="send" type="submit" value="Send" />
+        </div>
+      </form>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+((token, url) => {
+  const getMetadataFromLdJson = () => {
+    const script = document.querySelector('script[type="application/ld+json"]');
+
+    if (!script || script.innerHTML.length === 0) {
+      return null;
+    };
+
+    const parsed = JSON.parse(script.innerHTML);
+
+    const author = Array.isArray(parsed.author)
+      ? parsed.author[0]
+      : parsed.author;
+
+    return {
+      authorName: author?.name ?? null,
+      title: parsed.headline ?? null,
+      url: parsed.url ?? null,
+      siteName: parsed.publisher?.name ?? null,
+      siteUrl: parsed.publisher?.url ?? null,
+      publishedAt: parsed.datePublished ? new Date(parsed.datePublished) : null,
+    };
+  };
+
+  const getData = () => {
+    const json = getMetadataFromLdJson();
+
+    const getPageTitle = () => {
+      const title = document.title;
+
+      return json?.title ?? title;
+    };
+
+    const getPageUrl = () => {
+      return json?.url ?? window.location.href;
+    };
+
+    const getHostUrl = () => {
+      const url = (new URL(window.location.href)).origin;
+
+      return json?.siteUrl ?? url;
+    };
+
+    const getPublishedDate = () => {
+      const metaPublishedAt = document.querySelector('meta[property="article:published_time"]')?.content;
+
+      if (json?.publishedAt) {
+        return json.publishedAt;
+      };
+
+      return metaPublishedAt ? new Date(metaPublishedAt) : undefined;
+    };
+
+    const getOriginTitle = () => {
+      const metaTitle = document.querySelector('meta[property="og:site_name"]')?.content;
+
+      return json?.siteName ?? json?.author ?? metaTitle;
+    };
+
+    const getPageTags = () => {
+      const tagNodes = document.querySelectorAll('meta[property="article:tag"]');
+
+      if (tagNodes.length === 0) {
+        return [];
+      };
+
+      if (tagNodes.length === 1) {
+        return tagNodes[0].content.split(',').map(v => v.trim());
+      };
+
+      return Array.from(tagNodes).map(node => node.content);
+    };
+
+    return {
+      title: getPageTitle(),
+      url: getPageUrl(),
+      originUrl: getHostUrl(),
+      originTitle: getOriginTitle(),
+      publishedDate: getPublishedDate(),
+      tags: getPageTags(),
+    };
+  };
+
+  const initialData = getData();
+
+  const params = new URLSearchParams();
+  params.set('token', token);
+  params.set('title', initialData.title ?? '');
+  params.set('url', initialData.url ? window.encodeURIComponent(initialData.url) : '');
+  params.set('originTitle', initialData.originTitle ?? '');
+  params.set('originUrl', initialData.originUrl ? window.encodeURIComponent(initialData.originUrl) : '');
+  params.set('publishedDate', initialData.publishedDate ? initialData.publishedDate.toISOString() : '');
+  params.set('tags', initialData.tags ? JSON.stringify(initialData.tags) : '');
+
+  const link = new URL(url);
+  link.search = params.toString();
+
+  const win = window.open(link.toString(), '_blank', 'top=30, left=30, width=350, height=550');
+})(<%= token %>, <%= url %>)

@@ -1,181 +1,40 @@
-(() => {
-  const formatDateTimeLocal = (date) => {
-    return [
-      date.getFullYear(),
-      '-',
-      `${Math.min(date.getMonth() + 1, 12)}`.padStart(2, '0'),
-      '-',
-      `${date.getDate()}`.padStart(2, '0'),
-      'T',
-      `${date.getHours()}`.padStart(2, '0'),
-      ':',
-      `${date.getMinutes()}`.padStart(2, '0'),
-    ].join('')
-  }
+/**
+ * Script for generating Javacript bookmarklet for storing
+ * links.
+ *
+ * Pass GITHUB_PERSONAL_ACCESS_TOKEN token to template, you
+ * should never store the generated script in version control
+ * system as it will contain the token.
+ * The bookmarklet is to be used only in your local browser,
+ * do not share it anywhere!
+ *
+ * Pass ORIGIN_URL which is path to page that contains form
+ * for adding links and logic to make request to Github API.
+ * It fall-backs to `localhost:1111` for development purposes.
+ *
+ * Outpath is a path to file containing code for the bookmarklet.
+ * You should copy and paste it.
+ */
+import fs from 'fs';
+import path from 'path';
+import { cwd, env, exit, argv } from 'node:process';
 
-  const getMetadataFromLdJson = () => {
-    const script = document.querySelector('script[type="application/ld+json"]');
+const token = env.GITHUB_PERSONAL_ACCESS_TOKEN;
+const originUrl = env.ORIGIN_URL;
+const outPath = argv[2];
 
-    if (!script || script.innerHTML.length === 0) {
-      return null;
-    }
+if (!outPath || !token) {
+  console.info('Usage: GITHUB_PERSONAL_ACCESS_TOKEN=<token> node create-bookmarket.mjs <outPath>');
+  exit(1);
+}
 
-    const parsed = JSON.parse(script.innerHTML);
+const template = fs.readFileSync(path.join(cwd(), 'bookmarklet', 'template.mjs__templ__'))
 
-    const author = Array.isArray(parsed.author)
-      ? parsed.author[0]
-      : parsed.author;
+const templateString = template.toString();
 
-    return {
-      authorName: author?.name ?? null,
-      title: parsed.headline ?? null,
-      url: parsed.url ?? null,
-      siteName: parsed.publisher?.name ?? null,
-      siteUrl: parsed.publisher?.url ?? null,
-      publishedAt: parsed.datePublished ? new Date(parsed.datePublished) : null,
-    }
-  }
+const templateStringWithToken = templateString
+  .replace(/\<\%\= token \%\>/, `"${token}"`)
+  .replace(/\<\%\= url \%\>/, `"${originUrl ?? 'http://localhost:1111/add_link'}"`);
+const bookmarkletOutput = `javascript: ${templateStringWithToken}`;
 
-  const getData = () => {
-    const json = getMetadataFromLdJson();
-
-    const getPageTitle = () => {
-      const title = document.title;
-
-      return json?.title ?? title;
-    }
-
-    const getPageUrl = () => {
-      return json?.url ?? window.location.href;
-    }
-
-    const getHostUrl = () => {
-      const url = (new URL(window.location.href)).origin;
-
-      return json?.siteUrl ?? url;
-    }
-
-    const getPublishedDate = () => {
-      const metaPublishedAt = document.querySelector('meta[property="article:published_time"]')?.content;
-
-      if (json?.publishedAt) {
-        return json.publishedAt;
-      }
-
-      return metaPublishedAt ? new Date(metaPublishedAt) : undefined;
-    }
-
-    const getOriginTitle = () => {
-      const metaTitle = document.querySelector('meta[property="og:site_name"]')?.content;
-
-      return json?.siteName ?? json?.author ?? metaTitle;
-    }
-
-    const getPageTags = () => {
-      const tagNodes = document.querySelectorAll('meta[property="article:tag"]');
-
-      if (tagNodes.length === 0) {
-        return [];
-      }
-
-      if (tagNodes.length === 1) {
-        return tagNodes[0].content.split(',').map(v => v.trim());
-      }
-
-      return Array.from(tagNodes).map(node => node.content);
-    }
-
-    return {
-      title: getPageTitle(),
-      url: getPageUrl(),
-      originUrl: getHostUrl(),
-      originTitle: getOriginTitle(),
-      publishedDate: getPublishedDate(),
-      tags: getPageTags(),
-    }
-  }
-
-  const initialData = getData();
-
-  const win = window.open(window.location.href, '_blank', 'top=30, left=30, width=350, height=550');
-
-  win.document.write(`
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <title>Add link to my web</title>
-        <style>
-          form {
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-          }
-          input, textarea {
-            margin-bottom: 15px;
-            width: 100%;
-          }
-          form label {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            justify-content: flex-start;
-          }
-          .controls {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 20px;
-          }
-          #reset {
-            margin-right: 10px;
-          }
-        </style>
-      </head>
-      <body onload="onLoaded">
-        <main>
-          <form>
-            <label>
-              Title*
-              <input required id="title" type="text" value="${initialData.title}" />
-            </label>
-            <label>
-              URL*
-              <input required id="url" type="url" value="${initialData.url}" />
-            </label>
-            <label>
-              Publisher name
-              <input id="originTitle" type="title" value="${initialData.originTitle}" />
-            </label>
-            <label>
-              Publisher URL
-              <input id="originUrl" type="url" value="${initialData.originUrl}" />
-            </label>
-            <label>
-              Published at
-              <input id="publishedDate" type="datetime-local" value="${initialData.publishedDate ? formatDateTimeLocal(initialData.publishedDate) : ""}" />
-            </label>
-            <label>
-              Tags (comma-separated)
-              <input id="tags" type="text" value="${initialData.tags.join(', ')}" />
-            </label>
-            <label>
-              Your comment
-              <textarea id="comment" value=""></textarea>
-            </label>
-            <div class="controls">
-              <input id="reset" type="reset" value="Reset" />
-              <input id="send" type="submit" value="Send" />
-            </div>
-          </form>
-        </main>
-        <script>
-          const onLoaded = () => {
-            console.info('Page loaded');
-            document.body.style.background = "silver";
-          };
-        </script>
-      </body>
-    </html>
-  `);
-})()
+fs.writeFileSync(outPath, bookmarkletOutput);
