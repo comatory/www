@@ -36,7 +36,7 @@ jobs:
       labels: ${{ steps.set-labels.outputs.labels }}
     steps:
       - id: set-labels
-      - name: Set labels
+        name: Set labels
         run: |
           if [[ "${{ inputs.automerge }}" ]];then
             echo "labels=automerge" >> $GITHUB_OUTPUT
