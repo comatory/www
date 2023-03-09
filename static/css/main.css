@@ -171,53 +171,39 @@ section {
   color: inherit;
 }
 
-.header__nav--about-me,
-.header__nav--code,
-.header__nav--contact {
+.header__nav-item--about-me,
+.header__nav-item--code,
+.header__nav-item--contact {
   cursor: pointer;
   display: flex;
   width: 100%;
   padding: 1px 0;
 }
 
-.header__nav--about-me--active {
-  box-shadow: var(--active-box-shadow);
-}
-
-.header__nav--code--active {
-  box-shadow: var(--active-box-shadow);
-  color: var(--color5);
-}
-
-.header__nav--contact--active {
-  box-shadow: var(--active-box-shadow);
-  color: var(--color3);
-}
-
-.header__nav--about-me:hover {
+.header__nav-item--about-me:hover {
   color: var(--color3);
   background-image: var(--nav-hover-background);
 }
 
-.header__nav--code:hover {
+.header__nav-item--code:hover {
   color: var(--color5);
   background-image: var(--nav-hover-background);
 }
 
-.header__nav--contact:hover {
+.header__nav-item--contact:hover {
   color: var(--color3);
   background-image: var(--nav-hover-background);
 }
 
-.header__nav--about-me {
+.header__nav-item--about-me {
   background-color: var(--color2);
 }
 
-.header__nav--code {
+.header__nav-item--code {
   background-color: var(--color3);
 }
 
-.header__nav--contact {
+.header__nav-item--contact {
   background-color: var(--color4);
   
 }
