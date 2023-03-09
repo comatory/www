@@ -23,9 +23,28 @@ on:
       published_date:
         required: false
         type: string
+      automerge:
+        required: false
+        type: boolean
+        default: true
+
 jobs:
+  prepare_labels:
+    runs-on: ubuntu-latest
+    name: Prepare PR labels
+    outputs:
+      labels: ${{ steps.set-labels.outputs.labels }}
+    steps:
+      - id: set-labels
+      - name: Set labels
+        run: |
+          if [[ "${{ inputs.automerge }}" ]];then
+            echo "labels=automerge" >> $GITHUB_OUTPUT
+          fi
   create_link:
     runs-on: ubuntu-latest
+    name: Generate link post
+    needs: prepare_labels
     steps:
       - uses: actions/checkout@v3
       - name: log
@@ -55,4 +74,4 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: Ondrej Synacek <ondrej@synacek.org>
           labels: |
-            automerge
+            ${{ needs.prepare_labels.outputs.labels }}
