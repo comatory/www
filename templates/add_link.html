@@ -1,8 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Add link to my web</title>
     <style>
+      @media screen and (max-width: 400px) {
+        body {
+          font-size: 20px;
+        }
+        input, textarea {
+          font-size: 18px;
+        }
+        .tag {
+          font-size: 1rem !important;
+        }
+        .tag__remove-button {
+          font-size: 0.6rem !important;
+        }
+      }
+
       form {
         display: flex;
         flex-direction: column;

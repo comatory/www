@@ -33,6 +33,7 @@ const template = fs.readFileSync(path.join(cwd(), 'bookmarklet', 'template.mjs__
 const templateString = template.toString();
 
 const templateStringWithToken = templateString
+  .replaceAll(/\n/g, '')
   .replace(/\<\%\= token \%\>/, `"${token}"`)
   .replace(/\<\%\= url \%\>/, `"${originUrl ?? 'http://localhost:1111/add_link'}"`);
 const bookmarkletOutput = `javascript: ${templateStringWithToken}`;
