@@ -38,7 +38,7 @@ jobs:
       - id: set-labels
         name: Set labels
         run: |
-          if [[ "${{ inputs.automerge }}" -eq "true" ]];then
+          if [[ "${{ inputs.automerge }}" == "true" ]];then
             echo "labels=automerge" >> $GITHUB_OUTPUT
           fi
   create_link:
