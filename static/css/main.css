@@ -56,6 +56,15 @@ a.back-to {
   font-size: 0.8rem;
 }
 
+.separator {
+  margin: 0px 10px;
+  transform: scale(2);
+}
+
+.separator::after {
+  content: "\0000B7";
+}
+
 .row {
   display: flex;
 }
@@ -163,6 +172,14 @@ section {
   width: 100%;
 }
 
+.header__navlink--inline {
+  width: unset;
+}
+
+.header__navlink--inline:last-child {
+  width: 100%;
+}
+
 .header__navlink:active {
   color: inherit;
 }
@@ -172,7 +189,7 @@ section {
 }
 
 .header__nav-item--about-me,
-.header__nav-item--code,
+.header__nav-item--code-and-links,
 .header__nav-item--contact {
   cursor: pointer;
   display: flex;
@@ -180,32 +197,35 @@ section {
   padding: 1px 0;
 }
 
-.header__nav-item--about-me:hover {
-  color: var(--color3);
-  background-image: var(--nav-hover-background);
-}
-
-.header__nav-item--code:hover {
-  color: var(--color5);
-  background-image: var(--nav-hover-background);
-}
-
-.header__nav-item--contact:hover {
-  color: var(--color3);
-  background-image: var(--nav-hover-background);
-}
-
 .header__nav-item--about-me {
   background-color: var(--color2);
 }
 
-.header__nav-item--code {
+.header__nav-item--code-and-links {
   background-color: var(--color3);
 }
 
 .header__nav-item--contact {
   background-color: var(--color4);
   
+}
+
+.header__nav-item--about-me:hover {
+  color: var(--color3);
+  background-image: var(--nav-hover-background);
+}
+
+.header__nav-item--code-and-links a:hover {
+  color: var(--color5);
+}
+
+.header__nav-item--code-and-links:hover {
+  background-image: var(--nav-hover-background);
+}
+
+.header__nav-item--contact:hover {
+  color: var(--color3);
+  background-image: var(--nav-hover-background);
 }
 
 .section {
@@ -422,6 +442,11 @@ figcaption {
   }
   #logo-description--responsive {
     width: 50px;
+  }
+
+  .separator {
+    margin: 0px;
+    transform: scale(1.0);
   }
 }
 
