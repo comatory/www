@@ -277,6 +277,7 @@
               },
             }),
           }).then((_) => {
+            window.close();
           }).catch((e) => {
             console.error(e);
             errorPanel.innerText = e.message ?? e.toString();
