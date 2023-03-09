@@ -23,6 +23,10 @@ on:
       published_date:
         required: false
         type: string
+      automerge:
+        required: false
+        type: boolean
+        default: true
 jobs:
   create_link:
     runs-on: ubuntu-latest
@@ -44,6 +48,7 @@ jobs:
       - name: create post
         run: node scripts/create-link.mjs --title=${{ inputs.title }} --url=${{ inputs.url }} --date=$(date +"%Y-%m-%dT%H:%M:%S%z") --originTitle=${{ inputs.origin_title }} --originUrl=${{ inputs.origin_url }} --comment=${{ inputs.comment }} --publishedDate=${{ inputs.published_date }} --tags=${{ inputs.tags }}
       - name: create PR
+        if ${{ inputs.automerge }}
         uses: peter-evans/create-pull-request@v4
         with:
           base: master
@@ -56,3 +61,14 @@ jobs:
           author: Ondrej Synacek <ondrej@synacek.org>
           labels: |
             automerge
+        if ${{ !inputs.automerge }}
+        uses: peter-evans/create-pull-request@v4
+        with:
+          base: master
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          title: "Create link ${{ inputs.url }}"
+          commit-message: "Automated PR for link ${{ inputs.title }} @ ${{ inputs.url }}"
+          branch: "add-link"
+          branch-suffix: "timestamp"
+          committer: GitHub <noreply@github.com>
+          author: Ondrej Synacek <ondrej@synacek.org>
