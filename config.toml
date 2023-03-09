@@ -10,7 +10,7 @@ default_language = "en"
 build_search_index = true
 
 taxonomies = [
-  { name = "tech", feed = true }
+  { name = "tech" }
 ]
 
 generate_feed = true

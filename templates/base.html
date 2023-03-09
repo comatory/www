@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Ondrej Synacek - Front end & Web developer</title>
+  <title>Ondrej Synacek - Software Developer</title>
   <link rel="stylesheet" type="text/css" href="{{get_url(path="/css/main.css")}}">
   <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
 {% block rss %}
@@ -23,13 +23,15 @@
             </a>
           </div>
           <nav class="header__nav">
-            <div class="header__nav--about-me <%= active === 'index' ? 'header__nav--about-me--active' : '' %>">
+            <div class="header__nav-item--about-me">
               <a href="/" class="header__navlink">About me</a>
             </div>
-            <div class="header__nav--code <%= active === 'code' ? 'header__nav--code--active' : '' %>">
-              <a href="/code" class="header__navlink">Code</a>
+            <div class="header__nav-item--code-and-links">
+              <a href="/code" class="header__navlink header__navlink--inline">Code</a>
+              <div class="separator"></div>
+              <a href="/links" class="header__navlink header__navlink--inline">Links</a>
             </div>
-            <div class="header__nav--contact <%= active === 'contact' ? 'header__nav--contact--active' : '' %>">
+            <div class="header__nav-item--contact">
               <a href="/contact" class="header__navlink">Contact</a>
             </div>
           </nav>
