@@ -7,7 +7,22 @@ import path from 'path';
 
   console.info(`processing arguments ${process.argv.slice(2)}`);
 
-  const options = process.argv.slice(2).reduce((acc, str) => {
+  const normalizedInput = process.argv.slice(2).reduce((argList, str) => {
+    if (/\-\-.*\=.*/.test(str)) {
+      return [ ...argList, str ];
+    }
+
+    const lastItem = argList[argList.length - 1];
+
+    const copy = [ ...argList ];
+    copy.splice(argList.length - 1, 1, `${lastItem} ${str}`);
+
+    return copy;
+  }, []);
+
+  console.info(`normalized arguments ${normalizedInput.join(' ')}`);
+
+  const options = normalizedInput.reduce((acc, str) => {
     const [ arg, value ] = str.split(/=/);
 
     switch (arg) {
@@ -104,8 +119,8 @@ import path from 'path';
 
   const dashedName = options.title
     .slice(0, 50)
-    .replaceAll(/ /g, '-')
-    .replaceAll(/'/g, '')
+    .replaceAll(/[$&+,:;=?@#|'"<>.^*()%!-]/g, '_')
+    .replaceAll(/\s/g, '-')
     .toLowerCase()
 
   fs.writeFileSync(path.join('content', 'links', `${dateString}_${dashedName}.md`), fileContent);
