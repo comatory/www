@@ -31,10 +31,11 @@ on:
 jobs:
   prepare_labels:
     runs-on: ubuntu-latest
+    name: Prepare PR labels
     outputs:
       labels: ${{ steps.set-labels.outputs.labels }}
     steps:
-      - id: set-labels:
+      - id: set-labels
       - name: Set labels
         run: |
           if [[ "${{ inputs.automerge }}" ]];then
@@ -42,6 +43,7 @@ jobs:
           fi
   create_link:
     runs-on: ubuntu-latest
+    name: Generate link post
     needs: prepare_labels
     steps:
       - uses: actions/checkout@v3
