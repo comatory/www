@@ -27,9 +27,22 @@ on:
         required: false
         type: boolean
         default: true
+
 jobs:
+  prepare_labels:
+    runs-on: ubuntu-latest
+    outputs:
+      labels: ${{ steps.set-labels.outputs.labels }}
+    steps:
+      - id: set-labels:
+      - name: Set labels
+        run: |
+          if [[ "${{ inputs.automerge }}" ]];then
+            echo "labels=automerge" >> $GITHUB_OUTPUT
+          fi
   create_link:
     runs-on: ubuntu-latest
+    needs: prepare_labels
     steps:
       - uses: actions/checkout@v3
       - name: log
@@ -48,7 +61,6 @@ jobs:
       - name: create post
         run: node scripts/create-link.mjs --title=${{ inputs.title }} --url=${{ inputs.url }} --date=$(date +"%Y-%m-%dT%H:%M:%S%z") --originTitle=${{ inputs.origin_title }} --originUrl=${{ inputs.origin_url }} --comment=${{ inputs.comment }} --publishedDate=${{ inputs.published_date }} --tags=${{ inputs.tags }}
       - name: create PR
-        if ${{ inputs.automerge }}
         uses: peter-evans/create-pull-request@v4
         with:
           base: master
@@ -60,15 +72,4 @@ jobs:
           committer: GitHub <noreply@github.com>
           author: Ondrej Synacek <ondrej@synacek.org>
           labels: |
-            automerge
-        if ${{ !inputs.automerge }}
-        uses: peter-evans/create-pull-request@v4
-        with:
-          base: master
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          title: "Create link ${{ inputs.url }}"
-          commit-message: "Automated PR for link ${{ inputs.title }} @ ${{ inputs.url }}"
-          branch: "add-link"
-          branch-suffix: "timestamp"
-          committer: GitHub <noreply@github.com>
-          author: Ondrej Synacek <ondrej@synacek.org>
+            ${{ needs.prepare_labels.outputs.labels }}
