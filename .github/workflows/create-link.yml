@@ -38,6 +38,9 @@ jobs:
       - id: set-labels
         name: Set labels
         run: |
+          echo Automerge input value
+          echo ${{ inputs.automerge }}
+
           if [[ "${{ inputs.automerge }}" ]];then
             echo "labels=automerge" >> $GITHUB_OUTPUT
           fi
