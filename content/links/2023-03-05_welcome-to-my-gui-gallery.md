@@ -1,5 +1,5 @@
 +++
-title = "Welcome"
+title = "Welcome to my GUI Gallery"
 date = 2023-03-05T22:01:36.000Z
 template = "link.html"
 [taxonomies]
