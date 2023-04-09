@@ -47,11 +47,15 @@ jobs:
     needs: prepare_labels
     steps:
       - uses: actions/checkout@v3
+      - name: set current timestamp
+        id: current-timestamp
+        run: echo "TIMESTAMP=$(date +\"%Y-%m-%dT%H:%M:%S%z\")" >> $GITHUB_OUTPUT
       - name: log
         run: |
           echo "Create link PR ..."
           echo "\ttitle: ${{ inputs.title }}"
           echo "\tURL: ${{ inputs.url }}"
+          echo "\tdate: ${{ steps.current-timestamp.outputs.TIMESTAMP }}"
           echo "\ttags: ${{ inputs.tags }}"
           echo "\tcomment: ${{ inputs.comment }}"
           echo "\torigin title: ${{ inputs.origin_title }}"
@@ -61,7 +65,7 @@ jobs:
         with:
           node-version: 18.2.0
       - name: create post
-        run: node scripts/create-link.mjs --title="${{ inputs.title }}" --url=${{ inputs.url }} --date=${{ github.event.repository.updated_at }} --originTitle="${{ inputs.origin_title }}" --originUrl=${{ inputs.origin_url }} --comment="${{ inputs.comment }}" --publishedDate=${{ inputs.published_date }} --tags=${{ inputs.tags }}
+        run: node scripts/create-link.mjs --title="${{ inputs.title }}" --url=${{ inputs.url }} --date=${{ steps.current-timestamp.outputs.TIMESTAMP }} --originTitle="${{ inputs.origin_title }}" --originUrl=${{ inputs.origin_url }} --comment="${{ inputs.comment }}" --publishedDate=${{ inputs.published_date }} --tags=${{ inputs.tags }}
       - name: create PR
         uses: peter-evans/create-pull-request@v4
         with:
