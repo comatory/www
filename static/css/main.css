@@ -455,3 +455,63 @@ figcaption {
     width: 100%;
   }
 }
+
+/* Animations */
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-out {
+  0% {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+::view-transition-old(section-navigation) {
+  animation: slide-out 0.3s linear forwards;
+}
+::view-transition-new(section-navigation) {
+  animation: slide-in 0.3s linear forwards;
+}
+
+.section {
+  view-transition-name: section-navigation;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+::view-transition-old(header-navigation) {
+  animation: fade-out 0.3s linear forwards;
+}
+::view-transition-new(header-navigation) {
+  animation: fade-in 0.3s linear forwards;
+}
+.header {
+  view-transition-name: header-navigation;
+}
