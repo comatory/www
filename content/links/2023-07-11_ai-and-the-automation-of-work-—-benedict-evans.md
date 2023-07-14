@@ -5,7 +5,7 @@ template = "link.html"
 [taxonomies]
 tech=[]
 [extra]
-link_url = "https://www.ben-evans.com"
+link_url = "https://www.ben-evans.com/benedictevans/2023/7/2/working-with-ai"
 origin_title = "Benedict Evans"
 origin_url = "https://www.ben-evans.com"
 published_date = "2023-07-02T10:00:00.000Z"
