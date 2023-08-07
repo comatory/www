@@ -21,6 +21,10 @@
     tag_list=page.taxonomies.tech,
     taxonomy_category="tech"
     ) }}
+
+  <div>
+    {{ page.content | safe }}
+  </div>
 </section>
 
 {% endblock content %}
