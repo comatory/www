@@ -2,55 +2,25 @@
 {% import "macros/macros.html" as macros %}
 
 {% block content %}
-  <section id="log" class="section">
-    <div class="row wrap">
-      <ul class="log-list">
-        {% for log in paginator.pages %}
-          <li class="log-list__item">
-            <span class="log-list__item__subtitle">
-              {{ log.date | date(format="%Y-%m-%d %H:%M") }}
-            </span>
-            <h3 class="log-list__item__title">
-              <a
-                href="{{ log.path }}"
-                class="log-list__item__title__link"
-              >
-                {{ log.title }}
-              </a>
-            </h3>
-            {% if log.content %}
-              <div class="log-list__item__comment">
-                {% set wordcount_limit = 100 %}
-                {% if log.content | striptags | wordcount > wordcount_limit %}
-                  {{ log.content | striptags | split(pat=" ") | slice(end=wordcount_limit) | join(sep=" ") }}
-                  <a
-                    class="show-more-link"
-                    href="{{ log.path }}"
-                   >
-                     … Read more
-                  </a>
-                {% else %}
-                  {{ log.content | safe }}
-                {% endif %}
-              </div>
-            {% endif %}
-            {% if log.taxonomies and 'tech' in log.taxonomies %}
-              {{ macros::tags(
-                tag_list=log.taxonomies.tech,
-                taxonomy_category="tech"
-                ) }}
-            {% endif %}
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
-    <nav class="pagination">
-      {% if paginator.previous %}
-          <a class="previous" href="{{ paginator.previous }}">‹ Previous</a>
-      {% endif %}
-      {% if paginator.next %}
-          <a class="next" href="{{ paginator.next }}">Next ›</a>
-      {% endif %}
-    </nav>
-  </section>
+
+<section class="section">
+  <div>
+    <a
+      href="/log"
+      class="back-to"
+    >↩︎ Go back</a>
+  </div>
+
+  <div class="log-posted">
+    Posted on: {{ page.date | date(format="%Y-%m-%d %H:%M") }}
+  </div>
+
+  <h2 class="log-title">{{ page.title }}</h2>
+
+  {{ macros::tags(
+    tag_list=page.taxonomies.tech,
+    taxonomy_category="tech"
+    ) }}
+</section>
+
 {% endblock content %}

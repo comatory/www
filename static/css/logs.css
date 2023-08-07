@@ -1,29 +1,38 @@
-.log-list {
+.logs {
   list-style-type: none;
   padding: 0px;
 }
 
-.log-list__item:not(:first-child) {
+.logs__item:not(:first-child) {
   margin-top: 40px;
   padding-top: 20px;
   border-top: 1px solid var(--color1);
 }
 
-.log-list__item__title {
+.logs__item__title {
   letter-spacing: 1px;
   margin: 0px;
 }
 
-.log-list__item__subtitle {
+.logs__item__subtitle {
   font-size: 0.9rem;
 }
 
-.log-list__item__comment {
+.logs__item__comment {
   border-left: 1px solid var(--color1);
   padding-left: 10px;
   margin: 5px 0px;
 }
 
-.log-list__item__comment p {
+.logs__item__comment p {
   margin: 0px
+}
+
+.log-posted {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.log-title {
+  margin: 5px 0 5px 0;
 }
