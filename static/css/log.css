@@ -17,3 +17,13 @@
 .log-list__item__subtitle {
   font-size: 0.9rem;
 }
+
+.log-list__item__comment {
+  border-left: 1px solid var(--color1);
+  padding-left: 10px;
+  margin: 5px 0px;
+}
+
+.log-list__item__comment p {
+  margin: 0px
+}

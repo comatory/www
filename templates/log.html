@@ -18,6 +18,22 @@
                 {{ log.title }}
               </a>
             </h3>
+            {% if log.content %}
+              <div class="log-list__item__comment">
+                {% set wordcount_limit = 100 %}
+                {% if log.content | striptags | wordcount > wordcount_limit %}
+                  {{ log.content | striptags | split(pat=" ") | slice(end=wordcount_limit) | join(sep=" ") }}
+                  <a
+                    class="show-more-link"
+                    href="{{ log.path }}"
+                   >
+                     … Read more
+                  </a>
+                {% else %}
+                  {{ log.content | safe }}
+                {% endif %}
+              </div>
+            {% endif %}
             {% if log.taxonomies and 'tech' in log.taxonomies %}
               {{ macros::tags(
                 tag_list=log.taxonomies.tech,
