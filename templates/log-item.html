@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import "macros/macros.html" as macros %}
+
+{% block content %}
+
+<section class="section">
+  <div>
+    <a
+      href="/log"
+      class="back-to"
+    >↩︎ Go back</a>
+  </div>
+
+  <h2 class="log-title">{{ page.title }}</h2>
+
+  {{ macros::tags(
+    tag_list=page.taxonomies.tech,
+    taxonomy_category="tech"
+    ) }}
+
+  <span class="log-posted">
+    Posted: {{ page.date | date(format="%Y-%m-%d %H:%M") }}
+  </span>
+</section>
+
+{% endblock content %}

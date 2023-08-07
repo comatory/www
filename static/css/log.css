@@ -1,0 +1,19 @@
+.log-list {
+  list-style-type: none;
+  padding: 0px;
+}
+
+.log-list__item:not(:first-child) {
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color1);
+}
+
+.log-list__item__title {
+  letter-spacing: 1px;
+  margin: 0px;
+}
+
+.log-list__item__subtitle {
+  font-size: 0.9rem;
+}

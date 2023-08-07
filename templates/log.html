@@ -2,65 +2,25 @@
 {% import "macros/macros.html" as macros %}
 
 {% block content %}
-  <section id="links" class="section">
+  <section id="log" class="section">
     <div class="row wrap">
       <ul class="log-list">
-        {% for link in paginator.pages %}
+        {% for log in paginator.pages %}
           <li class="log-list__item">
-            <span class="log-list__item__posted-subtitle">
-              {{ link.date | date(format="%Y-%m-%d %H:%M") }}
+            <span class="log-list__item__subtitle">
+              {{ log.date | date(format="%Y-%m-%d %H:%M") }}
             </span>
-            <h3 class="log-list__item__posted-title">
+            <h3 class="log-list__item__title">
               <a
-                href="{{ link.extra.link_url }}"
-                target="_blank"
-                class="log-list__item__posted-title__link"
+                href="{{ log.path }}"
+                class="log-list__item__title__link"
               >
-                {{ link.title }}
+                {{ log.title }}
               </a>
             </h3>
-            {% if link.extra.published_date or link.extra.origin_title %}
-              {% if link.extra.published_date %}
-                <span class="log-list__item__published">
-                  Published {{ link.extra.published_date | date(format="%Y-%m-%d") }}
-                </span>
-              {% endif %}
-
-              {% if link.extra.origin_title and link.extra.origin_url %}
-                <span class="log-list__item__published--link">
-                  <a
-                    href="{{ link.extra.origin_url }}"
-                    target="_blank"
-                  >
-                    on {{ link.extra.origin_title }}
-                  </a>
-                </span>
-              {% elif link.extra.origin_title %}
-                <span class="log-list__item__published">
-                  on {{ link.extra.origin_title }}
-                </span>
-              {% endif %}
-            {% endif %}
-            {% if link.content %}
-              <div class="log-list__item__comment">
-                {% set wordcount_limit = 100 %}
-                {% if link.content | striptags | wordcount > wordcount_limit %}
-                  {{ link.content | striptags | split(pat=" ") | slice(end=wordcount_limit) | join(sep=" ") }}
-                  <a
-                    class="show-more-link"
-                    href="{{ link.path }}"
-                   >
-                     … Read more
-                  </a>
-                {% else %}
-                  {{ link.content | safe }}
-                {% endif %}
-              </div>
-            {% endif %}
-
-            {% if link.taxonomies and 'tech' in link.taxonomies %}
+            {% if log.taxonomies and 'tech' in log.taxonomies %}
               {{ macros::tags(
-                tag_list=link.taxonomies.tech,
+                tag_list=log.taxonomies.tech,
                 taxonomy_category="tech"
                 ) }}
             {% endif %}
