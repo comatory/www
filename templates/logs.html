@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% import "macros/macros.html" as macros %}
+
+{% block content %}
+  <section id="logs" class="section">
+    <div class="row wrap">
+      <ul class="logs">
+        {% for log in paginator.pages %}
+          <li class="logs__item">
+            <span class="logs__item__subtitle">
+              {{ log.date | date(format="%Y-%m-%d %H:%M") }}
+            </span>
+            <h3 class="logs__item__title">
+              <a
+                href="{{ log.path }}"
+                class="logs__item__title__link"
+              >
+                {{ log.title }}
+              </a>
+            </h3>
+            {% if log.content %}
+              <div class="logs__item__comment">
+                {% set wordcount_limit = 100 %}
+                {% if log.content | striptags | wordcount > wordcount_limit %}
+                  {{ log.content | striptags | split(pat=" ") | slice(end=wordcount_limit) | join(sep=" ") }}
+                  <a
+                    class="show-more-link"
+                    href="{{ log.path }}"
+                   >
+                     … Read more
+                  </a>
+                {% else %}
+                  {{ log.content | safe }}
+                {% endif %}
+              </div>
+            {% endif %}
+            {% if log.taxonomies and 'tech' in log.taxonomies %}
+              {{ macros::tags(
+                tag_list=log.taxonomies.tech,
+                taxonomy_category="tech"
+                ) }}
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <nav class="pagination">
+      {% if paginator.previous %}
+          <a class="previous" href="{{ paginator.previous }}">‹ Previous</a>
+      {% endif %}
+      {% if paginator.next %}
+          <a class="next" href="{{ paginator.next }}">Next ›</a>
+      {% endif %}
+    </nav>
+  </section>
+{% endblock content %}
