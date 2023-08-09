@@ -97,6 +97,11 @@ section {
   max-width: 800px;
 }
 
+pre {
+  overflow-x: auto;
+  padding: 1rem;
+}
+
 .icon-row {
   display: flex;
   align-items: center;
