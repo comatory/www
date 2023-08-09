@@ -8,7 +8,7 @@ tech=["typescript"]
 
 I was looking for a way to exhaustively type-check `switch` statements when writing Typescript. I went through few iterations with a colleague at work before we arrived at something that worked.
 
-The goal is to always cover all possible cases using `case`, similarly how language such as Rust forces you to return value as optionals.
+The goal is to always cover all possible cases using `case`, similarly how language such as Rust forces you to return value as `Option<...>`.
 
 _Note: All code examples were tested on Typescript v5.1.6_
 
@@ -34,7 +34,7 @@ Now we want to make sure that Typescript compiler throws an error because case f
 Simple solution would be to omit `default` value like this:
 
 ```typescript
-    function getId(id: Id) {
+    function getId(id: Id): 'first' | 'second' {
       switch (id) {
         case "A":
           return "first";
@@ -44,12 +44,12 @@ Simple solution would be to omit `default` value like this:
     }
 ```
 
-Sure it does work but this solution assumes that:
+Sure it does work, but this solution assumes that:
 
-- The `switch` statement is always inside a function that returns primitive types. Imagine you want to cover multiple scenarios inside a React component and you want to place these at the bottom of the function where JSX is placed. You might be out of luck because as of version 18 of React, you're allowed to return `undefined` values from your component functions.
+- The `switch` statement is always inside a function that returns primitive types - so you also need to make sure that you type the return values explicitly.
 - You must explicitly omit `default` case for this to work. More often than not, the codebase you're working on might have lint rule such as `default-case` enabled and will force you to add the default case - which is good! But then you're unable to use this pattern.
 
-Maybe you might've seen built-in type `never` and you wondered what it's good for? Well, it can be useful for making sure you can fail something, we can leverage this type to make sure default case never happens.
+Maybe you might have seen built-in type `never` and you wondered what it's good for? Well, it can be useful for making sure you can fail something, we can leverage this type to make sure default case never happens.
 
 ```typescript
 type Id = "A" | "B" | "C";
@@ -78,7 +78,7 @@ Now you're getting this type-checking error:
 Argument of type 'string' is not assignable to parameter of type 'never'
 ```
 
-The "trick" here is simple: function `noop` cannot ever receive any argument. And since there is missing case for "C", Typescript compiler correctly assumes that there's a real possibility of an argument being bassed to the function. 
+The "trick" here is simple: function `noop` cannot ever receive any argument. And since there is missing case for "C", Typescript compiler correctly assumes that there's a real possibility of an argument being passed to the function. 
 
 ✅ When you correct this mistake, the error goes away:
 
@@ -107,7 +107,7 @@ getId("B");
 
 The secret sauce is defining `noop`, I've also seen this function being called `absurd`.
 
-I already mentioned React and how this can be leveraged when returning JSX from the component. I give you the following example in which I have `OkComponent` and `ErrorComponent` which render child components depending on their `type` prop:
+I already mentioned React and how this can be leveraged when returning `JSX` from the component. I give you the following example in which I have `OkComponent` and `ErrorComponent` which render child components depending on their `type` prop:
 
 ```tsx
 import React from "react";
@@ -162,8 +162,10 @@ const ErrorComponent = (props: Data) => {
 
 This example shows you how the exhaustive `switch` statement can be made to work with non-primitive types such as JavaScript object.
 
-On top of this, the `absurd` function also throws - this mean not only you get error from Typescript compiler but you also get one from the Javascript runtime. However this might be something you might _not_ want to do, it depends on your use case. Perhaps you'd like to log the error to your logging service.
+On top of this, the `absurd` function also throws. This means not only you get error from Typescript compiler, but you also get one from the JavaScript run-time, however this might be something you might _not_ want to do. It depends on your use case, perhaps you'd like to log the error to your logging service instead.
 
-This pattern might not fit everyone. It requires developers to always add `absurd` function to their default case. Abstracting it away is possile but I think it makes the code more opaque. It might look out of place in some code bases, the concept feels more aligned with functional style of programming.
+_Tip: when using `absurd` with `throw` in React, it will trigger error boundary._
+
+This pattern might not fit everyone. It requires developers to always add `absurd` function to their default case. Abstracting it away is possible, but I think it makes the code more opaque. It might look out of place in some code bases, the concept feels more aligned with functional style of programming.
 
 But for those who like to have their execution paths well covered I would say it's a good approach. This pattern could be supported by linter where each `switch` would require calling `absurd` in the default case.
