@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script>if(!sessionStorage.getItem("_swa")&&document.referrer.indexOf(location.protocol+"//"+location.host)!== 0){fetch("https://counter.dev/track?"+new URLSearchParams({referrer:document.referrer,screen:screen.width+"x"+screen.height,user:"ondrejsynacek",utcoffset:"1"}))};sessionStorage.setItem("_swa","1");</script>
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +12,7 @@
 {% block rss %}
   <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
 {% endblock rss %}
+  <script src="https://cdn.counter.dev/script.js" data-id="85dcf6f7-e135-4bed-bd5e-3b57e814cdca" data-utcoffset="1"></script>
   </head>
   <body>
     <div class="body-wrapper">
