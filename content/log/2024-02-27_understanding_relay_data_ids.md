@@ -297,7 +297,96 @@ The usefulness of `__id` becomes more apparent when your application does advanc
 
 It's usually easy enough to pass `id` field to a mutation, but `__id` field becomes way more important when dealing with connections[^5]. Let's take a small detour here and show how Data IDs are represented for connections.
 
-We'll expand our schema with query `users` which will return connection containing `User` types which we've already declared in previous steps.
+We'll expand our schema with query `users` which will return connection containing `User` types which we've already declared in previous steps:
+
+*Note: I'm omitting some types we declared in previous steps for brevity.*
+
+```graphql
+# ...
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  endCursor: String
+  startCursor: String
+}
+
+type UserEdge {
+  cursor: String!
+  node: User
+}
+
+type UserConnection {
+  edges: [UserEdge]
+  pageInfo: PageInfo!
+}
+
+type Query {
+  # ...
+  users(first: Int, after: String): UserConnection!
+}
+```
+
+We will have two components fetching for `users` field:
+
+```tsx
+// user-list-container.tsx
+export function UserListContainer() {
+  const data = useLazyLoadQuery<userListContainerQuery>(
+    graphql`
+      query userListContainerQuery {
+        ...userList_User
+      }
+    `,
+    {}
+  );
+
+  return (
+    <UserList dataRef={data} />
+  );
+}
+
+// user-list.tsx
+export function UserList({ dataRef }: { dataRef: userList_User$key }) {
+  const { data, loadNext, hasNext } = usePaginationFragment(
+    graphql`
+      fragment userList_User on Query
+      @refetchable(queryName: "userListPaginationQuery")
+      @argumentDefinitions(
+        count: { type: "Int", defaultValue: 10 }
+        cursor: { type: "String" }
+      ) {
+        users(first: $count, after: $cursor)
+          @connection(key: "userList__users") {
+          edges {
+            node {
+              id
+              name
+            }
+          }
+        }
+      }
+    `,
+    dataRef
+  );
+
+  if (!data.users || !data.users.edges) {
+    return null;
+  }
+
+  return (
+    <div>
+      <ul>
+        {data.users.edges.map((user) => (
+          <li key={user?.node?.id}>{user?.node?.name}</li>
+        ))}
+      </ul>
+      <button onClick={() => loadNext(10)} disabled={!hasNext}>
+        Next
+      </button>
+    </div>
+  );
+}
+```
 
 [^1]: The store is a data structure that contains queried, cached or payload data related to GraphQL operations performed via Relay hooks. It offers many methods to read and write to the store. You can find more  in the [official documentation](https://relay.dev/docs/api-reference/store/)([archive](https://web.archive.org/web/20240227201914/https://relay.dev/docs/api-reference/store/))
 [^2]: TBD
