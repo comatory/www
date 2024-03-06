@@ -171,5 +171,136 @@ You can confirm this by looking again into Relay dev tools. You will now see new
 
 This significantly saves on space in very big applications and this upside becomes even more pronounced when dealing with connections.
 
+It is quite common that some queries might not return type with `id`. Let's add type `Version` which describes a version of our application. This type does not include `id` so it's not reachable via `node` query:
+
+```graphql
+type Version {
+  value: String!
+}
+
+type Query {
+  getUser(id: ID!): User
+  node(id: ID!): User
+  version: Version
+}
+```
+
+We will query for that field via React component:
+
+```tsx
+// version.tsx
+export function Version() {
+  const data = useLazyLoadQuery<versionQuery>(
+    graphql`
+      query versionQuery {
+        version {
+          value
+        }
+      }
+    `,
+    {}
+  );
+
+  return <pre>{data.version?.value}</pre>
+}
+```
+
+Upon calling `version` query, the returned payload from server has this shape:
+
+```json
+{
+  "data": {
+    "version": {
+      "value": "1.0.0"
+    }
+  }
+}
+```
+
+Inspecting the store via devtools, you'll notice store now holds this data under key `version`, it points to the data via `__ref` with value `client:root:version`. How come?
+
+Since this query and its returned type do not contain `id`, Relay needs some *key* to store it in its normalized cache. Usually this is value of `id` but in this case, the library generates its own key instead.
+It's using `client:root` as its prefix. This prefix is pre-defined in the library, then it appends name of the query `version` which results in `client:root:version`.
+
+Every piece of data can be referenced in the cache by this key. This key is called **Data ID**. **For types that contain `id` field, they resolve to its value. For types that do not have `id` field, Relay generates one for you**. Such is the case of our `Version` type returned by our `version` query.
+
+Relay can expose this Data ID value as a special field `__id` in queries. I call it special because this field is not part of your schema but is added by Relay to every type for convenience.
+
+This means we can expand our `node` query to retrieve Data ID for `User` type. In this scenario, you'll just get value of `id`:
+
+```tsx
+// user-card.tsx
+export function UserCard() {
+  const data = useLazyLoadQuery<userCardQuery>(
+    graphql`
+      query userCardQuery($id: ID!) {
+        node(id: $id) {
+          __typename
+          ... on User {
+            __id # << we added special Data ID field
+            ...userAvatar_User
+          }
+        }
+      }
+    `,
+    {
+      id: "MTpVc2VyOjEyMw==",
+    }
+  );
+
+  if (!data.node) {
+    return null;
+  }
+
+  if (data.node.__typename !== "User") {
+    return null;
+  }
+
+  return (
+    <>
+      <pre>{data.node.__id}</pre>
+      <UserAvatar dataRef={data.node} />
+    </>
+  );
+}
+```
+
+This will render `MTpVc2VyOjEyMw==` value inside `<pre>` tag. Does not look very useful at first sight but let's show an example with `version` query for completeness sake:
+
+```tsx
+// version.tsx
+export function Version() {
+  const data = useLazyLoadQuery<versionQuery>(
+    graphql`
+      query versionQuery {
+        version {
+          __id # << Data ID field
+          value
+        }
+      }
+    `,
+    {}
+  );
+
+  return (
+    <>
+      <pre>{data.version?.__id}</pre>
+      <pre>{data.version?.value}</pre>
+    </>
+  );
+}
+```
+
+This renders `client:root:version` in `<pre>` tag, just right above `1.0.0` string (our value for `value` field).
+
+The usefulness of `__id` becomes more apparent when your application does advanced data manipulation within Relay store. These manipulations usually take place inside *updater* functions[^3], performing some kind of imperative data updates[^4].
+
+It's usually easy enough to pass `id` field to a mutation, but `__id` field becomes way more important when dealing with connections[^5]. Let's take a small detour here and show how Data IDs are represented for connections.
+
+We'll expand our schema with query `users` which will return connection containing `User` types which we've already declared in previous steps.
+
 [^1]: The store is a data structure that contains queried, cached or payload data related to GraphQL operations performed via Relay hooks. It offers many methods to read and write to the store. You can find more  in the [official documentation](https://relay.dev/docs/api-reference/store/)([archive](https://web.archive.org/web/20240227201914/https://relay.dev/docs/api-reference/store/))
 [^2]: TBD
+[^3]: Updater function documentation (mention `commitLocalUpdate`)
+[^4]: Link to imperative updates
+[^5]: Link to connection spec
