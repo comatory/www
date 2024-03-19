@@ -7,13 +7,29 @@ draft = true
 tech=["relay", "graphql"]
 +++
 
-Starting out with Relay framework, I wasn't really sure whenever I was looking inside dev tools:
+When I started using the Relay framework, I wasn't really sure what I was looking at inside the dev tools.
 
-It all looks really confusing at first sight but after some years working with Relay bunch of that now makes more sense.
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-01.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-01.png"
+        loading="lazy"
+        alt="Screenshot of Relay dev tools"
+        style="width: 400px; height: auto;"
+      />
+      <figcaption>
+        Relay dev tools
+      </figcaption>
+    </figure>
+  </a>
+</div>
 
-First of all, it's important to mention that Relay's store[^1] uses normalized cache. Imagine the store being key-value data structure, such as `Map`, that is what's contained within the Relay store and for you as a consumer of the library, mostly abstracted away from you.
+At first glance, it all may seem quite confusing, but after spending a few years working with Relay, it has started to make a lot more sense.
 
-`Data ID` is what's used as a **key** for given value in the normalized cache. Consider following type being part of your schema:
+Firstly, it's important to note that Relay's store[^1] employs a normalized cache. Picture the store as a key-value data structure, like a `Map`; this is what is contained within the Relay store. As a user of the library, this is mostly abstracted away from you.
+
+The `Data ID` is used as a **key** for a given value in the normalized cache. Consider the following type being a part of your schema:
 
 ```graphql
 type User {
@@ -23,9 +39,8 @@ type User {
 }
 ```
 
-Whenever you query or receive payload which contains a type with `id` field, it will use that value as a key for the normalized cache in the store.
-
-Taking from our example type from above, imagine your schema contains query like this:
+Whenever you query or receive a payload containing a type with an `id` field, that value will be used as a key for the normalized cache in the store.
+Consider an example type from above. Imagine your schema includes a query like this:
 
 ```graphql
 type Query {
@@ -33,7 +48,7 @@ type Query {
 }
 ```
 
-Perhaps your Relay code is querying this data somewhere and you are obtaining some fields using a fragment:
+Perhaps your Relay code is querying this data somewhere, and you are obtaining some fields using a fragment.
 
 ```tsx
 // user-panel.tsx
@@ -58,6 +73,7 @@ export function UserPanel() {
 export function UserPanelHeading({ dataRef }: { dataRef: userPanelHeading_User$key }) {
   const { id, name } = useFragment(graphql`
     fragment userPanelHeading_User on User {
+      __typename
       id
       name
     }
@@ -73,6 +89,7 @@ And the response might look something like this:
 {
   "data": {
     "getUser": {
+      "__typename": "User",
       "id": "MTpVc2VyOjEyMw==",
       "name": "Johnny Appleseed"
     }
@@ -80,15 +97,28 @@ And the response might look something like this:
 }
 ```
 
-When that data is received, Relay knows that `getUser` field returns `User` type. It automatically uses key `id` with value `MTpVc2VyOjEyMw==` to write it to the store.
+Upon receiving data, Relay recognizes the `getUser` field to return the `User` type. It then uses the key `id` with corresponding value of `MTpVc2VyOjEyMw==` and registers this in the store. Relay dev tools will display a key labeled `getUser(id: "MTpVc2VyOjEyMw==")`.
+This record, however, contains a `__ref` attribute that redirects to a separate stored record holding the `MTpVc2VyOjEyMw==` ID:
 
-If you open Relay dev tools, you will see that there's a key like this `getUser(id: "MTpVc2VyOjEyMw==")`. But this record has `__ref` property which points to separate store record which has that `MTpVc2VyOjEyMw==` ID.
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-02.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-02.png"
+        loading="lazy"
+        alt="Screenshot of a field named getUser inside Relay dev tools"
+        style="width: 400px; height: auto;"
+      />
+      <figcaption>
+        Name of the query and its arguments used as a key
+      </figcaption>
+    </figure>
+  </a>
+</div>
 
-Now you might not think this is a big deal but if you have data-heavy application, you will come to appreciate the following.
+While the implications of this may seem negligible, its significance becomes apparent within a data-intensive application. Relay's approach emphasizes minimizing _waterfall_ requests. This is evident in its adoption of data fragments, which are linked to React components. These fragments define data dependencies, however the actual data fetching can be triggered elsewhere within your component tree, optimally at the top, at the root level.
 
-The _Relay-way_ is to minimize "waterfall" requests and the library is very opinionated about this - that is why it has concepts of data fragments tied to components. The fragments define data dependencies but the actual fetching can happen in a completely different place of your component tree, ideally all the way at the top on the root level.
-
-We augment our schema so `User` type conforms to Node interface[^3]. The query now also contains `node` field:
+Let's' adjust our schema so the `User` implements the Node interface[^3]. The Query now defines the `node` field:
 
 ```graphql
 interface Node {
@@ -96,6 +126,7 @@ interface Node {
 }
 
 type User implements Node {
+  id: ID!
   name: String!
   email: String!
 }
@@ -142,6 +173,7 @@ export function UserCard() {
 export function UserAvatar({ dataRef }: { dataRef: userAvatar_User$key }) {
   const { email } = useFragment(graphql`
     fragment userAvatar_User on User {
+      __typename
       id
       email
     }
@@ -165,13 +197,29 @@ Calling the `node` query, we receive the following payload:
 }
 ```
 
-Now the real fun part begins: instead of placing this data into the store under some new key, Relay knows that you've asked for the same user but this time with additional data. It leaves the existing data in place but augments it with `email` field. Brilliant!
+Now the real fun part begins. Instead of storing this data under a new key, Relay recognizes that you've requested the same user data, but this time with additional fields. It retains the existing data but enhances it with the `email` field. Brilliant!
 
-You can confirm this by looking again into Relay dev tools. You will now see new key next to existing `getUser` key, this time it has this value: `node(id: "MTpVc2VyOjEyMw==")` but again, it has *reference* (notice `__ref` property) which points to the same record of type `User`.
+You can verify this by revisiting the Relay dev tools. You will now see a new key next to the existing `getUser` key, holding the value: `node(id: "MTpVc2VyOjEyMw==")`. However, it also has a *reference* (note the `__ref` property), which leads back to the same `User` record which now also includes the requested `email` field:
 
-This significantly saves on space in very big applications and this upside becomes even more pronounced when dealing with connections.
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-03.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-03.png"
+        loading="lazy"
+        alt="Screenshot of a Relay dev tools displaying node and getUser fields"
+        style="width: 400px; height: auto;"
+      />
+      <figcaption>
+        Both `node` and `getUser` reference the same `User` object
+      </figcaption>
+    </figure>
+  </a>
+</div>
 
-It is quite common that some queries might not return type with `id`. Let's add type `Version` which describes a version of our application. This type does not include `id` so it's not reachable via `node` query:
+This significantly saves space in large applications, with the benefits becoming even more apparent when managing connections.
+
+It's worth mentioning that it's quite common for some queries not to return a type with `id`. Let's introduce `Version` type, which characterizes a version of our application. This type doesn't include `id`, so it's unreachable via the `node` query.
 
 ```graphql
 type Version {
@@ -194,6 +242,7 @@ export function Version() {
     graphql`
       query versionQuery {
         version {
+          __typename
           value
         }
       }
@@ -211,22 +260,38 @@ Upon calling `version` query, the returned payload from server has this shape:
 {
   "data": {
     "version": {
+      "__typename": "Version",
       "value": "1.0.0"
     }
   }
 }
 ```
 
-Inspecting the store via devtools, you'll notice store now holds this data under key `version`, it points to the data via `__ref` with value `client:root:version`. How come?
+Inspecting the store via dev tools reveals that store now holds this data under key `version`, it points to this data via `__ref` property which has value `client:root:version`. How come?
 
-Since this query and its returned type do not contain `id`, Relay needs some *key* to store it in its normalized cache. Usually this is value of `id` but in this case, the library generates its own key instead.
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-04.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-04.png"
+        loading="lazy"
+        alt="Screenshot of a Relay dev tools displaying version field"
+        style="width: 400px; height: auto;"
+      />
+      <figcaption>
+        Notice anything strange?
+      </figcaption>
+    </figure>
+  </a>
+</div>
+
+Since this query and its returned type do not contain an `id` field, Relay requires a unique *key* to store it in its normalized cache. Typically, this would be the value of the `id`. However, in this absence, the library generates its own unique key instead.
+
 It's using `client:root` as its prefix. This prefix is pre-defined in the library, then it appends name of the query `version` which results in `client:root:version`.
 
-Every piece of data can be referenced in the cache by this key. This key is called **Data ID**. **For types that contain `id` field, they resolve to its value. For types that do not have `id` field, Relay generates one for you**. Such is the case of our `Version` type returned by our `version` query.
+Every piece of data can be referenced in the cache by a key. This key is known as **Data ID**. **For types that contain an `id` field, they resolve to its value. For types that lack an `id` field, Relay generates one for you**. This applies to our `Version` type as returned by our `version` query.
 
-Relay can expose this Data ID value as a special field `__id` in queries. I call it special because this field is not part of your schema but is added by Relay to every type for convenience.
-
-This means we can expand our `node` query to retrieve Data ID for `User` type. In this scenario, you'll just get value of `id`:
+Relay can expose this Data ID value in queries using a special field `__id`. I call it special because this field, although not part of the schema, is added by Relay to every type for ease of use. This allows us to broaden our `node` query to retrieve the Data ID for the `User` type. In this case, the `id` value is what you will receive.
 
 ```tsx
 // user-card.tsx
@@ -291,13 +356,13 @@ export function Version() {
 }
 ```
 
-This renders `client:root:version` in `<pre>` tag, just right above `1.0.0` string (our value for `value` field).
+This code renders `client:root:version` in a `<pre>` tag, which is located right above the `1.0.0` string (which is our value for the `value` field).
 
-The usefulness of `__id` becomes more apparent when your application does advanced data manipulation within Relay store. These manipulations usually take place inside *updater* functions[^3], performing some kind of imperative data updates[^4].
+The usefulness of `__id` becomes increasingly apparent when your application performs advanced data manipulation within the Relay store. These manipulations often take place inside *updater* functions[^3], with an imperative approach[^4].
 
-It's usually easy enough to pass `id` field to a mutation, but `__id` field becomes way more important when dealing with connections[^5]. Let's take a small detour here and show how Data IDs are represented for connections.
+It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections[^5]. Let's briefly deviate here and illustrate how Data IDs are represented in connections.
 
-We'll expand our schema with query `users` which will return connection containing `User` types which we've already declared in previous steps:
+We'll enhance our schema with a `users` query that returns a connection containing `User` types, which we've previously defined in earlier steps:
 
 *Note: I'm omitting some types we declared in previous steps for brevity.*
 
@@ -389,7 +454,11 @@ export function UserList({ dataRef }: { dataRef: userList_User$key }) {
 ```
 
 [^1]: The store is a data structure that contains queried, cached or payload data related to GraphQL operations performed via Relay hooks. It offers many methods to read and write to the store. You can find more  in the [official documentation](https://relay.dev/docs/api-reference/store/)([archive](https://web.archive.org/web/20240227201914/https://relay.dev/docs/api-reference/store/))
+
 [^2]: TBD
+
 [^3]: Updater function documentation (mention `commitLocalUpdate`)
+
 [^4]: Link to imperative updates
+
 [^5]: Link to connection spec
