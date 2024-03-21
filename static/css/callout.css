@@ -1,0 +1,29 @@
+.callout {
+  display: flex;
+  padding: 10px;
+  background-color: var(--color1);
+  color: var(--color5);
+  border-radius: 5px;
+}
+
+.callout a {
+  color: var(--color5);
+}
+
+.callout__icon {
+  font-size: 1.5rem;
+}
+
+.callout__content {
+  display: flex;
+  flex-direction: column;
+  padding-left: 10px;
+}
+
+.callout__content__title {
+  margin: 0 0 0.5rem 0;
+}
+
+.callout__content__body {
+  font-size: 0.9rem;
+}

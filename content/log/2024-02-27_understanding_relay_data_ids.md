@@ -97,6 +97,10 @@ And the response might look something like this:
 }
 ```
 
+{% callout(title="__typename field") %}
+  The field is part of the `userPanelHeading_User` fragment but it is not required, Relay store infers `__typename` automatically if your `ID` conforms to specification of encoded Global GraphQLIDs[^4].
+{% end %}
+
 Upon receiving data, Relay recognizes the `getUser` field to return the `User` type. It then uses the key `id` with corresponding value of `MTpVc2VyOjEyMw==` and registers this in the store. Relay dev tools will display a key labeled `getUser(id: "MTpVc2VyOjEyMw==")`.
 This record, however, contains a `__ref` attribute that redirects to a separate stored record holding the `MTpVc2VyOjEyMw==` ID:
 
@@ -358,9 +362,9 @@ export function Version() {
 
 This code renders `client:root:version` in a `<pre>` tag, which is located right above the `1.0.0` string (which is our value for the `value` field).
 
-The usefulness of `__id` becomes increasingly apparent when your application performs advanced data manipulation within the Relay store. These manipulations often take place inside *updater* functions[^3], with an imperative approach[^4].
+The usefulness of `__id` becomes increasingly apparent when your application performs advanced data manipulation within the Relay store. These manipulations often take place inside *updater* functions[^4], with an imperative approach[^5].
 
-It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections[^5]. Let's briefly deviate here and illustrate how Data IDs are represented in connections.
+It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections[^6]. Let's briefly deviate here and illustrate how Data IDs are represented in connections.
 
 We'll enhance our schema with a `users` query that returns a connection containing `User` types, which we've previously defined in earlier steps:
 
@@ -458,6 +462,8 @@ export function UserList({ dataRef }: { dataRef: userList_User$key }) {
 [^2]: TBD
 
 [^3]: Updater function documentation (mention `commitLocalUpdate`)
+
+[^4]: Link to spec regarding Global GraphQL IDs
 
 [^4]: Link to imperative updates
 
