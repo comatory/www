@@ -366,7 +366,7 @@ The usefulness of `__id` becomes increasingly apparent when your application per
 
 It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections[^6]. Let's briefly deviate here and illustrate how Data IDs are represented in connections.
 
-We'll enhance our schema with a `users` query that returns a connection containing `User` types, which we've previously defined in earlier steps:
+We'll enhance the schema and change our `User` type. This type will now contain `friends` field which will return a new type `UserConnection`. This field conforms to Relay pagination specification so I'm also adding other types that should be included:
 
 *Note: I'm omitting some types we declared in previous steps for brevity.*
 
@@ -389,43 +389,84 @@ type UserConnection {
   pageInfo: PageInfo!
 }
 
-type Query {
-  # ...
-  users(first: Int, after: String): UserConnection!
+input FriendSearchInput {
+  name: String
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  friends(first: Int!, after: String, search: FriendSearchInput): UserConnection!
 }
 ```
 
-We will have two components fetching for `users` field:
+You can think of `friends` field as a list of friends the given user has, with ability to filter this list with `search` argument. Let's augment `UserCard` component `node` query with new fragment. This fragment will belong to new component `FriendList`:
 
 ```tsx
-// user-list-container.tsx
-export function UserListContainer() {
-  const data = useLazyLoadQuery<userListContainerQuery>(
+// user-card.tsx
+export function UserCard() {
+  const [search, setSearch] = useState("");
+  const [debouncedSearch] = useDebounce(search, 500);
+
+  const data = useLazyLoadQuery<userCardQuery>(
     graphql`
-      query userListContainerQuery {
-        ...userList_User
+      query userCardQuery($id: ID!, $name: String!) {
+        node(id: $id) {
+          __typename
+          ... on User {
+            __id
+            ...userAvatar_User
+            ...friendList_User @arguments(name: $name, first: 10) # << new field
+          }
+        }
       }
     `,
-    {}
+    {
+      id: "MTpVc2VyOjEyMw==",
+      name: debouncedSearch.trim().length > 0 ? debouncedSearch : "",
+    }
   );
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
+  if (!data.node) {
+    return null;
+  }
+
+  if (data.node.__typename !== "User") {
+    return null;
+  }
+
   return (
-    <UserList dataRef={data} />
+    <>
+      <pre>{data.node.__id}</pre>
+      <UserAvatar dataRef={data.node} />
+      <label>
+        Search:
+        <input type="text" value={search} onChange={handleInputChange} />
+      </label>
+      <FriendList dataRef={data.node} />
+    </>
   );
 }
 
-// user-list.tsx
-export function UserList({ dataRef }: { dataRef: userList_User$key }) {
+// friend-list.tsx
+export function FriendList({ dataRef }: { dataRef: friendList_User$key }) {
   const { data, loadNext, hasNext } = usePaginationFragment(
     graphql`
-      fragment userList_User on Query
-      @refetchable(queryName: "userListPaginationQuery")
+      fragment friendList_User on User
+      @refetchable(queryName: "friendListPaginationQuery")
       @argumentDefinitions(
-        count: { type: "Int", defaultValue: 10 }
+        first: { type: "Int", defaultValue: 10 }
         cursor: { type: "String" }
+        name: { type: "String", defaultValue: "" }
       ) {
-        users(first: $count, after: $cursor)
-          @connection(key: "userList__users") {
+        friends(first: $first, after: $cursor, search: { name: $name })
+          @connection(key: "user_friends") {
+          __id # << adding for debugging purposes
           edges {
             node {
               id
@@ -435,17 +476,18 @@ export function UserList({ dataRef }: { dataRef: userList_User$key }) {
         }
       }
     `,
-    dataRef
+    dataRef,
   );
 
-  if (!data.users || !data.users.edges) {
+  if (!data.friends || !data.friends.edges) {
     return null;
   }
 
   return (
     <div>
+      <pre>{data.friends.__id}</pre>
       <ul>
-        {data.users.edges.map((user) => (
+        {data.friends.edges.map((user) => (
           <li key={user?.node?.id}>{user?.node?.name}</li>
         ))}
       </ul>
@@ -456,6 +498,153 @@ export function UserList({ dataRef }: { dataRef: userList_User$key }) {
   );
 }
 ```
+
+The (first) page you will receive from server has this shape:
+
+*Note: I'm only including partial output to include first two edges.*
+
+```json
+{
+    "data": {
+        "node": {
+            "__typename": "User",
+            "id": "MTpVc2VyOjEyMw==",
+            "email": "johnny@apple.com",
+            "friends": {
+                "edges": [
+                    {
+                        "node": {
+                            "id": "MTpVc2VyOmZhZDkxZjIxLTVhYzEtNDY3ZC1hOWU3LTljMmQwOTQzYjY5Zg==",
+                            "name": "Lana Maggio",
+                            "__typename": "User"
+                        },
+                        "cursor": "MTpVc2VyOmZhZDkxZjIxLTVhYzEtNDY3ZC1hOWU3LTljMmQwOTQzYjY5Zg=="
+                    },
+                    {
+                        "node": {
+                            "id": "MTpVc2VyOjU2NDY2NWRhLWViNmYtNGM3My04MDQwLTk4MjUyNzU4ZDBjYw==",
+                            "name": "Gertrude Rogahn",
+                            "__typename": "User"
+                        },
+                        "cursor": "MTpVc2VyOjU2NDY2NWRhLWViNmYtNGM3My04MDQwLTk4MjUyNzU4ZDBjYw=="
+                    },
+
+                  // 8 other edges ...
+                ],
+                "pageInfo": {
+                    "endCursor": "MTpVc2VyOmMwYmIzYjY0LTJlZDgtNGRjNS04MTg0LWZhOGY1MjgxM2QxOA==",
+                    "hasNextPage": true
+                }
+            }
+        }
+    }
+}
+```
+
+There's one detail you might've missed in the code for `FriendList` component's fragment definition. I've included `__id` field to help us uncover, how the connection is identified via its Data ID. The value of this ID is:
+
+`client:MTpVc2VyOjEyMw==:__user_friends_connection(search:{"name":""})`
+
+Let's break down how this Data ID is created with the following diagram:
+
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-05.svg" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-05.svg"
+        loading="lazy"
+        alt="Diagram of explanation of Relay's connection Data ID"
+        style="width: 500px; height: auto;"
+      />
+      <figcaption>
+        Connection Data ID
+      </figcaption>
+    </figure>
+  </a>
+</div>
+
+Why and how is this Data ID created? It is similar to what we've already observed with `version` field. In our schema, the connection `UserConnection` does not contain any `id` field. This means that Relay has to generate the ID for us and it does it by concatenating several strings. Double colon `:` is used as separator between these strings.
+
+We've touched on `client` string before, this is pre-determined value of Relay library so it's used as *root* prefix. Next, the Data ID of its parent type is used - in our case this equals to `id` field of `User` we've queried with `node` query.
+Lastly, it uses value of `key` argument provided to `@connection` directive, in our case we defined it as `user_friends` in `friendList_User` fragment. For some reason it is prefixed with `__`. This last part also includes serialized arguments provided to the connection, in this specific case it's `search` which is empty string at the moment. I'll get to these in a moment.
+
+Let's look at Relay dev tools to understand how it represents this connection with only first page loaded:
+
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-06.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-06.png"
+        loading="lazy"
+        alt="Relay dev tools with UserConnection"
+        style="width: 500px; height: auto;"
+      />
+      <figcaption>
+        Wait, what?
+      </figcaption>
+    </figure>
+  </a>
+</div>
+
+That's strange, it looks like there are two fields associated with our `User` record:
+
+1. `__user_friends_connection(search:{"name":""})`
+2. `friends(first: 10,search:{"name":""})`
+
+What gives? Well the way I think about it is that any field starting with underscore(s), like the first one is internal field which is somehow *special*. This field `__user_friends_connection(search:{"name":""})` matches the suffix of connection's Data ID. Let's fetch another page using `loadNext` and see what happens:
+
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-07.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-07.png"
+        loading="lazy"
+        alt="Relay dev tools with UserConnection on second page"
+        style="width: 500px; height: auto;"
+      />
+      <figcaption>
+        Next page fetched, more fields!
+      </figcaption>
+    </figure>
+  </a>
+</div>
+
+Now we have additional `friends` field in our `User` record:
+
+1. `__user_friends_connection(search:{"name":""})`
+2. `friends(first: 10,search:{"name":""})`
+3. `friends(after:"MTpVc2VyOmMwYmIzYjY0LTJlZDgtNGRjNS04MTg0LWZhOGY1MjgxM2QxOA==",first:10,search:{"name":""})`
+
+The third field signifies another page, since `after` is a cursor to get the next page and it's one of the connection arguments, it gets serialized as well.
+
+The `__id` field of the connection itself that we're rendering in `FriendList` component like so:
+
+```tsx
+<pre>{data.friends.__id}</pre>
+```
+
+Still renders this Data ID: `client:MTpVc2VyOjEyMw==:__user_friends_connection(search:{"name":""})`
+
+The way I think about this is that the internal field `__user_friends_connection(search:{"name":""})` is what is actually read by hook `usePaginationFragment`. This field collects all the other pages (`UserConnection` types) so they can be represented as one long list in our UI. It can resolve those two fields on our `User` record and treat them as one list, using `after` argument to know that it needs to append it to the one list. You can see it by expanding `__user_friends_connection(search:{"name":""})` field in dev tools:
+
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-08.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-08.png"
+        loading="lazy"
+        alt="Expanded internal field for connection"
+        style="width: 500px; height: auto;"
+      />
+      <figcaption>
+        It's all there
+      </figcaption>
+    </figure>
+  </a>
+</div>
+
+Inspecting this field, you will see this internal field contains all 20 edges, meaning two pages since each page has 10 of them. If you would call `loadNext(5)`, it will append only 5 records to that list. So similarly to `after` argument, Relay is smart enough to recognize that we still want to represent all of this data as one list in our UI.
+
 
 [^1]: The store is a data structure that contains queried, cached or payload data related to GraphQL operations performed via Relay hooks. It offers many methods to read and write to the store. You can find more  in the [official documentation](https://relay.dev/docs/api-reference/store/)([archive](https://web.archive.org/web/20240227201914/https://relay.dev/docs/api-reference/store/))
 
