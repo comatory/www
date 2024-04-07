@@ -1,0 +1,15 @@
+<aside role="note" class="callout">
+  <div class="callout__icon">
+    💡
+  </div>
+  <div class="callout__content">
+    {% if title %}
+    <h4 class="callout__content__title">
+      {{ title }}
+    </h4>
+    {% endif %}
+    <div class="callout__content__body">
+      {{ body | markdown | safe }}
+    </div>
+  </div>
+</aside>

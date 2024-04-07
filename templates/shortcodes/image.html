@@ -1,0 +1,17 @@
+<div class="{% if wrapper_class %}{{ wrapper_class }}{% else %}centered{% endif %}">
+  <a href="{{ href }}" target="_blank">
+    <figure>
+      <img
+        src="{{ href }}"
+        loading="lazy"
+        alt="{% if alt %}{{ alt }}{% endif %}{% if caption %}{{ caption }}{% endif %}"
+        style="width: {% if width %}{{ width }}px{% else %}400px{% endif %}; height: {% if height %}{{ height}}{% else %}auto{% endif %};"
+      />
+      <figcaption>
+        {% if caption %}
+          {{ caption }}
+        {% endif %}
+      </figcaption>
+    </figure>
+  </a>
+</div>
