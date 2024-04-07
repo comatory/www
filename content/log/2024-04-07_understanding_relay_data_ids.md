@@ -1,6 +1,6 @@
 +++
 title = "Understanding Relay Data IDs"
-date = 2024-02-27T20:56:18.000Z
+date = 2024-04-07T21:56:18.000Z
 template = "log.html"
 draft = true
 [taxonomies]
@@ -98,7 +98,7 @@ And the response might look something like this:
 ```
 
 {% callout(title="__typename field") %}
-  The field is part of the `userPanelHeading_User` fragment but it is not required, Relay store infers `__typename` automatically if your `ID` conforms to specification of encoded Global GraphQLIDs[^4].
+  The field is part of the `userPanelHeading_User` fragment but it is not required, Relay store infers `__typename` automatically if your `ID` conforms to specification of encoded Global GraphQLIDs.
 {% end %}
 
 Upon receiving data, Relay recognizes the `getUser` field to return the `User` type. It then uses the key `id` with corresponding value of `MTpVc2VyOjEyMw==` and registers this in the store. Relay dev tools will display a key labeled `getUser(id: "MTpVc2VyOjEyMw==")`.
@@ -122,7 +122,7 @@ This record, however, contains a `__ref` attribute that redirects to a separate 
 
 While the implications of this may seem negligible, its significance becomes apparent within a data-intensive application. Relay's approach emphasizes minimizing _waterfall_ requests. This is evident in its adoption of data fragments, which are linked to React components. These fragments define data dependencies, however the actual data fetching can be triggered elsewhere within your component tree, optimally at the top, at the root level.
 
-Let's' adjust our schema so the `User` implements the Node interface[^3]. The Query now defines the `node` field:
+Let's' adjust our schema so the `User` implements the Node interface[^2]. The Query now defines the `node` field:
 
 ```graphql
 interface Node {
@@ -362,11 +362,11 @@ export function Version() {
 
 This code renders `client:root:version` in a `<pre>` tag, which is located right above the `1.0.0` string (which is our value for the `value` field).
 
-The usefulness of `__id` becomes increasingly apparent when your application performs advanced data manipulation within the Relay store. These manipulations often take place inside *updater* functions[^4], with an imperative approach[^5].
+The usefulness of `__id` becomes increasingly apparent when your application performs advanced data manipulation within the Relay store. These manipulations often take place inside *updater* functions[^3], with an imperative approach.
 
-It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections[^6]. Let's briefly deviate here and illustrate how Data IDs are represented in connections.
+It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections[^6]. I will illustrate this concept by showing you how Data IDs are represented in connections.
 
-We'll enhance the schema and change our `User` type. This type will now contain `friends` field which will return a new type `UserConnection`. This field conforms to Relay pagination specification so I'm also adding other types that should be included:
+We will enhance the schema and modify our `User` type. This type will now include a `friends` field that will return a new type, `UserConnection`. This field conforms to the Relay pagination specification, so we're also adding other types that should be included:
 
 *Note: I'm omitting some types we declared in previous steps for brevity.*
 
@@ -401,7 +401,7 @@ type User {
 }
 ```
 
-You can think of `friends` field as a list of friends the given user has, with ability to filter this list with `search` argument. Let's augment `UserCard` component `node` query with new fragment. This fragment will belong to new component `FriendList`:
+You can think of the `friends` field as a list of friends the given user has, with ability to filter this list with `search` argument. Let's augment `UserCard` component `node` query with new fragment. This fragment will belong to new component `FriendList`:
 
 ```tsx
 // user-card.tsx
@@ -499,7 +499,7 @@ export function FriendList({ dataRef }: { dataRef: friendList_User$key }) {
 }
 ```
 
-The (first) page you will receive from server has this shape:
+The first page received from server has this shape:
 
 *Note: I'm only including partial output to include first two edges.*
 
@@ -541,17 +541,17 @@ The (first) page you will receive from server has this shape:
 }
 ```
 
-There's one detail you might've missed in the code for `FriendList` component's fragment definition. I've included `__id` field to help us uncover, how the connection is identified via its Data ID. The value of this ID is:
+There's one detail you might've missed in the code for the `FriendList` component's fragment definition. I've included the `__id` field to help us uncover how the connection is identified via its Data ID. The value of this ID is:
 
 `client:MTpVc2VyOjEyMw==:__user_friends_connection(search:{"name":""})`
 
 Let's break down how this Data ID is created with the following diagram:
 
 <div class="centered">
-  <a href="/image/understanding_relay_data_ids-05.svg" target="_blank">
+  <a href="/image/understanding_relay_data_ids-05.png" target="_blank">
     <figure>
       <img
-        src="/image/understanding_relay_data_ids-05.svg"
+        src="/image/understanding_relay_data_ids-05.png"
         loading="lazy"
         alt="Diagram of explanation of Relay's connection Data ID"
         style="width: 500px; height: auto;"
@@ -563,10 +563,10 @@ Let's break down how this Data ID is created with the following diagram:
   </a>
 </div>
 
-Why and how is this Data ID created? It is similar to what we've already observed with `version` field. In our schema, the connection `UserConnection` does not contain any `id` field. This means that Relay has to generate the ID for us and it does it by concatenating several strings. Double colon `:` is used as separator between these strings.
+Why and how is this Data ID created? It appears similar to what we've previously observed with the `version` field. In our schema, the `UserConnection` does not contain an `id` field. This means that Relay needs to generate the ID for us, which it accomplishes by concatenating several strings. The double colon `:` is used as a separator between these strings.
 
-We've touched on `client` string before, this is pre-determined value of Relay library so it's used as *root* prefix. Next, the Data ID of its parent type is used - in our case this equals to `id` field of `User` we've queried with `node` query.
-Lastly, it uses value of `key` argument provided to `@connection` directive, in our case we defined it as `user_friends` in `friendList_User` fragment. For some reason it is prefixed with `__`. This last part also includes serialized arguments provided to the connection, in this specific case it's `search` which is empty string at the moment. I'll get to these in a moment.
+We've touched on the `client` string before; it's a pre-determined value from the Relay library used as the *root* prefix. Up next, the Data ID of its parent type is utilized - in our case, this would be equivalent to the `id` field of the `User` that we've queried with `node` query.
+Finally, it uses the value of the `key` argument supplied to the `@connection` directive. We set it as `user_friends` in the `friendList_User` fragment. Interestingly, this key is prefixed with `__`. This final section of the Data ID also encompasses serialized arguments given to the connection, in this particular scenario `search`, which is an empty string right now. I'll delve into these elements shortly.
 
 Let's look at Relay dev tools to understand how it represents this connection with only first page loaded:
 
@@ -591,7 +591,7 @@ That's strange, it looks like there are two fields associated with our `User` re
 1. `__user_friends_connection(search:{"name":""})`
 2. `friends(first: 10,search:{"name":""})`
 
-What gives? Well the way I think about it is that any field starting with underscore(s), like the first one is internal field which is somehow *special*. This field `__user_friends_connection(search:{"name":""})` matches the suffix of connection's Data ID. Let's fetch another page using `loadNext` and see what happens:
+What’s going on? Here's how I see it: any field that begins with an underscore(s), such as the first one, is an internal field that is somehow *special*. The field `__user_friends_connection(search:{"name":""})` matches the suffix of the connection's Data ID. Let's fetch another page using `loadNext` and observe what happens.
 
 <div class="centered">
   <a href="/image/understanding_relay_data_ids-07.png" target="_blank">
@@ -623,9 +623,9 @@ The `__id` field of the connection itself that we're rendering in `FriendList` c
 <pre>{data.friends.__id}</pre>
 ```
 
-Still renders this Data ID: `client:MTpVc2VyOjEyMw==:__user_friends_connection(search:{"name":""})`
+Is still equal to previous value and has same Data ID: `client:MTpVc2VyOjEyMw==:__user_friends_connection(search:{"name":""})`
 
-The way I think about this is that the internal field `__user_friends_connection(search:{"name":""})` is what is actually read by hook `usePaginationFragment`. This field collects all the other pages (`UserConnection` types) so they can be represented as one long list in our UI. It can resolve those two fields on our `User` record and treat them as one list, using `after` argument to know that it needs to append it to the one list. You can see it by expanding `__user_friends_connection(search:{"name":""})` field in dev tools:
+The way I interpret this is that the internal field `__user_friends_connection(search:{"name":""})` is essentially read by the `usePaginationFragment` hook. This field amalgamates all the other pages (of the `UserConnection` types) so they can be shown as a single list in our user interface. It is capable of resolving those two fields (see #2 and #3 in the list above) on our `User` record and then treating them as one collective list. It uses the `after` argument to know that it needs to append it to the existing list. This process can be visualized by expanding the `__user_friends_connection(search:{"name":""})` field in the development tools.
 
 <div class="centered">
   <a href="/image/understanding_relay_data_ids-08.png" target="_blank">
@@ -643,17 +643,44 @@ The way I think about this is that the internal field `__user_friends_connection
   </a>
 </div>
 
-Inspecting this field, you will see this internal field contains all 20 edges, meaning two pages since each page has 10 of them. If you would call `loadNext(5)`, it will append only 5 records to that list. So similarly to `after` argument, Relay is smart enough to recognize that we still want to represent all of this data as one list in our UI.
+Upon inspecting this field, you'll notice that it contains all 20 edges. This means two pages, as each page consists of 10 edges. If you were to use `loadNext(5)`, it would only append 5 records to this list. Much like the `after` argument, Relay is clever enough to understand that we still want to present all of this data as a single list in our UI.
 
+Imagine our UI has input to search through the friend list. We've already fetched two pages without any `search` argument. Now we pass value `"Tim"` as a search term.
+
+As a user you will expect that UI will clear our existing list and replace it with new one, containing only the filtered values. This time our Data ID has different value:
+
+`client:MTpVc2VyOjEyMw==:__user_friends_connection(search:{"name":"Tim"})`
+
+Our `search` argument to the connection gets serialized into its Data ID. The hook is now reading from different Data ID with its own internal field to which subsequent pages will be appended. In our case we only get 2 edges though:
+
+<div class="centered">
+  <a href="/image/understanding_relay_data_ids-09.png" target="_blank">
+    <figure>
+      <img
+        src="/image/understanding_relay_data_ids-09.png"
+        loading="lazy"
+        alt="New Data ID for connection with search argument"
+        style="width: 500px; height: auto;"
+      />
+      <figcaption>
+        New `friends` fields with search argument
+      </figcaption>
+    </figure>
+  </a>
+</div>
+
+If our search results had more than 10 edges and we'd fetch another page, new field `friends(first:10,search:{"name":"Tim"},after:"cursor")` would appear in the store, its internal field `__user_friends_connection(search:{"name":"Tim"})` would be updated with these new edges.
+
+This mechanism provides very quick user feedback. In case the user clears the input field for search term, our previously fetched pages will appear instantly as they're read from the cache - very smart and efficient!
+
+From these examples above, you should understand that serialization of our pagination arguments "forks" the state of the connection. Any change to connection arguments, such as `first`, `after`, `search` etc will cause new edges to be stored under different Data IDs. You can control this behaviour by `filters` argument to `@connection` directive.
+
+Lastly, I need to mention that Relay exposes set of utility function `ConnectionHandler.getConnection` that can generate Data ID as well. It is imperative way which requires you to pass record containing the connection, it's `key` argument and any other arguments so in practice, it means passing all the values around in order to access them. I find querying for `__id` to be more convenient and easy to use.
+
+---
 
 [^1]: The store is a data structure that contains queried, cached or payload data related to GraphQL operations performed via Relay hooks. It offers many methods to read and write to the store. You can find more  in the [official documentation](https://relay.dev/docs/api-reference/store/)([archive](https://web.archive.org/web/20240227201914/https://relay.dev/docs/api-reference/store/))
 
-[^2]: TBD
+[^2]: [https://relay.dev/graphql/connections.htm](https://relay.dev/graphql/connections.htm)([archive](https://web.archive.org/web/20240407194949/https://relay.dev/graphql/connections.htm))
 
-[^3]: Updater function documentation (mention `commitLocalUpdate`)
-
-[^4]: Link to spec regarding Global GraphQL IDs
-
-[^4]: Link to imperative updates
-
-[^5]: Link to connection spec
+[^3]: [https://relay.dev/docs/next/guided-tour/updating-data/imperatively-modifying-store-data-unsafe/#the-various-types-of-updater-functions](https://relay.dev/docs/next/guided-tour/updating-data/imperatively-modifying-store-data-unsafe/#the-various-types-of-updater-functions)([archive](https://web.archive.org/web/20240407195335/https://relay.dev/docs/next/guided-tour/updating-data/imperatively-modifying-store-data-unsafe/#the-various-types-of-updater-functions))
