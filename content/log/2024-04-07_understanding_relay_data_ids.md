@@ -9,21 +9,7 @@ tech=["relay", "graphql"]
 
 When I started using the Relay framework, I wasn't really sure what I was looking at inside the dev tools.
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-01.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-01.png"
-        loading="lazy"
-        alt="Screenshot of Relay dev tools"
-        style="width: 400px; height: auto;"
-      />
-      <figcaption>
-        Relay dev tools
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-01.png", alt="Screenshot of Relay dev tools", caption="Relay dev tools", width=600) }}
 
 At first glance, it all may seem quite confusing, but after spending a few years working with Relay, it has started to make a lot more sense.
 
@@ -104,21 +90,7 @@ And the response might look something like this:
 Upon receiving data, Relay recognizes the `getUser` field to return the `User` type. It then uses the key `id` with corresponding value of `MTpVc2VyOjEyMw==` and registers this in the store. Relay dev tools will display a key labeled `getUser(id: "MTpVc2VyOjEyMw==")`.
 This record, however, contains a `__ref` attribute that redirects to a separate stored record holding the `MTpVc2VyOjEyMw==` ID:
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-02.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-02.png"
-        loading="lazy"
-        alt="Screenshot of a field named getUser inside Relay dev tools"
-        style="width: 400px; height: auto;"
-      />
-      <figcaption>
-        Name of the query and its arguments used as a key
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-02.png", alt="Screenshot of a field named getUser inside Relay dev tools", caption="Name of the query and its arguments used as a key") }}
 
 While the implications of this may seem negligible, its significance becomes apparent within a data-intensive application. Relay's approach emphasizes minimizing _waterfall_ requests. This is evident in its adoption of data fragments, which are linked to React components. These fragments define data dependencies, however the actual data fetching can be triggered elsewhere within your component tree, optimally at the top, at the root level.
 
@@ -205,21 +177,7 @@ Now the real fun part begins. Instead of storing this data under a new key, Rela
 
 You can verify this by revisiting the Relay dev tools. You will now see a new key next to the existing `getUser` key, holding the value: `node(id: "MTpVc2VyOjEyMw==")`. However, it also has a *reference* (note the `__ref` property), which leads back to the same `User` record which now also includes the requested `email` field:
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-03.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-03.png"
-        loading="lazy"
-        alt="Screenshot of a Relay dev tools displaying node and getUser fields"
-        style="width: 400px; height: auto;"
-      />
-      <figcaption>
-        Both `node` and `getUser` reference the same `User` object
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-03.png", alt="Screenshot of a Relay dev tools displaying node and getUser fields", caption="Both `node` and `getUser` reference the same `User` object") }}
 
 This significantly saves space in large applications, with the benefits becoming even more apparent when managing connections.
 
@@ -273,21 +231,7 @@ Upon calling `version` query, the returned payload from server has this shape:
 
 Inspecting the store via dev tools reveals that store now holds this data under key `version`, it points to this data via `__ref` property which has value `client:root:version`. How come?
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-04.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-04.png"
-        loading="lazy"
-        alt="Screenshot of a Relay dev tools displaying version field"
-        style="width: 400px; height: auto;"
-      />
-      <figcaption>
-        Notice anything strange?
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-04.png", alt="Screenshot of a Relay dev tools displaying version field", caption="Notice anything strange?") }}
 
 Since this query and its returned type do not contain an `id` field, Relay requires a unique *key* to store it in its normalized cache. Typically, this would be the value of the `id`. However, in this absence, the library generates its own unique key instead.
 
@@ -547,21 +491,7 @@ There's one detail you might've missed in the code for the `FriendList` componen
 
 Let's break down how this Data ID is created with the following diagram:
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-05.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-05.png"
-        loading="lazy"
-        alt="Diagram of explanation of Relay's connection Data ID"
-        style="width: 500px; height: auto;"
-      />
-      <figcaption>
-        Connection Data ID
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-05.png", alt="Diagram of explanation of Relay's connection Data ID", caption="Connection Data ID", width=600) }}
 
 Why and how is this Data ID created? It appears similar to what we've previously observed with the `version` field. In our schema, the `UserConnection` does not contain an `id` field. This means that Relay needs to generate the ID for us, which it accomplishes by concatenating several strings. The double colon `:` is used as a separator between these strings.
 
@@ -570,21 +500,7 @@ Finally, it uses the value of the `key` argument supplied to the `@connection` d
 
 Let's look at Relay dev tools to understand how it represents this connection with only first page loaded:
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-06.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-06.png"
-        loading="lazy"
-        alt="Relay dev tools with UserConnection"
-        style="width: 500px; height: auto;"
-      />
-      <figcaption>
-        Wait, what?
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-06.png", alt="Relay dev tools with UserConnection", caption="Wait, what?") }}
 
 That's strange, it looks like there are two fields associated with our `User` record:
 
@@ -593,21 +509,7 @@ That's strange, it looks like there are two fields associated with our `User` re
 
 What’s going on? Here's how I see it: any field that begins with an underscore(s), such as the first one, is an internal field that is somehow *special*. The field `__user_friends_connection(search:{"name":""})` matches the suffix of the connection's Data ID. Let's fetch another page using `loadNext` and observe what happens.
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-07.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-07.png"
-        loading="lazy"
-        alt="Relay dev tools with UserConnection on second page"
-        style="width: 500px; height: auto;"
-      />
-      <figcaption>
-        Next page fetched, more fields!
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-07.png", alt="Relay dev tools with UserConnection on second page", caption="Next page fetched, more fields!") }}
 
 Now we have additional `friends` field in our `User` record:
 
@@ -627,21 +529,7 @@ Is still equal to previous value and has same Data ID: `client:MTpVc2VyOjEyMw==:
 
 The way I interpret this is that the internal field `__user_friends_connection(search:{"name":""})` is essentially read by the `usePaginationFragment` hook. This field amalgamates all the other pages (of the `UserConnection` types) so they can be shown as a single list in our user interface. It is capable of resolving those two fields (see #2 and #3 in the list above) on our `User` record and then treating them as one collective list. It uses the `after` argument to know that it needs to append it to the existing list. This process can be visualized by expanding the `__user_friends_connection(search:{"name":""})` field in the development tools.
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-08.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-08.png"
-        loading="lazy"
-        alt="Expanded internal field for connection"
-        style="width: 500px; height: auto;"
-      />
-      <figcaption>
-        It's all there
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-08.png", alt="Expanded internal field for connection", caption="It's all there") }}
 
 Upon inspecting this field, you'll notice that it contains all 20 edges. This means two pages, as each page consists of 10 edges. If you were to use `loadNext(5)`, it would only append 5 records to this list. Much like the `after` argument, Relay is clever enough to understand that we still want to present all of this data as a single list in our UI.
 
@@ -653,21 +541,7 @@ As a user you will expect that UI will clear our existing list and replace it wi
 
 Our `search` argument to the connection gets serialized into its Data ID. The hook is now reading from different Data ID with its own internal field to which subsequent pages will be appended. In our case we only get 2 edges though:
 
-<div class="centered">
-  <a href="/image/understanding_relay_data_ids-09.png" target="_blank">
-    <figure>
-      <img
-        src="/image/understanding_relay_data_ids-09.png"
-        loading="lazy"
-        alt="New Data ID for connection with search argument"
-        style="width: 500px; height: auto;"
-      />
-      <figcaption>
-        New `friends` fields with search argument
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/understanding_relay_data_ids-09.png", alt="New Data ID for connection with search argument", caption="New `friends` fields with search argument") }}
 
 If our search results had more than 10 edges and we'd fetch another page, new field `friends(first:10,search:{"name":"Tim"},after:"cursor")` would appear in the store, its internal field `__user_friends_connection(search:{"name":"Tim"})` would be updated with these new edges.
 
