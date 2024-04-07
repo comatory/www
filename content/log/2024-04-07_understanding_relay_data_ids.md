@@ -2,7 +2,6 @@
 title = "Understanding Relay Data IDs"
 date = 2024-04-07T21:56:18.000Z
 template = "log.html"
-draft = true
 [taxonomies]
 tech=["relay", "graphql"]
 +++
