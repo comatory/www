@@ -547,7 +547,7 @@ If our search results had more than 10 edges and we'd fetch another page, new fi
 
 This mechanism provides very quick user feedback. In case the user clears the input field for search term, our previously fetched pages will appear instantly as they're read from the cache - very smart and efficient!
 
-From these examples above, you should understand that serialization of our pagination arguments "forks" the state of the connection. Any change to connection arguments, such as `first`, `after`, `search` etc will cause new edges to be stored under different Data IDs. You can control this behaviour by `filters` argument to `@connection` directive.
+From these examples above, you should understand that serialization of our pagination arguments "forks" the state of the connection. Any change to connection arguments, such as `first`, `after`, `search` etc will cause new edges to be stored under different Data IDs. You can control this behaviour by `filters` argument to `@connection` directive[^4].
 
 Lastly, I need to mention that Relay exposes set of utility function `ConnectionHandler.getConnection` that can generate Data ID as well. It is imperative way which requires you to pass record containing the connection, it's `key` argument and any other arguments so in practice, it means passing all the values around in order to access them. I find querying for `__id` to be more convenient and easy to use.
 
@@ -558,3 +558,5 @@ Lastly, I need to mention that Relay exposes set of utility function `Connection
 [^2]: [https://relay.dev/graphql/connections.htm](https://relay.dev/graphql/connections.htm)([archive](https://web.archive.org/web/20240407194949/https://relay.dev/graphql/connections.htm))
 
 [^3]: [https://relay.dev/docs/next/guided-tour/updating-data/imperatively-modifying-store-data-unsafe/#the-various-types-of-updater-functions](https://relay.dev/docs/next/guided-tour/updating-data/imperatively-modifying-store-data-unsafe/#the-various-types-of-updater-functions)([archive](https://web.archive.org/web/20240407195335/https://relay.dev/docs/next/guided-tour/updating-data/imperatively-modifying-store-data-unsafe/#the-various-types-of-updater-functions))
+
+[^4]: [https://relay.dev/docs/guided-tour/list-data/updating-connections/#connection-identity-with-filters](https://relay.dev/docs/guided-tour/list-data/updating-connections/#connection-identity-with-filters)([archive](https://web.archive.org/web/20240407204551/https://relay.dev/docs/guided-tour/list-data/updating-connections/#connection-identity-with-filters))
