@@ -13,6 +13,9 @@
 
   <div class="log-posted">
     Posted on: {{ page.date | date(format="%Y-%m-%d %H:%M") }}
+    {% if page.updated %}
+      | Updated on: {{ page.updated | date(format="%Y-%m-%d %H:%M") }}
+    {% endif %}
   </div>
 
   <h2 class="log-title">{{ page.title }}</h2>

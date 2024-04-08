@@ -1,6 +1,7 @@
 +++
 title = "Understanding Relay Data IDs"
 date = 2024-04-07T21:56:18.000Z
+updated = 2024-04-08T21:21:00.000Z
 template = "log.html"
 [taxonomies]
 tech=["relay", "graphql"]
@@ -303,11 +304,11 @@ export function Version() {
 }
 ```
 
-This code renders `client:root:version` in a `<pre>` tag, which is located right above the `1.0.0` string (which is our value for the `value` field).
+This code renders `client:root:version` inside `<pre>{data.version?.__id}</pre>` tag, which is located right above the `1.0.0` string (which is our value for the `value` field).
 
 The usefulness of `__id` becomes increasingly apparent when your application performs advanced data manipulation within the Relay store. These manipulations often take place inside *updater* functions[^3], with an imperative approach.
 
-It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections[^6]. I will illustrate this concept by showing you how Data IDs are represented in connections.
+It's typically straightforward to pass the `id` field to a mutation, but the `__id` field becomes far more crucial when dealing with connections. I will illustrate this concept by showing you how Data IDs are represented in connections.
 
 We will enhance the schema and modify our `User` type. This type will now include a `friends` field that will return a new type, `UserConnection`. This field conforms to the Relay pagination specification, so we're also adding other types that should be included:
 
@@ -385,6 +386,7 @@ export function UserCard() {
 
   return (
     <>
+      {/* Used for debugging purposes, shows Data ID of User type */}
       <pre>{data.node.__id}</pre>
       <UserAvatar dataRef={data.node} />
       <label>
@@ -408,7 +410,7 @@ export function FriendList({ dataRef }: { dataRef: friendList_User$key }) {
         name: { type: "String", defaultValue: "" }
       ) {
         friends(first: $first, after: $cursor, search: { name: $name })
-          @connection(key: "user_friends") {
+          @connection(key: "user_friends", filters: ["search"]) {
           __id # << adding for debugging purposes
           edges {
             node {
@@ -428,6 +430,7 @@ export function FriendList({ dataRef }: { dataRef: friendList_User$key }) {
 
   return (
     <div>
+      {/* Used for debugging purposes - shows Data ID for the connection itself, I refer to this ID in following paragraphs */}
       <pre>{data.friends.__id}</pre>
       <ul>
         {data.friends.edges.map((user) => (
@@ -492,7 +495,7 @@ Let's break down how this Data ID is created with the following diagram:
 
 {{ image(href="/image/understanding_relay_data_ids-05.png", alt="Diagram of explanation of Relay's connection Data ID", caption="Connection Data ID", width=600) }}
 
-Why and how is this Data ID created? It appears similar to what we've previously observed with the `version` field. In our schema, the `UserConnection` does not contain an `id` field. This means that Relay needs to generate the ID for us, which it accomplishes by concatenating several strings. The double colon `:` is used as a separator between these strings.
+Why and how is this Data ID created? It appears similar to what we've previously observed with the `version`, `getUser` and `node` fields. In our schema, the `UserConnection` does not contain an `id` field. This means that Relay needs to generate the ID for us, which it accomplishes by concatenating several strings. The double colon `:` is used as a separator between these strings.
 
 We've touched on the `client` string before; it's a pre-determined value from the Relay library used as the *root* prefix. Up next, the Data ID of its parent type is utilized - in our case, this would be equivalent to the `id` field of the `User` that we've queried with `node` query.
 Finally, it uses the value of the `key` argument supplied to the `@connection` directive. We set it as `user_friends` in the `friendList_User` fragment. Interestingly, this key is prefixed with `__`. This final section of the Data ID also encompasses serialized arguments given to the connection, in this particular scenario `search`, which is an empty string right now. I'll delve into these elements shortly.
@@ -534,7 +537,7 @@ Upon inspecting this field, you'll notice that it contains all 20 edges. This me
 
 Imagine our UI has input to search through the friend list. We've already fetched two pages without any `search` argument. Now we pass value `"Tim"` as a search term.
 
-As a user you will expect that UI will clear our existing list and replace it with new one, containing only the filtered values. This time our Data ID has different value:
+As a user you will expect that UI will clear our existing list and replace it with new one, containing only the filtered values. This time our Data ID rendered inside React as `data.friend.__id` has different value:
 
 `client:MTpVc2VyOjEyMw==:__user_friends_connection(search:{"name":"Tim"})`
 
@@ -546,7 +549,28 @@ If our search results had more than 10 edges and we'd fetch another page, new fi
 
 This mechanism provides very quick user feedback. In case the user clears the input field for search term, our previously fetched pages will appear instantly as they're read from the cache - very smart and efficient!
 
-From these examples above, you should understand that serialization of our pagination arguments "forks" the state of the connection. Any change to connection arguments, such as `first`, `after`, `search` etc will cause new edges to be stored under different Data IDs. You can control this behaviour by `filters` argument to `@connection` directive[^4].
+**The difference between `__id` field queried via fragment versus how Data IDs are represented in the dev tools were the main source of confusion for me.** You can see that Relay internally serializes all connection arguments such as `after`, `first` but they are missing from `__id` field. This is explained in the documentation[^4]:
+
+> [...] each of the values passed in as connection filters will be used to identify the connection in the Relay store.
+> Note that this excludes pagination arguments, i.e. it excludes first, last, before, and after.
+
+Our `search` field is part of `__id` field because we explicitly added it as `filters` argument to `@connection` directive in the `FriendList` component:
+
+```graphql
+@connection(key: "user_friends", filters: ["search"])
+```
+
+This tells Relay to include it as part of the connection identity. For queries with connections that do not have any extra filtering, it is recommended to completely omit `filters` argument, the arguments such as `first`, `after`, `before` etc are implicit.
+
+For example if in our case we would **not want** to include `search` in Data ID, we can set it up like this:
+
+```graphql
+@connection(key: "user_friends", filters: [])
+```
+
+The `__id` field will now have value `client:MTpVc2VyOjEyMw==:__user_friends_connection`.
+
+In some situations you might want to omit some argument to your connection field to keep the identity of the connection the same, regardless of the changed input. Relay will still create its internal fields like we've seen before but Relay hook will treat it as the same connection. It gets much more useful inside updater functions, where you can call `store.get(__id)` and be sure you'll get that specific connection.
 
 Lastly, I need to mention that Relay exposes set of utility function `ConnectionHandler.getConnection` that can generate Data ID as well. It is imperative way which requires you to pass record containing the connection, it's `key` argument and any other arguments so in practice, it means passing all the values around in order to access them. I find querying for `__id` to be more convenient and easy to use.
 
