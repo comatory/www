@@ -423,6 +423,15 @@ figcaption {
   margin: 0;
 }
 
+blockquote {
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--color2);
+  margin: 0;
+  padding-left: 10px;
+  border-left: 3px solid var(--color2);
+}
+
 /* Media queries */
 @media only screen and (max-width : 321px) {
   .header__main-text {
