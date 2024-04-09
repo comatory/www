@@ -1,0 +1,17 @@
+<div class="{% if wrapper_class %}{{ wrapper_class }}{% else %}centered{% endif %}">
+  <figure>
+    <video
+     controls=""
+     muted=""
+     title="{% if title %}{{ title }}{% endif %}"
+     src="{{ href }}"
+     class="{% if class %}{{ class }}{% endif %}"
+    >
+    </video>
+    {% if caption %}
+      <figcaption>
+        {{ caption }}
+      </figcaption>
+    {% endif %}
+  </figure>
+</div>
