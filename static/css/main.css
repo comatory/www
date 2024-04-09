@@ -55,7 +55,10 @@ a.contact-link:after {
 }
 
 a.back-to {
-  font-size: 0.8rem;
+  width: 100%;
+  display: block;
+  margin: 20px;
+  text-align: right;
 }
 
 .separator {

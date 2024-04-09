@@ -4,13 +4,6 @@
 {% block content %}
 
 <section class="section">
-  <div>
-    <a
-      href="/log"
-      class="back-to"
-    >↩︎ Go back</a>
-  </div>
-
   <div class="log-posted">
     Posted on: {{ page.date | date(format="%Y-%m-%d %H:%M") }}
     {% if page.updated %}
@@ -28,6 +21,14 @@
   <div>
     {{ page.content | safe }}
   </div>
+
+  <div>
+    <a
+      href="/log"
+      class="back-to"
+    >↩︎ Go back</a>
+  </div>
+
 </section>
 
 {% endblock content %}

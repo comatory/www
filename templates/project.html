@@ -4,12 +4,6 @@
 {% block content %}
 
 <section class="section">
-  <div>
-    <a
-      href="/code"
-      class="back-to"
-    >↩︎ Go back</a>
-  </div>
   <h2>{{ page.title }}</h2>
 
   {{ macros::tags(
@@ -50,6 +44,12 @@
     {% else %}
       {{ page.content | safe }}
     {% endif %}
+  </div>
+  <div>
+    <a
+      href="/code"
+      class="back-to"
+    >↩︎ Go back</a>
   </div>
 </section>
 {% endblock content %}
