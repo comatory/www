@@ -369,6 +369,10 @@ code:not([class]) {
   font-weight: 100;
 }
 
+li {
+  word-wrap: break-word;
+}
+
 ul.list li {
   padding-top: 5px;
 }
