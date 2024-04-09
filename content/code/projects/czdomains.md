@@ -15,21 +15,7 @@ Web application that allows you to browse or search through database of Czechia 
 
 This project was created with main goal being **simplicity**. Even if it's written in Typescript, the front-end is old-fashioned HTML (nunjucks) templates. The database is just `sqlite` file that contains all the entries making the deployment really straightforward. The design is intentional and is a throwback to mid-1990s web, even the icons were sourced from CD-ROM containing clip-art graphics.
 
-<div class="centered">
-  <a href="/image/czdomains-01.png" target="_blank">
-    <figure>
-      <img
-        src="/image/czdomains-01.png"
-        loading="lazy"
-        alt="Home page of czdomains web application"
-        style="width: 400px; height: auto;"
-      />
-      <figcaption>
-        Home page sporting early-web classical look
-      </figcaption>
-    </figure>
-  </a>
-</div>
+{{ image(href="/image/czdomains-01.png", alt="Home page of czdomains web application", caption="Home page sporting early-web classical look") }}
 
 I wanted to have some kind of simple web application that I could experiment with, hosting it on own VPS and setting it all up. I was interested in trying out Typescript-based web framework with server-side rendered HTML, without using any client-side Javascript - the design and type of the application does not really need it.
 
@@ -43,30 +29,6 @@ The project was originally written for Deno runtime using [Fresh web framework](
 Overall it was good experience rewriting the project and comparing the pros and cons. I think Fresh framework was otherwise very cool and I really appreciate its _islands_ architecture ("ship HTML first"), I also prefer Deno's dependency management over centralized NPM registry.
 
 <div class="row wrap centered">
-  <a href="/image/czdomains-02.png" target="_blank">
-    <figure>
-      <img
-        src="/image/czdomains-02.png"
-        loading="lazy"
-        alt="Browsing the list of domains"
-        style="width: 160px; height: auto"
-      />
-      <figcaption>
-        Paginated results
-      </figcaption>
-    </figure>
-  </a>
-  <a href="/image/czdomains-03.png" target="_blank">
-    <figure>
-      <img
-        src="/image/czdomains-03.png"
-        loading="lazy"
-        alt="Detail of a domain"
-        style="width: 160px; height: auto"
-      />
-      <figcaption>
-        Domain detail
-      </figcaption>
-    </figure>
-  </a>
+  {{ image(href="/image/czdomains-02.png", alt="Browsing the list of domains", caption="Paginated results", width="160", layout="none") }}
+  {{ image(href="/image/czdomains-03.png", alt="Detail of a domain", caption="Domain detail", width="160", layout="none") }}
 </div>

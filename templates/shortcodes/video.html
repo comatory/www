@@ -1,0 +1,22 @@
+<div class="{% if wrapper_class and not layout %}{{ wrapper_class }}{% elif layout and layout == "none" %} {% else %}centered{% endif %}">
+  {% if caption %}
+  <figure>
+  {% endif %}
+    <video
+     controls=""
+     muted=""
+     title="{% if title %}{{ title }}{% endif %}"
+     src="{{ href }}"
+     class="{% if class %}{{ class }}{% endif %}"
+     style="width: {% if width %}{{ width }}px{% else %}400px{% endif %}; height: {% if height %}{{ height}}{% else %}auto{% endif %};"
+    >
+    </video>
+    {% if caption %}
+      <figcaption>
+        {{ caption }}
+      </figcaption>
+    {% endif %}
+  {% if caption %}
+  </figure>
+  {% endif %}
+</div>

@@ -22,21 +22,7 @@ I didn't use `Canvas` API for browsers but instead opted for rendering the game 
 
 See for yourself:
 
-<div class="centered">
-  <figure>
-    <video
-     controls=""
-     muted=""
-     title="Tetris game"
-     src="/video/html-tetris.mov"
-     class="responsive-media"
-    >
-    </video>
-    <figcaption>
-      Gameplay footage of Tetris game
-    </figcaption>
-  </figure>
-</div>
+{{ video(href="/video/html-tetris.mov", title="Tetris game", caption="Gameplay footage of Tetris game", width=600, class="responsive-media") }}
 
 Another goal of my implementation was to approach it with simplicity in mind. I'm using plain Javascript and regular DOM APIs. I didn't want any build steps [^2] but also wanted to have the code modularized. I went with native [ES modules](https://developer.mozilla.org/en-US/).
 
@@ -44,7 +30,7 @@ Having static types is nice too but that would mean introducing Typescript (and 
 
 I went for pixel-art look, more specifically I wanted the game to be similar to [1989 Gameboy release](https://en.wikipedia.org/wiki/Tetris_(Game_Boy_video_game)). The game is meant to be played on desktop computers with keyboard but the game can accomodate mobile devices as well, touch controls will show up on smaller screens or they can be toggled via an option control.
 
-<img src="/image/html-tetris.png" class="centered responsive-media" alt="Image of HTML Tetris game" />
+{{ image(href="/image/html-tetris.png", wrapper_class="centered responsive-media", alt="Image of HTML Tetris game") }}
 
 Game is installable as a PWA so it can run offline. Generally this was interesting challenge. I found out that getting some things right is quite tricky - correct timing and animations. My implementation is not perfect on that front but it is playable. It definitely took more time than I expected it to.
 

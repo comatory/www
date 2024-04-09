@@ -55,7 +55,10 @@ a.contact-link:after {
 }
 
 a.back-to {
-  font-size: 0.8rem;
+  width: 100%;
+  display: block;
+  margin: 20px;
+  text-align: right;
 }
 
 .separator {
@@ -101,6 +104,13 @@ section {
 pre {
   overflow-x: auto;
   padding: 1rem;
+}
+
+code:not([class]) {
+  font-family: monospace;
+  background-color: var(--code-orphan-block-color);
+  color: var(--color5);
+  padding: 0 0.2rem;
 }
 
 .icon-row {
@@ -362,6 +372,10 @@ pre {
   font-weight: 100;
 }
 
+li {
+  word-wrap: break-word;
+}
+
 ul.list li {
   padding-top: 5px;
 }
@@ -400,6 +414,15 @@ ul.list li > p {
 
 .on-right {
   float: right;
+}
+
+.footnote-definition {
+  display: flex;
+}
+
+.footnote-definition p {
+  margin-block-start: 0.5rem;
+  margin-inline-start: 0.25rem;
 }
 
 img {

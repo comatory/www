@@ -12,70 +12,14 @@ archived = false
 The goal of the applications was to provide two mobile apps - one for end-users (customers) and other for service providers (taxi drivers).
 
 <div class="row wrap">
-  <a href="/image/mileus-taxi-0.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-0.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus app showing taxi in a city."
-      style="width: 160px; height: auto;"
-    />
-  </a>
-  <a href="/image/mileus-taxi-1.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-1.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus app showing screen with a map with line between home and work locations."
-      style="width: 160px; height: auto;"
-    />
-  </a>
-  <a href="/image/mileus-taxi-2.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-2.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus app showing screen with parameters of journey."
-      style="width: 160px; height: auto;"
-    />
-  </a>
-  <a href="/image/mileus-taxi-3.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-3.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus app showing screen with parameters of journey."
-      style="width: 160px; height: auto;"
-    />
-  </a>
-  <a href="/image/mileus-taxi-4.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-4.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus app showing screen with parameters of a service subscription."
-      style="width: 160px; height: auto;"
-    />
-  </a>
-  <a href="/image/mileus-taxi-5.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-5.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus app showing screen with map and navigation."
-      style="width: 160px; height: auto;"
-    />
-  </a>
-  <a href="/image/mileus-taxi-6.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-6.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus service with illustration of taxi and subway."
-      style="width: 160px; height: auto;"
-    />
-  </a>
-  <a href="/image/mileus-taxi-7.png" target="_blank">
-    <img
-      src="/image/mileus-taxi-7.png"
-      loading="lazy"
-      alt="Promotional picture of Mileus service with illustration of taxi and subway amongst buildings."
-      style="width: 160px; height: auto;"
-    />
-  </a>
+  {{ image(href="/image/mileus-taxi-0.png", alt="Promotional picture of Mileus app showing taxi in a city.", width=160, layout="none") }}
+  {{ image(href="/image/mileus-taxi-1.png", alt="Promotional picture of Mileus app showing screen with a map with line between home and work locations.", width=160, layout="none") }}
+  {{ image(href="/image/mileus-taxi-2.png", alt="Promotional picture of Mileus app showing screen with parameters of journey.", width=160, layout="none") }}
+  {{ image(href="/image/mileus-taxi-3.png", alt="Promotional picture of Mileus app showing screen with parameters of journey.", width=160, layout="none") }}
+  {{ image(href="/image/mileus-taxi-4.png", alt="Promotional picture of Mileus app showing screen with parameters of a service subscription.", width=160, layout="none") }}
+  {{ image(href="/image/mileus-taxi-5.png", alt="Promotional picture of Mileus app showing screen with map and navigation.", width=160, layout="none") }}
+  {{ image(href="/image/mileus-taxi-6.png", alt="Promotional picture of Mileus service with illustration of taxi and subway.", width=160, layout="none") }}
+  {{ image(href="/image/mileus-taxi-7.png", alt="Promotional picture of Mileus service with illustration of taxi and subway amongst buildings.", width=160, layout="none") }}
 </div>
 
 Requirement for applications were:
@@ -90,39 +34,11 @@ When different technologies were evaluated, *Flutter* framework came out as a wi
 
 Both applications are very much like what other ride-hailing services, such as Uber offer.
 
-<div class="centered">
-  <figure>
-    <video
-     controls=""
-     muted=""
-     title="Commute flow"
-     src="/video/mileus-taxi-commute.mov"
-     style="width: 400px; height: auto;"
-    >
-    </video>
-    <figcaption>
-      The commute flow within the customer application. User searches for available taxis, starts the commute. The taxi catches up with the commuter later on.
-    </figcaption>
-  </figure>
-</div>
+{{ video(href="/video/mileus-taxi-commute.mov", title="Commute flow", caption="The commute flow within the customer application. User searches for available taxis, starts the commute. The taxi catches up with the commuter later on.") }}
 
 Customer application allows users to sign up for the service. The purchase flow will ask users to fill-in their home and destination addresses, calculate the recommended route and the subscription price. The price is tailored specifically for each customer, depending on their journey.
 
-<div class="centered">
-  <figure>
-    <video
-     controls=""
-     muted=""
-     title="Subscription flow"
-     src="/video/mileus-taxi-subscription.mov"
-     style="width: 400px; height: auto;"
-    >
-    </video>
-    <figcaption>
-      User has to subscribe to a commute from theirwork address to home. App requires both addresses, user is provided with recommended routes and finally pays for the subscription.
-    </figcaption>
-  </figure>
-</div>
+{{ video(href="/video/mileus-taxi-subscription.mov", title="Subscription flow", caption="User has to subscribe to a commute from theirwork address to home. App requires both addresses, user is provided with recommended routes and finally pays for the subscription.") }}
 
 Customer app needs device location in order to navigate the user. When commute is activated, the service will pair commuter with a driver. From then on, the app helps commuter with navigation via map and commute directions.
 
@@ -150,50 +66,12 @@ First step was to strictly separate UI (widgets) and logic such as data fetching
 
 The communication between widgets and BLoCs was made via widgets that would re-render whenever state was changed.
 
-<div class="centered">
-  <figure>
-    <video
-     controls=""
-     muted=""
-     title="Debugging UI"
-     src="/video/mileus-taxi-debug.mov"
-     style="width: 400px; height: auto;"
-    >
-    </video>
-    <figcaption>
-      Debugging UI to observe current state of sensors, Firebase services and user account. It is possible to see application logs or save these logs into a file.
-    </figcaption>
-  </figure>
-</div>
+{{ video(href="/video/mileus-taxi-debug.mov", title="Debugging UI", caption="Debugging UI to observe current state of sensors, Firebase services and user account. It is possible to see application logs or save these logs into a file.") }}
 
 Technical implementations such as data fetching over network (API), writing and reading from device disk, encryption - these were extracted into modules and classes. I used dependency injection so these modules could communicate between each other without being coupled together.
 This solution proved to be good since later on in the project, another developer joined the team and the changes could be made to specific isolated parts of the codebase. It was easier to review changes and integrate the work efficiently.
 
 <div class="row wrap">
-  <figure>
-    <video
-     controls=""
-     muted=""
-     title="Debugging UI"
-     src="/video/mileus-taxi-onboarding.mov"
-     style="width: 300px; height: auto;"
-    >
-    </video>
-    <figcaption>
-      User onboarding.
-    </figcaption>
-  </figure>
-  <figure>
-    <video
-     controls=""
-     muted=""
-     title="Debugging UI"
-     src="/video/mileus-taxi-registration.mov"
-     style="width: 300px; height: auto;"
-    >
-    </video>
-    <figcaption>
-      User registration.
-    </figcaption>
-  </figure>
+    {{ video(href="/video/mileus-taxi-onboarding.mov", title="Debugging UI", caption="User onboarding.", width=300, layout="none") }}
+    {{ video(href="/video/mileus-taxi-registration.mov", title="Debugging UI", caption="User registration.", width=300, layout="none") }}
 </div>

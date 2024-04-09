@@ -1,17 +1,41 @@
-<div class="{% if wrapper_class %}{{ wrapper_class }}{% else %}centered{% endif %}">
+{% set layout_wrapper_class = "" %}
+
+{% if wrapper_class and not layout %}
+  {% set layout_wrapper_class = wrapper_class %}
+{% elif layout and layout == "none" %}
+  {% set layout_wrapper_class = "" %}
+{% elif layout and layout == "fit" %}
+  {% set layout_wrapper_class = "" %}
+{% else %}
+  {% set layout_wrapper_class = "centered" %}
+{% endif %}
+
+<div class="{{ layout_wrapper_class }}">
   <a href="{{ href }}" target="_blank">
-    <figure>
+    {% if caption %}
+    <figure style="{% if layout and layout == "fit" and width %}width:{{ width }}px{% endif %}">
+    {% endif %}
+      {% if fallback_href and href %}
+      <picture>
+        <source srcset="{{ href }}" type="{% if type %}{{ type }}{% else %}image/png{% endif %}">
+        <source srcset="{{ fallback_href }}" type="{% if fallback_type %}{{ fallback_type }}{% else %}image/png{% endif %}">
+      {% endif %}
       <img
-        src="{{ href }}"
+        src="{% if fallback_href %}{{ fallback_href }}{% else %}{{ href }}{% endif %}"
         loading="lazy"
         alt="{% if alt %}{{ alt }}{% endif %}{% if caption %}{{ caption }}{% endif %}"
         style="width: {% if width %}{{ width }}px{% else %}400px{% endif %}; height: {% if height %}{{ height}}{% else %}auto{% endif %};"
       />
-      <figcaption>
-        {% if caption %}
+      {% if fallback_href and href %}
+      </picture>
+      {% endif %}
+      {% if caption %}
+        <figcaption>
           {{ caption }}
-        {% endif %}
-      </figcaption>
+        </figcaption>
+      {% endif %}
+    {% if caption %}
     </figure>
+    {% endif %}
   </a>
 </div>

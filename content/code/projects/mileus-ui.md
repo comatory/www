@@ -13,65 +13,11 @@ I decided to build React component library for Mileus' web projects because we w
 
 It was important to have consistent look across them and I also wanted to be more productive by working on business requirements instead of reinventing basic UI components each time. The result was this library that was distributed as NPM package.
 
-<div class="centered">
-  <figure>
-    <a href="/image/mileus-ui-input.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-input.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-input.gif" type="image/gif">
-        <img
-          src="/image/mileus-ui-input.gif"
-          style="width: 320px; height: auto"
-          loading="lazy"
-          alt="Text input component"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Text input component with validation.
-    </figcaption>
-  </figure>
-</div>
+{{ image(href="/image/mileus-ui-input.webp", fallback_href="/image/mileus-ui-input.gif", type="image/webp", fallback_type="image/gif", alt="Text input component", caption="Text input component with validation.", width=320) }}
 
-<div class="centered">
-  <figure>
-    <a href="/image/mileus-ui-toggle.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-toggle.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-toggle.gif" type="image/gif">
-        <img
-          src="/image/mileus-ui-toggle.gif"
-          style="width: 320px; height: auto"
-          loading="lazy"
-          alt="Button toggle component"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Toggle button component composed from base buttons.
-    </figcaption>
-  </figure>
-</div>
+{{ image(href="/image/mileus-ui-toggle.webp", fallback_href="/image/mileus-ui-toggle.gif", type="image/webp", fallback_type="image/gif", alt="Button toggle component", caption="Toggle button component composed from base buttons.", width=320) }}
 
-<div class="centered">
-  <figure>
-    <a href="/image/mileus-ui-datetime.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-datetime.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-datetime.gif" type="image/gif">
-        <img
-          src="/image/mileus-ui-datetime.gif"
-          style="width: 320px; height: auto"
-          loading="lazy"
-          alt="Datetime input component"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Combined date time input component which is locale aware.
-    </figcaption>
-  </figure>
-</div>
+{{ image(href="/image/mileus-ui-datetime.webp", fallback_href="/image/mileus-ui-datetime.gif", type="image/webp", fallback_type="image/gif", alt="Datetime input component", caption="Combined date time input component which is locale aware.", width=320) }}
 
 The library is heavily opinionated which means it comes with its own stylesheet and typography to maintain brand identity.
 
@@ -84,65 +30,11 @@ These are just some components that the library uses:
 * icon set
 * configurable tooltip based on PopperJS
 
-<div class="centered">
-  <figure>
-    <a href="/image/mileus-ui-tooltip.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-tooltip.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-tooltip.gif" type="image/gif">
-        <img
-          src="/image/mileus-ui-tooltip.gif"
-          style="width: 320px; height: auto"
-          loading="lazy"
-          alt="Tooltip component"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Tooltip applied to button, triggers on hover or focus. Tooltip can automatically switch its location if it detects window boundaries.
-    </figcaption>
-  </figure>
-</div>
+{{ image(href="/image/mileus-ui-tooltip.webp", fallback_href="/image/mileus-ui-tooltip.gif", type="image/webp", fallback_type="image/gif", alt="Tooltip component", caption="Tooltip applied to button, triggers on hover or focus. Tooltip can automatically switch its location if it detects window boundaries.", width=320) }}
 
-<div class="centered">
-  <figure>
-    <a href="/image/mileus-ui-combobox.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-combobox.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-combobox.gif" type="image/gif">
-        <img
-          src="/image/mileus-ui-combobox.gif"
-          style="width: 320px; height: auto"
-          loading="lazy"
-          alt="Address combobox"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Address combobox component which automatically fetches options from server. It uses portal so option list is always visible even when the input is placed in container with hidden overflow.
-    </figcaption>
-  </figure>
-</div>
+{{ image(href="/image/mileus-ui-combobox.webp", fallback_href="/image/mileus-ui-combobox.gif", type="image/webp", fallback_type="image/gif", alt="Address combobox", caption="Address combobox component which automatically fetches options from server. It uses portal so option list is always visible even when the input is placed in container with hidden overflow.", width=320) }}
 
-<div class="centered">
-  <figure>
-    <a href="/image/mileus-ui-icons.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-icons.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-icons.gif" type="image/gif">
-        <img
-          src="/image/mileus-ui-icons.gif"
-          style="width: 320px; height: auto"
-          loading="lazy"
-          alt="Icons"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Icons specific to Mileus' business domain
-    </figcaption>
-  </figure>
-</div>
+{{ image(href="/image/mileus-ui-icons.webp", fallback_href="/image/mileus-ui-icons.gif", type="image/webp", fallback_type="image/gif", alt="Icons", caption="Icons specific to Mileus' business domain.", width=320) }}
 
 Apart from React components the library also exports series of CSS variables used for consistency such as
 
@@ -152,59 +44,9 @@ Apart from React components the library also exports series of CSS variables use
 * typographical sizes and weights
 
 <div class='row--centered'>
-  <figure style="width: 160px">
-    <a href="/image/mileus-ui-colors.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-colors.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-colors.png" type="image/png">
-        <img
-          src="/image/mileus-ui-colors.png"
-          style="width: 160px; height: auto"
-          loading="lazy"
-          alt="Colors"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Colors used for components and exposed as CSS variables
-    </figcaption>
-  </figure>
-
-  <figure style="width: 160px">
-    <a href="/image/mileus-ui-spacing.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-spacing.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-spacing.png" type="image/png">
-        <img
-          src="/image/mileus-ui-spacing.png"
-          style="width: 160px; height: auto"
-          loading="lazy"
-          alt="Spacing"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Set of CSS variables for margin and padding used for components. These are also exposed and can be used to implement consistent spacing - inspired by Tailwind CSS.
-    </figcaption>
-  </figure>
-
-  <figure style="width: 160px">
-    <a href="/image/mileus-ui-typography.webp" target="_blank">
-      <picture>
-        <source srcset="/image/mileus-ui-typography.webp" type="image/webp">
-        <source srcset="/image/mileus-ui-typography.png" type="image/png">
-        <img
-          src="/image/mileus-ui-typography.png"
-          style="width: 160px; height: auto"
-          loading="lazy"
-          alt="Typography"
-        />
-      </picture>
-    </a>
-    <figcaption>
-      Typography used for components and exposed CSS variables for sizes and weights. Used font is a variable font so supported browsers save bandwith.
-    </figcaption>
-  </figure>
+    {{ image(href="/image/mileus-ui-colors.webp", fallback_href="/image/mileus-ui-colors.png", type="image/webp", fallback_type="image/png", alt="Colors", caption="Colors used for components and exposed as CSS variables", width=160, layout="fit") }}
+    {{ image(href="/image/mileus-ui-spacing.webp", fallback_href="/image/mileus-ui-spacing.png", type="image/webp", fallback_type="image/png", alt="Spacing", caption="Set of CSS variables for margin and padding used for components. These are also exposed and can be used to implement consistent spacing - inspired by Tailwind CSS.", width=160, layout="fit") }}
+    {{ image(href="/image/mileus-ui-typography.webp", fallback_href="/image/mileus-ui-typography.png", type="image/webp", fallback_type="image/png", alt="Typography", caption="Typography used for components and exposed CSS variables for sizes and weights. Used font is a variable font so supported browsers save bandwith.", width=160, layout="fit") }}
 </div>
 
 Thanks to PostCSS it was possible to use breakpoint CSS variables in target projects.
