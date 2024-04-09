@@ -103,6 +103,13 @@ pre {
   padding: 1rem;
 }
 
+code:not([class]) {
+  font-family: monospace;
+  background-color: var(--code-orphan-block-color);
+  color: var(--color5);
+  padding: 0 0.2rem;
+}
+
 .icon-row {
   display: flex;
   align-items: center;
