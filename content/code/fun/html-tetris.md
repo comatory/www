@@ -22,7 +22,7 @@ I didn't use `Canvas` API for browsers but instead opted for rendering the game 
 
 See for yourself:
 
-{{ video(href="/video/html-tetris.mov", title="Tetris game", caption="Gameplay footage of Tetris game", class="responsive-media") }}
+{{ video(href="/video/html-tetris.mov", title="Tetris game", caption="Gameplay footage of Tetris game", width=600, class="responsive-media") }}
 
 Another goal of my implementation was to approach it with simplicity in mind. I'm using plain Javascript and regular DOM APIs. I didn't want any build steps [^2] but also wanted to have the code modularized. I went with native [ES modules](https://developer.mozilla.org/en-US/).
 
