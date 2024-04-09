@@ -7,11 +7,11 @@
         alt="{% if alt %}{{ alt }}{% endif %}{% if caption %}{{ caption }}{% endif %}"
         style="width: {% if width %}{{ width }}px{% else %}400px{% endif %}; height: {% if height %}{{ height}}{% else %}auto{% endif %};"
       />
-      <figcaption>
-        {% if caption %}
+      {% if caption %}
+        <figcaption>
           {{ caption }}
-        {% endif %}
-      </figcaption>
+        </figcaption>
+      {% endif %}
     </figure>
   </a>
 </div>
