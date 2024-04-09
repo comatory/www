@@ -1,4 +1,4 @@
-<div class="{% if wrapper_class %}{{ wrapper_class }}{% else %}centered{% endif %}">
+<div class="{% if wrapper_class and not layout %}{{ wrapper_class }}{% elif layout and layout == "none" %} {% else %}centered{% endif %}">
   <a href="{{ href }}" target="_blank">
     <figure>
       <img
