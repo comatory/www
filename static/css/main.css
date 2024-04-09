@@ -416,6 +416,15 @@ ul.list li > p {
   float: right;
 }
 
+.footnote-definition {
+  display: flex;
+}
+
+.footnote-definition p {
+  margin-block-start: 0.5rem;
+  margin-inline-start: 0.25rem;
+}
+
 img {
   margin: 4px;
 }
