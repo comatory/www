@@ -71,7 +71,7 @@ The communication between widgets and BLoCs was made via widgets that would re-r
 Technical implementations such as data fetching over network (API), writing and reading from device disk, encryption - these were extracted into modules and classes. I used dependency injection so these modules could communicate between each other without being coupled together.
 This solution proved to be good since later on in the project, another developer joined the team and the changes could be made to specific isolated parts of the codebase. It was easier to review changes and integrate the work efficiently.
 
-<div class="row wrap">
+<div class="row wrap centered">
     {{ video(href="/video/mileus-taxi-onboarding.mov", title="Debugging UI", caption="User onboarding.", width=300, layout="none") }}
     {{ video(href="/video/mileus-taxi-registration.mov", title="Debugging UI", caption="User registration.", width=300, layout="none") }}
 </div>

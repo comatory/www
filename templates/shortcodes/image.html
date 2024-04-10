@@ -10,7 +10,7 @@
   {% set layout_wrapper_class = "centered" %}
 {% endif %}
 
-<div class="{{ layout_wrapper_class }}">
+<div class="{{ layout_wrapper_class }} image">
   <a href="{{ href }}" target="_blank">
     {% if caption %}
     <figure style="{% if layout and layout == "fit" and width %}width:{{ width }}px{% endif %}">
@@ -24,7 +24,8 @@
         src="{% if fallback_href %}{{ fallback_href }}{% else %}{{ href }}{% endif %}"
         loading="lazy"
         alt="{% if alt %}{{ alt }}{% endif %}{% if caption %}{{ caption }}{% endif %}"
-        style="width: {% if width %}{{ width }}px{% else %}400px{% endif %}; height: {% if height %}{{ height}}{% else %}auto{% endif %};"
+        width="{% if width %}{{ width }}px{% else %}400px{% endif %}"
+        height="{% if height %}{{ height}}{% else %}auto{% endif %};"
       />
       {% if fallback_href and href %}
       </picture>
