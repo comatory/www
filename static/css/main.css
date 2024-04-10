@@ -6,6 +6,8 @@
 @import './links.css';
 @import './logs.css';
 @import './callout.css';
+@import './image.css';
+@import './video.css';
 
 @import url('https://fonts.googleapis.com/css?family=Oswald:700');
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Sans:100,400,700');
@@ -111,6 +113,7 @@ code:not([class]) {
   background-color: var(--code-orphan-block-color);
   color: var(--color5);
   padding: 0 0.2rem;
+  word-break: break-word;
 }
 
 .icon-row {

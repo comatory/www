@@ -1,4 +1,16 @@
-<div class="{% if wrapper_class and not layout %}{{ wrapper_class }}{% elif layout and layout == "none" %} {% else %}centered{% endif %}">
+{% set layout_wrapper_class = "" %}
+
+{% if wrapper_class and not layout %}
+  {% set layout_wrapper_class = wrapper_class %}
+{% elif layout and layout == "none" %}
+  {% set layout_wrapper_class = "" %}
+{% elif layout and layout == "fit" %}
+  {% set layout_wrapper_class = "" %}
+{% else %}
+  {% set layout_wrapper_class = "centered" %}
+{% endif %}
+
+<div class="{{ layout_wrapper_class }} video">
   {% if caption %}
   <figure>
   {% endif %}
@@ -8,7 +20,8 @@
      title="{% if title %}{{ title }}{% endif %}"
      src="{{ href }}"
      class="{% if class %}{{ class }}{% endif %}"
-     style="width: {% if width %}{{ width }}px{% else %}400px{% endif %}; height: {% if height %}{{ height}}{% else %}auto{% endif %};"
+     width="{% if width %}{{ width }}px{% else %}400px{% endif %}"
+     height="{% if height %}{{ height}}{% else %}auto{% endif %}"
     >
     </video>
     {% if caption %}

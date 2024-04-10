@@ -1,0 +1,17 @@
+.image {
+  max-width: 100vw;
+  margin: 0px 5px;
+}
+
+.image a, .image figure {
+  width: fit-content;
+}
+
+.image figure {
+  margin: 0px;
+}
+
+.image img {
+  max-width: 100%;
+  margin: 0px;
+}
