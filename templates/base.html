@@ -6,6 +6,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="view-transition" content="same-origin">
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Ondrej Synacek - Software Developer" />
+  <meta property="og:url" content="{{ current_url }}" />
+  <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ 'Ondrej Synacek - Software Developer' }}{% endif %}" />
+  {% if page.description %}
+    <meta property="og:description" content="{{ page.description }}" />
+  {% endif %}
+  {% if page.extra.image %}
+    <meta property="og:image" content="{{ get_url(path=page.extra.image) }}" />
+  {% endif %}
   <title>Ondrej Synacek - Software Developer</title>
   <link rel="stylesheet" type="text/css" href="{{get_url(path="/css/main.css")}}">
   <link href="https://fonts.googleapis.com/css?family=Share+Tech" rel="stylesheet">
