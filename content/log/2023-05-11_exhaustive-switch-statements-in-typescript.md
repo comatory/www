@@ -1,9 +1,12 @@
 +++
 title = "Exhaustive switch statements in Typescript"
 date = 2023-05-11T21:00:00.000Z
+description = "Tips for implementing exhaustive switch statements in Typescript"
 template = "log.html"
 [taxonomies]
 tech=["typescript"]
+[extra]
+image = "image/og/exhaustive-switch-statements-in-typescript.webp"
 +++
 
 I was looking for a way to exhaustively type-check `switch` statements when writing Typescript. I went through few iterations with a colleague at work before we arrived at something that worked.

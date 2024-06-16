@@ -1,10 +1,13 @@
 +++
 title = "Understanding Relay Data IDs"
 date = 2024-04-07T21:56:18.000Z
+description = "Deep dive into Relay's data IDs and their relation to normalized cache"
 updated = 2024-04-08T21:21:00.000Z
 template = "log.html"
 [taxonomies]
 tech=["relay", "graphql"]
+[extra]
+image = "image/og/understanding-relay-data-ids.webp"
 +++
 
 When I started using the Relay framework, I wasn't really sure what I was looking at inside the dev tools.
