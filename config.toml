@@ -14,7 +14,7 @@ taxonomies = [
   { name = "tech" }
 ]
 
-generate_feed = true
+generate_feeds = true
 
 [markdown]
 # Whether to do syntax highlighting
