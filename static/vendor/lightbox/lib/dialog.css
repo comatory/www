@@ -1,0 +1,122 @@
+:host {
+  --height: 100vh;
+  --width: 100vw;
+  --position: relative;
+  --overflow: hidden;
+  --open-display: flex;
+  --close-display: none;
+  --image-width: 100%;
+  --image-height: auto;
+  --image-object-fit: contain;
+  --caption-position: absolute;
+  --caption-top: unset;
+  --caption-right: unset;
+  --caption-bottom: 0;
+  --caption-left: unset;
+  --close-button-position: absolute;
+  --close-button-top: 0;
+  --close-button-right: 0;
+  --close-button-bottom: unset;
+  --close-button-left: unset;
+  --close-button-color: rgb(255, 255, 0);
+  --close-button-border-color: rgb(255, 255, 0);
+  --close-button-mix-blend-mode: difference;
+  --close-button-background: transparent;
+  --button-prev-disabled-display: none;
+  --button-prev-enabled-display: block;
+  --button-prev-position: absolute;
+  --button-prev-top: 50%;
+  --button-prev-right: unset;
+  --button-prev-bottom: unset;
+  --button-prev-left: unset;
+  --button-prev-color: rgb(255, 255, 0);
+  --button-prev-border-color: rgb(255, 255, 0);
+  --button-prev-mix-blend-mode: difference;
+  --button-prev-background: transparent;
+  --button-next-disabled-display: none;
+  --button-next-enabled-display: block;
+  --button-next-position: absolute;
+  --button-next-top: 50%;
+  --button-next-right: 0;
+  --button-next-bottom: unset;
+  --button-next-left: unset;
+  --button-next-color: rgb(255, 255, 0);
+  --button-next-border-color: rgb(255, 255, 0);
+  --button-next-mix-blend-mode: difference;
+  --button-next-background: transparent;
+}
+
+dialog {
+  position: var(--position);
+  width: var(--width);
+  height: var(--height);
+  overflow: var(--overflow);
+}
+
+dialog[open] {
+  display: var(--open-display);
+}
+
+dialog:not([open]) {
+  display: var(--close-display);
+}
+
+#image, #image img {
+  width: var(--image-width);
+  height: var(--image-height);
+  object-fit: var(--image-object-fit);
+}
+
+#caption {
+  position: var(--caption-position);
+  top: var(--caption-top);
+  right: var(--caption-right);
+  bottom: var(--caption-bottom);
+  left: var(--caption-left);
+}
+
+button#close {
+  position: var(--close-button-position);
+  top: var(--close-button-top);
+  right: var(--close-button-right);
+  bottom: var(--close-button-bottom);
+  left: var(--close-button-left);
+  background: var(--close-button-background);
+  color: var(--close-button-color);
+  border-color: var(--close-button-border-color);
+  mix-blend-mode: var(--close-button-mix-blend-mode);
+}
+
+button#prev {
+  display: var(--button-prev-disabled-display);
+  position: var(--button-prev-position);
+  top: var(--button-prev-top);
+  left: var(--button-prev-left);
+  bottom: var(--button-prev-bottom);
+  right: var(--button-prev-right);
+  background: var(--button-prev-background);
+  color: var(--button-prev-color);
+  border-color: var(--button-prev-border-color);
+  mix-blend-mode: var(--button-prev-mix-blend-mode);
+}
+
+button#prev[enabled] {
+  display: var(--button-prev-enabled-display);
+}
+
+button#next {
+  display: var(--button-next-disabled-display);
+  position: var(--button-next-position);
+  top: var(--button-next-top);
+  left: var(--button-next-left);
+  bottom: var(--button-next-bottom);
+  right: var(--button-next-right);
+  background: var(--button-next-background);
+  color: var(--button-next-color);
+  border-color: var(--button-next-border-color);
+  mix-blend-mode: var(--button-next-mix-blend-mode);
+}
+
+button#next[enabled] {
+  display: var(--button-next-enabled-display);
+}

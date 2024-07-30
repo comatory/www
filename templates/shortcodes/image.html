@@ -11,7 +11,7 @@
 {% endif %}
 
 <div class="{{ layout_wrapper_class }} image">
-  <a href="{{ href }}" target="_blank">
+  <wc-lightbox>
     {% if caption %}
     <figure style="{% if layout and layout == "fit" and width %}width:{{ width }}px{% endif %}">
     {% endif %}
@@ -38,5 +38,5 @@
     {% if caption %}
     </figure>
     {% endif %}
-  </a>
+  </wc-lightbox>
 </div>

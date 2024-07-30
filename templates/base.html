@@ -23,6 +23,14 @@
   <link rel="alternate" type="application/atom+xml" title="RSS" href="{{ get_url(path="atom.xml", trailing_slash=false) }}">
 {% endblock rss %}
   <script src="https://cdn.counter.dev/script.js" data-id="85dcf6f7-e135-4bed-bd5e-3b57e814cdca" data-utcoffset="1"></script>
+  <!-- Lightbox JS -->
+  <script type="module">
+    import { Lightbox } from "{{get_url(path="/vendor/lightbox/index.mjs")}}";
+
+    customElements.define('wc-lightbox', Lightbox);
+  </script>
+  <!-- Lightbox CSS (hide scrollbar) -->
+  <link rel="stylesheet" type="text/css" href="{{get_url(path="/vendor/lightbox/lib/styles.css")}}">
   </head>
   <body>
     <div class="body-wrapper">

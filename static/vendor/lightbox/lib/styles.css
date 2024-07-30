@@ -1,0 +1,4 @@
+body:has(wc-lightbox-dialog[open]) {
+  overflow: hidden;
+  scrollbar-gutter: stable;
+}
