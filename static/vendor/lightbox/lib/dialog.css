@@ -1,23 +1,35 @@
 :host {
   --height: 100vh;
   --width: 100vw;
-  --position: relative;
+  --position: fixed;
   --overflow: hidden;
   --open-display: flex;
   --close-display: none;
+  --margin: 0;
+  --border-width: 0;
+  --border-style: none;
+  --border-color: transparent;
   --image-width: 100%;
   --image-height: auto;
   --image-object-fit: contain;
   --caption-position: absolute;
   --caption-top: unset;
-  --caption-right: unset;
+  --caption-right: 0;
   --caption-bottom: 0;
-  --caption-left: unset;
+  --caption-left: 0;
+  --caption-padding: 1rem;
+  --caption-background: rgba(0, 0, 0, 0.7);
+  --caption-text-color: rgb(255, 255, 255);
+  --caption-text-mix-blend-mode: unset;
+  --caption-enabled-display: block;
+  --caption-disabled-display: none;
   --close-button-position: absolute;
   --close-button-top: 0;
   --close-button-right: 0;
   --close-button-bottom: unset;
   --close-button-left: unset;
+  --close-button-width: 4rem;
+  --close-button-height: 4rem;
   --close-button-color: rgb(255, 255, 0);
   --close-button-border-color: rgb(255, 255, 0);
   --close-button-mix-blend-mode: difference;
@@ -25,22 +37,26 @@
   --button-prev-disabled-display: none;
   --button-prev-enabled-display: block;
   --button-prev-position: absolute;
-  --button-prev-top: 50%;
+  --button-prev-top: 0;
   --button-prev-right: unset;
   --button-prev-bottom: unset;
-  --button-prev-left: unset;
+  --button-prev-left: 0;
   --button-prev-color: rgb(255, 255, 0);
+  --button-prev-width: 4rem;
+  --button-prev-height: 100%;
   --button-prev-border-color: rgb(255, 255, 0);
   --button-prev-mix-blend-mode: difference;
   --button-prev-background: transparent;
   --button-next-disabled-display: none;
   --button-next-enabled-display: block;
   --button-next-position: absolute;
-  --button-next-top: 50%;
+  --button-next-top: 0;
   --button-next-right: 0;
   --button-next-bottom: unset;
   --button-next-left: unset;
   --button-next-color: rgb(255, 255, 0);
+  --button-next-width: 4rem;
+  --button-next-height: 100%;
   --button-next-border-color: rgb(255, 255, 0);
   --button-next-mix-blend-mode: difference;
   --button-next-background: transparent;
@@ -51,6 +67,10 @@ dialog {
   width: var(--width);
   height: var(--height);
   overflow: var(--overflow);
+  margin: var(--margin);
+  border-width: var(--border-width);
+  border-style: var(--border-style);
+  border-color: var(--border-color);
 }
 
 dialog[open] {
@@ -68,11 +88,23 @@ dialog:not([open]) {
 }
 
 #caption {
+  display: var(--caption-disabled-display);
   position: var(--caption-position);
   top: var(--caption-top);
   right: var(--caption-right);
   bottom: var(--caption-bottom);
   left: var(--caption-left);
+  padding: var(--caption-padding);
+  background: var(--caption-background);
+}
+
+#caption[enabled] {
+  display: var(--caption-enabled-display);
+}
+
+#caption figcaption, #caption figcaption a {
+  color: var(--caption-text-color);
+  mix-blend-mode: var(--caption-text-mix-blend-mode);
 }
 
 button#close {
@@ -81,6 +113,8 @@ button#close {
   right: var(--close-button-right);
   bottom: var(--close-button-bottom);
   left: var(--close-button-left);
+  width: var(--close-button-width);
+  height: var(--close-button-height);
   background: var(--close-button-background);
   color: var(--close-button-color);
   border-color: var(--close-button-border-color);
@@ -94,6 +128,8 @@ button#prev {
   left: var(--button-prev-left);
   bottom: var(--button-prev-bottom);
   right: var(--button-prev-right);
+  width: var(--button-prev-width);
+  height: var(--button-prev-height);
   background: var(--button-prev-background);
   color: var(--button-prev-color);
   border-color: var(--button-prev-border-color);
@@ -111,6 +147,8 @@ button#next {
   left: var(--button-next-left);
   bottom: var(--button-next-bottom);
   right: var(--button-next-right);
+  width: var(--button-next-width);
+  height: var(--button-next-height);
   background: var(--button-next-background);
   color: var(--button-next-color);
   border-color: var(--button-next-border-color);

@@ -10,14 +10,14 @@ template.innerHTML = `
   <link rel="stylesheet" href=${new URL("dialog.css", import.meta.url)} />
   <dialog name="dialog">
     <img id="image" />
-    <section id="caption"></section>
-    <button id="close">⨯</button>
     <button id="prev">
       ←
     </button>
     <button id="next">
       →
     </button>
+    <section id="caption"></section>
+    <button id="close">⨯</button>
   </dialog>
 `;
 
@@ -65,6 +65,7 @@ export class LightboxDialog extends HTMLElement {
   open = ({ image, caption, elementIds, elementId, showNavigation = true }) => {
     this.#setImage(image);
     if (caption) {
+      this.#unsetCaption();
       this.#setCaption(caption);
     } else {
       this.#unsetCaption();
@@ -82,6 +83,8 @@ export class LightboxDialog extends HTMLElement {
   close = () => {
     this.#resetHandlers();
     this.removeAttribute("open");
+    this.#unsetCaption();
+    this.#unsetImage();
   }
 
   #setImage(image) {
@@ -95,14 +98,21 @@ export class LightboxDialog extends HTMLElement {
     this.#dialog.replaceChild(clone, dialogImage);
   }
 
+  #unsetImage() {
+    const dialogImage = this.#dialog.children.namedItem("image");
+    dialogImage.innerHTML = "";
+  }
+
   #setCaption(caption) {
     const dialogCaption = this.#dialog.children.namedItem("caption");
     dialogCaption.append(caption.cloneNode(true));
+    dialogCaption.setAttribute("enabled", "");
   }
 
   #unsetCaption() {
     const dialogCaption = this.#dialog.children.namedItem("caption");
     dialogCaption.innerHTML = "";
+    dialogCaption.removeAttribute("enabled", "");
   }
 
   #addHandler({ key, type, handler, element }) {
