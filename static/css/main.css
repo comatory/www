@@ -428,6 +428,10 @@ ul.list li > p {
   margin-inline-start: 0.25rem;
 }
 
+.footnote-definition a {
+  word-break: break-word;
+}
+
 img {
   margin: 4px;
 }

@@ -8,16 +8,13 @@ import {
 
 export class Lightbox extends HTMLElement {
   #observer = null;
-  #children = null;
   #image = null;
   #caption = null;
-  #root = null;
   id = "";
   navigation = true;
 
   constructor() {
     super();
-    this.#root = this.attachShadow({ mode: "open" });
     this.#createDialog();
   }
 
@@ -28,8 +25,6 @@ export class Lightbox extends HTMLElement {
       // TODO: if `id` attribute changes, make sure to reflect it
       Lightbox.#elementIds = produceOrderedElementIds(document, this, Lightbox.#elementIds);
     }
-
-    this.#root.append(...this.children);
 
     this.#image = this.#findImage();
     this.#caption = this.#findCaption();
@@ -84,11 +79,17 @@ export class Lightbox extends HTMLElement {
   }
   
   #applyStyles() {
+    const href = new URL("lightbox.css", import.meta.url);
+
+    if (document.head.querySelector(`link[href="${href}"]`)) {
+      return;
+    }
+
     const style = document.createElement("link");
     style.rel = "stylesheet";
-    style.href = new URL("lightbox.css", import.meta.url);
+    style.href = href;
 
-    this.#root.prepend(style);
+    document.head.prepend(style);
   }
 
   #onMutation = (mutations) => {
@@ -106,11 +107,11 @@ export class Lightbox extends HTMLElement {
   }
 
   #findImage() {
-    return this.#root.querySelector("picture") || this.#root.querySelector("img");
+    return this.querySelector("picture") || this.querySelector("img");
   }
 
   #findCaption() {
-    return this.#root.querySelector("figcaption");
+    return this.querySelector("figcaption");
   }
 
   #setHandler() {
