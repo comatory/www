@@ -1,6 +1,8 @@
 :host {
-  --height: 100vh;
-  --width: 100vw;
+  --min-width: 100vw;
+  --min-height: 100vh;
+  --height: 100%;
+  --width: 100%;
   --position: fixed;
   --overflow: hidden;
   --open-display: flex;
@@ -63,9 +65,12 @@
 }
 
 dialog {
+  box-sizing: border-box;
   position: var(--position);
   width: var(--width);
   height: var(--height);
+  min-width: var(--min-width);
+  min-height: var(--min-height);
   overflow: var(--overflow);
   margin: var(--margin);
   border-width: var(--border-width);

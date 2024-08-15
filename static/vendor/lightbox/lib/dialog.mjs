@@ -26,10 +26,14 @@ const PREVIOUS_BUTTON_CLICK_EVENT = Symbol("previous-button-click");
 const NEXT_BUTTON_KEYDOWN_EVENT = Symbol("next-button-keydown");
 const PREVIOUS_BUTTON_KEYDOWN_EVENT = Symbol("previous-button-keydown");
 const IMAGE_WHEEL_EVENT = Symbol("image-wheel");
+const IMAGE_TOUCH_START_EVENT = Symbol("image-touch-start");
+const IMAGE_TOUCH_MOVE_EVENT = Symbol("image-touch-move");
+const IMAGE_TOUCH_END_EVENT = Symbol("image-touch-end");
 const IMAGE_DOUBLE_CLICK_EVENT = Symbol("image-double-click");
 const IMAGE_MOUSE_DOWN_EVENT = Symbol("image-mouse-down");
 const IMAGE_MOUSE_MOVE_EVENT = Symbol("image-mouse-move");
 const IMAGE_MOUSE_UP_EVENT = Symbol("image-mouse-up");
+const CAPTION_CLICK_EVENT = Symbol("caption-click");
 
 const DEFAULT_HANDLERS = Object.freeze({
   [NEXT_BUTTON_CLICK_EVENT]: { type: 'click', handler: null, element: null },
@@ -47,6 +51,7 @@ export class LightboxDialog extends HTMLElement {
   #root = null;
   #dialog = null;
   #handlers = { ...DEFAULT_HANDLERS };
+  #abortController = new AbortController();
 
   constructor() {
     super();
@@ -63,9 +68,17 @@ export class LightboxDialog extends HTMLElement {
   }
 
   open = ({ image, caption, elementIds, elementId, showNavigation = true }) => {
+    if (this.#abortController.signal.aborted) {
+      this.#abortController = new AbortController();
+    } else {
+      this.#abortController.abort();
+    }
+
+
+    this.#unsetImage();
     this.#setImage(image);
+
     if (caption) {
-      this.#unsetCaption();
       this.#setCaption(caption);
     } else {
       this.#unsetCaption();
@@ -107,17 +120,45 @@ export class LightboxDialog extends HTMLElement {
     const dialogCaption = this.#dialog.children.namedItem("caption");
     dialogCaption.append(caption.cloneNode(true));
     dialogCaption.setAttribute("enabled", "");
+
+    this.#addHandler({
+      key: CAPTION_CLICK_EVENT,
+      type: "click",
+      handler: this.#unsetCaption,
+      element: dialogCaption,
+    });
   }
 
-  #unsetCaption() {
+  #unsetCaption = (event) => {
     const dialogCaption = this.#dialog.children.namedItem("caption");
+
+    // In cases where caption contains other interactive
+    // elements, such as links.
+    if (event && event.target !== dialogCaption
+      && (
+        event.target.getAttribute("href")
+        || event.target.getAttribute("onclick")
+        || event.target.getAttribute('role') === 'button'
+      )
+    ) {
+      return;
+    }
+
+    if (!dialogCaption) {
+      return;
+    }
+
+    if (this.#handlers[CAPTION_CLICK_EVENT]) {
+      this.#removeHandler(CAPTION_CLICK_EVENT);
+    }
+
     dialogCaption.innerHTML = "";
     dialogCaption.removeAttribute("enabled", "");
   }
 
   #addHandler({ key, type, handler, element }) {
     this.#handlers[key] = { type, handler, element };
-    element.addEventListener(type, handler);
+    element.addEventListener(type, handler, { signal: this.#abortController.signal });
   }
 
   #removeHandler(key) {
@@ -130,9 +171,12 @@ export class LightboxDialog extends HTMLElement {
   }
 
   #resetHandlers() {
+    /*
     for (const key of Object.getOwnPropertySymbols(this.#handlers)) {
       this.#removeHandler(key);
     }
+    */
+    this.#abortController.abort();
     this.#handlers = { ...DEFAULT_HANDLERS };
   }
 
@@ -223,6 +267,7 @@ export class LightboxDialog extends HTMLElement {
     let initialX = 0;
     let initialY = 0;
     let mouseDown = false;
+    let isTouch = false;
 
     const isScaled = () => {
       return !isNaN(scale);
@@ -250,6 +295,45 @@ export class LightboxDialog extends HTMLElement {
 
       image.style.transform = `scale(${Math.min(scale, 5.0)})`;
       image.style.cursor = "grab";
+    }
+
+    const handleImageTouchStart = (event) => {
+      if (!isScaled() || event.touches.length > 1) {
+        return;
+      }
+
+      event.preventDefault();
+      isTouch = true;
+      const touch = event.touches[0];
+      initialX = touch.clientX;
+      initialY = touch.clientY;
+      prevX = touch.clientX;
+      prevY = touch.clientY;
+    }
+
+    const handleImageTouchMove = (event) => {
+      if (!isScaled() || !isTouch || event.touches.length > 1) {
+        return;
+      }
+
+      event.preventDefault();
+      const touch = event.touches[0];
+      const dx = touch.clientX - prevX;
+      const dy = touch.clientY - prevY;
+      initialX += dx;
+      initialY += dy;
+      image.style.transform = `translate(${initialX}px, ${initialY}px) scale(${scale})`;
+      prevX = touch.clientX;
+      prevY = touch.clientY;
+    }
+
+    const handleImageTouchEnd = (event) => {
+      if (!isScaled() || !isTouch) {
+        return;
+      }
+
+      event.preventDefault();
+      isTouch = false;
     }
 
     const handleImageMouseDown = (event) => {
@@ -312,6 +396,28 @@ export class LightboxDialog extends HTMLElement {
       handler: handleImageWheel,
       element: image,
     });
+
+    this.#addHandler({
+      key: IMAGE_TOUCH_START_EVENT,
+      type: 'touchstart',
+      handler: handleImageTouchStart,
+      element: image,
+    });
+
+    this.#addHandler({
+      key: IMAGE_TOUCH_MOVE_EVENT,
+      type: 'touchmove',
+      handler: handleImageTouchMove,
+      element: image,
+    });
+
+    this.#addHandler({
+      key: IMAGE_TOUCH_END_EVENT,
+      type: 'touchend',
+      handler: handleImageTouchEnd,
+      element: image,
+    });
+
 
     this.#addHandler({
       key: IMAGE_DOUBLE_CLICK_EVENT,
