@@ -10,14 +10,34 @@ template.innerHTML = `
   <link rel="stylesheet" href=${new URL("dialog.css", import.meta.url)} />
   <dialog name="dialog">
     <img id="image" />
-    <button id="prev">
-      ←
+    <button id="prev" tabindex="1">
+      <img
+        id="prev-icon"
+        src=${new URL("chevron-left-svgrepo-com.svg", import.meta.url)}
+        alt="Previous"
+        width="50px"
+        height="50px"
+      />
     </button>
-    <button id="next">
-      →
+    <button id="next" tabindex="0">
+      <img
+        id="next-icon"
+        src=${new URL("chevron-right-svgrepo-com.svg", import.meta.url)}
+        alt="Next"-
+        width="50px"
+        height="50px"
+      />
     </button>
     <section id="caption"></section>
-    <button id="close">⨯</button>
+    <button id="close" tabindex="2" autofocus>
+      <img
+        id="close-icon"
+        src=${new URL("close-bold-svgrepo-com.svg", import.meta.url)}
+        alt="Close"
+        width="50px"
+        height="50px"
+      />
+    </button>
   </dialog>
 `;
 
@@ -70,10 +90,7 @@ export class LightboxDialog extends HTMLElement {
   open = ({ image, caption, elementIds, elementId, showNavigation = true }) => {
     if (this.#abortController.signal.aborted) {
       this.#abortController = new AbortController();
-    } else {
-      this.#abortController.abort();
     }
-
 
     this.#unsetImage();
     this.#setImage(image);
